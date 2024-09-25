@@ -45,26 +45,48 @@ ClientHub é um SaaS (Software como Serviço) completo e profissional para geren
 
 ```
 clienthub/
-├── backend/
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── app.js
-│   ├── .env.example
-│   ├── package.json
-│   └── Dockerfile
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── App.js
-│   │   └── index.js
-│   ├── .env.example
-│   ├── package.json
-│   └── Dockerfile
+backend/
+├── node_modules/              # Módulos do Node.js
+├── config/                    # Configurações globais (ex: banco de dados, autenticação)
+│   ├── db.js                  # Configuração de conexão com banco de dados
+│   └── config.js              # Outras configurações globais
+├── controllers/               # Lógica de controle, comunicação entre rotas e modelos
+│   └── clientController.js    # Controlador de clientes
+├── models/                    # Definições de modelos e esquemas (ex: clientes, assinaturas)
+│   └── clientModel.js         # Modelo de clientes
+├── routes/                    # Definição de rotas para cada recurso
+│   └── clientRoutes.js        # Rotas relacionadas a clientes
+├── middlewares/               # Middlewares de autenticação, validação, etc.
+│   └── authMiddleware.js      # Middleware de autenticação
+├── services/                  # Lógica de serviços (ex: envio de e-mails, pagamentos)
+│   └── notificationService.js # Serviço para enviar notificações
+├── app.js                     # Arquivo principal para iniciar o servidor Express
+├── package.json               # Dependências do Node.js
+└── package-lock.json          # Bloqueio de versão das dependências
+|
+frontend/
+├── node_modules/              # Módulos do NPM
+├── public/                    # Arquivos estáticos (html, imagens, favicon)
+│   ├── index.html             # Arquivo HTML principal
+│   └── manifest.json          # Configuração PWA
+├── src/                       # Código-fonte principal
+│   ├── assets/                # Arquivos estáticos (imagens, fontes, etc.)
+│   ├── components/            # Componentes reutilizáveis
+│   │   └── Navbar.js          # Exemplo de um componente
+│   ├── pages/                 # Páginas específicas (Ex: Home, Dashboard)
+│   │   └── Home.js            # Exemplo de uma página
+│   ├── services/              # Comunicação com o backend (requisições API)
+│   │   └── api.js             # Configuração do Axios
+│   ├── hooks/                 # Custom Hooks (lógica compartilhada entre componentes)
+│   │   └── useAuth.js         # Hook de autenticação
+│   ├── styles/                # Arquivos de estilização global (CSS ou SCSS)
+│   │   └── App.css            # Estilos globais
+│   ├── App.js                 # Componente principal da aplicação React
+│   ├── index.js               # Ponto de entrada do React
+│   └── .env                   # Variáveis de ambiente para o frontend
+├── package.json               # Dependências do frontend
+├── package-lock.json          # Bloqueio de versão das dependências
+|── .gitignore                 # Ignorar arquivos no controle de versão
 ├── docker-compose.yml
 ├── README.md
 └── LICENSE
