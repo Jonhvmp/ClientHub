@@ -38,7 +38,7 @@ function Home() {
         {clients.map(client => (
           <li key={client._id}>
             <strong>{client.name}</strong> - {client.email} - {client.phone} - Assinatura: {client.subscriptionType}
-            <Link to={`/edit-client/${encodeURIComponent(client.name.replace(/ /g, '-'))}`}>Editar</Link>
+            <Link to={`/edit-client/${client._id}`}>Editar</Link>
             <button onClick={() => deleteClient(client._id)}>Excluir</button>
           </li>
         ))}

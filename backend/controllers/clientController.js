@@ -20,7 +20,15 @@ exports.getClients = async (req, res) => {
   }
 };
 
-
+// Rota para obter um cliente específico
+exports.getClient = async (req, res) => {
+  try {
+    const client = await Client.findById(req.params.id);
+    res.json(client);
+  } catch (error) {
+    res.status(404).json({ message: 'Cliente não encontrado', error });
+  }
+};
 
 // Atualizar um cliente
 exports.updateClient = async (req, res) => {

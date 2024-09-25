@@ -25,6 +25,19 @@ app.get('/api/clientes', async (req, res) => {
   }
 });
 
+// Rota GET para obter um cliente específico
+app.get('/api/clientes/:id', async (req, res) => {
+  try {
+    const client = await Client.findById(req.params.id);
+    if (!client) {
+      return res.status(404).json({ message: 'Cliente não encontrado' });
+    }
+    res.json(client);
+  } catch (error) {
+    res.status(404).json({ message: 'Cliente não encontrado', error });
+  }
+});
+
 // Rota principal para verificação do funcionamento da API
 app.get('/', (req, res) => {
   res.send('API funcionando!');

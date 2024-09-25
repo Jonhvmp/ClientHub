@@ -17,7 +17,7 @@ function EditClient() {
       }
     };
     fetchClient();
-  }, [id]);
+  }, [id]);  // Usa o id como parâmetro
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,31 +33,31 @@ function EditClient() {
     <div>
       <h2>Editar Cliente</h2>
       <p><a href="/">Voltar</a></p>
-      <p>Nome do cliente: <strong>{id}</strong></p>
+      <p>Nome do cliente: <strong>{form.name}</strong></p> {/* Exibe o nome do cliente */}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Nome"
-          value={form.name}
+          value={form.name} // Valor preenchido com os dados do cliente
           onChange={e => setForm({ ...form, name: e.target.value })}
           required
         />
         <input
           type="email"
           placeholder="Email"
-          value={form.email}
+          value={form.email} // Valor preenchido com os dados do cliente
           onChange={e => setForm({ ...form, email: e.target.value })}
           required
         />
         <input
           type="text"
           placeholder="Telefone"
-          value={form.phone}
+          value={form.phone} // Valor preenchido com os dados do cliente
           onChange={e => setForm({ ...form, phone: e.target.value })}
           required
         />
         <select
-          value={form.subscriptionType}
+          value={form.subscriptionType} // Valor preenchido com os dados do cliente
           onChange={e => setForm({ ...form, subscriptionType: e.target.value })}
           required
         >
