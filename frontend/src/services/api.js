@@ -2,8 +2,8 @@
 
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: 'http://localhost:5000', // URL do backend
+const api = axios.create({ // Crie uma instância do Axios
+  baseURL: 'http://localhost:5000',  // Defina a URL base para o backend
 });
 
 export default api;

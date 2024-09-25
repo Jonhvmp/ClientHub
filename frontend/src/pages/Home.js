@@ -1,26 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import api from '../services/api';  // Supondo que você tenha configurado o axios
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import api from '../services/api';
 
 function Home() {
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
-    // Verifique se o caminho da API está correto
-    api.get('/api/clientes')  // Atualize para '/api/clientes'
-      .then(response => {
-        setClients(response.data);  // Assumindo que os dados dos clientes estão na resposta
-      })
-      .catch(error => {
-        console.error("Erro ao buscar dados do backend", error);
-      });
+    fetchClients(); // Carregar clientes ao montar o componente
   }, []);
+
+  // Função para buscar clientes
+  const fetchClients = async () => {
+    try {
+      const response = await api.get('/api/clientes');
+      setClients(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar clientes', error);
+    }
+  };
+
+  // Função para excluir um cliente
+  const deleteClient = async (id) => {
+    try {
+      await api.delete(`/api/clientes/${id}`);
+      fetchClients(); // Recarregar a lista de clientes após excluir
+    } catch (error) {
+      console.error('Erro ao excluir cliente', error);
+    }
+  };
 
   return (
     <div>
-      <h1>Lista de Clientes</h1>
+      <Link to="/add-client">Adicionar Cliente</Link>
+      <h2>Lista de Clientes</h2>
+      <p>Quantidade de clientes: {clients.length}</p>
       <ul>
         {clients.map(client => (
-          <li key={client._id}>{client.name}</li>
+          <li key={client._id}>
+            <strong>{client.name}</strong> - {client.email} - {client.phone} - Assinatura: {client.subscriptionType}
+            <Link to={`/edit-client/${encodeURIComponent(client.name.replace(/ /g, '-'))}`}>Editar</Link>
+            <button onClick={() => deleteClient(client._id)}>Excluir</button>
+          </li>
         ))}
       </ul>
     </div>
