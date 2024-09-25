@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import api from '../services/api';  // Importe o Axios configurado
+import api from '../services/api';  // Supondo que você tenha configurado o axios
 
 function Home() {
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
-    api.get('/api/clients')  // Aqui não precisa incluir /api, pois já está configurado na baseURL
-      .then(response => { // Supondo que o backend retorne uma lista de clientes
-        setClients(response.data);  // Supondo que o backend retorne uma mensagem
+    // Verifique se o caminho da API está correto
+    api.get('/clientes')  // Altere para '/clientes' se o backend estiver esperando essa rota
+      .then(response => {
+        setClients(response.data);  // Assumindo que os dados dos clientes estão na resposta
       })
       .catch(error => {
         console.error("Erro ao buscar dados do backend", error);
       });
-  }
-  , []);
+  }, []);
 
   return (
     <div>
-      <h1>Clientes</h1>
+      <h1>Lista de Clientes</h1>
       <ul>
         {clients.map(client => (
-          <li key={client._id}>{client.name} - {client.email}</li>
+          <li key={client._id}>{client.name}</li>
         ))}
       </ul>
     </div>

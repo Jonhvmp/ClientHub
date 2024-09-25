@@ -8,4 +8,7 @@ router.get('/clientes', clientController.getClients);
 router.put('/clientes/:id', clientController.updateClient);
 router.delete('/clientes/:id', clientController.deleteClient);
 
+// Rota para listar todos os clientes
+router.get('/clientes', clientController.getClients);
+
 module.exports = router;
