@@ -8,8 +8,8 @@ ClientHub é um SaaS (Software como Serviço) completo e profissional para geren
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Pré-requisitos](#pré-requisitos)
 - [Instalação](#instalação)
-  - [Back-end](#back-end)
-  - [Front-end](#front-end)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
 - [Uso](#uso)
 - [Funcionalidades](#funcionalidades)
 - [Testes](#testes)
@@ -20,14 +20,14 @@ ClientHub é um SaaS (Software como Serviço) completo e profissional para geren
 
 ## Tecnologias Utilizadas
 
-### **Front-end**
+### **Frontend**
 
 - **React.js**: Biblioteca JavaScript para construção de interfaces de usuário.
 - **Axios**: Cliente HTTP para comunicação com a API.
-- **React Router DOM**: Gerenciamento de rotas no front-end.
+- **React Router DOM**: Gerenciamento de rotas no frontend.
 - **Bootstrap** ou **Material-UI**: Frameworks CSS para estilização e responsividade.
 
-### **Back-end**
+### **Backend**
 
 - **Node.js** com **Express.js**: Ambiente de execução JavaScript para o servidor e framework minimalista para construção de APIs.
 - **MongoDB**: Banco de dados NoSQL para armazenamento de dados.
@@ -37,7 +37,7 @@ ClientHub é um SaaS (Software como Serviço) completo e profissional para geren
 ### **Outras Tecnologias**
 
 - **Docker**: Containerização da aplicação para facilitar o desenvolvimento e implantação.
-- **Nginx**: Servidor web para servir o front-end em produção.
+- **Nginx**: Servidor web para servir o frontend em produção.
 - **Git**: Controle de versão.
 - **ESLint e Prettier**: Ferramentas para padronização e formatação de código.
 
@@ -45,7 +45,7 @@ ClientHub é um SaaS (Software como Serviço) completo e profissional para geren
 
 ```
 clienthub/
-├── back-end/
+├── backend/
 │   ├── src/
 │   │   ├── controllers/
 │   │   ├── models/
@@ -54,7 +54,7 @@ clienthub/
 │   ├── .env.example
 │   ├── package.json
 │   └── Dockerfile
-├── front-end/
+├── frontend/
 │   ├── public/
 │   ├── src/
 │   │   ├── components/
@@ -79,12 +79,12 @@ clienthub/
 
 ## Instalação
 
-### Back-end
+### Backend
 
 1. **Configuração Inicial**
 
    ```bash
-   cd clienthub/back-end
+   cd clienthub/backend
    ```
 
 2. **Instalar Dependências**
@@ -113,12 +113,12 @@ clienthub/
    yarn dev
    ```
 
-### Front-end
+### Frontend
 
 1. **Configuração Inicial**
 
    ```bash
-   cd clienthub/front-end
+   cd clienthub/frontend
    ```
 
 2. **Instalar Dependências**
@@ -147,7 +147,7 @@ clienthub/
 
 ## Uso
 
-- Acesse o front-end em `http://localhost:3000` para interagir com a aplicação.
+- Acesse o frontend em `http://localhost:3000` para interagir com a aplicação.
 - Utilize as funcionalidades de cadastro, edição, exclusão e visualização de clientes e assinaturas.
 - Para acessar rotas protegidas, é necessário realizar o login.
 
@@ -180,7 +180,7 @@ clienthub/
 
 ## Testes
 
-### Back-end
+### Backend
 
 - **Testes Unitários e de Integração**
 
@@ -190,7 +190,7 @@ clienthub/
   yarn test
   ```
 
-### Front-end
+### Frontend
 
 - **Testes de Componentes**
 
@@ -216,18 +216,18 @@ clienthub/
 
 3. **Acessar a Aplicação**
 
-   - Front-end: `http://localhost:80`
-   - Back-end: `http://localhost:5000`
+   - Frontend: `http://localhost:80`
+   - Backend: `http://localhost:5000`
 
 ### Sem Docker
 
-1. **Back-end**
+1. **Backend**
 
    - Configure um servidor para hospedar a API Node.js.
    - Certifique-se de que o MongoDB está acessível.
    - Configure as variáveis de ambiente de produção.
 
-2. **Front-end**
+2. **Frontend**
 
    - Execute `npm run build` ou `yarn build` para gerar os arquivos estáticos.
    - Sirva os arquivos estáticos usando um servidor web como Nginx ou Apache.
