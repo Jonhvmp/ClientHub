@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import '../assets/css/AddClient.css';
 
 function AddClient() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subscriptionType: '' });
-  const navigate = useNavigate();  // Substitua useHistory por useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await api.post('/api/clientes', form);
-      navigate('/');  // Redirecionar para a página inicial após adicionar cliente
+      navigate('/');
     } catch (error) {
       console.error('Erro ao adicionar cliente', error);
     }
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Adicionar Cliente</h2>
-      <Link to="/">Voltar</Link>
-      <br />
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -55,6 +54,9 @@ function AddClient() {
           <option value="anual">Anual</option>
         </select>
         <button type="submit">Adicionar Cliente</button>
+
+        {/* Button voltar */}
+        <button onClick={() => navigate('/')} className="btn-back">Voltar</button>
       </form>
     </div>
   );

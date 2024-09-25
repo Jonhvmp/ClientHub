@@ -1,0 +1,79 @@
+/* home.css */
+
+@import './global.css';
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-add-client {
+  /* Aplicando as classes btn e btn-success */
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: #fff;
+  background-color: var(--success-color);
+  transition: background-color var(--transition-speed);
+}
+
+.btn-add-client:hover {
+  background-color: var(--success-color-hover);
+}
+
+.client-list {
+  list-style: none;
+  padding: 0;
+}
+
+.client-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.actions button,
+.actions .btn-edit,
+.actions .btn-delete {
+  margin-left: 10px;
+}
+
+/* Botão de editar */
+.btn-edit {
+  /* Aplicando as classes btn e btn-warning */
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: #000;
+  background-color: var(--warning-color);
+  transition: background-color var(--transition-speed);
+}
+
+.btn-edit:hover {
+  background-color: var(--warning-color-hover);
+}
+
+/* Botão de excluir */
+.btn-delete {
+  /* Aplicando as classes btn e btn-danger */
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: #fff;
+  background-color: var(--danger-color);
+  transition: background-color var(--transition-speed);
+}
+
+.btn-delete:hover {
+  background-color: var(--danger-color-hover);
+}

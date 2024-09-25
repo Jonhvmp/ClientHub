@@ -1,0 +1,24 @@
+/* editclient.css */
+
+@import './global.css';
+
+/* Usando a classe .form-container já definida */
+
+
+button {
+  /* Aplicando as classes btn e btn-primary */
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: #fff;
+  background-color: var(--primary-color);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+  width: 100%;
+}
+
+button:hover {
+  background-color: var(--primary-color-hover);
+}

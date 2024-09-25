@@ -8,7 +8,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <h1>Gerenciamento de Clientes</h1>
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/add-client" element={<AddClient />} />

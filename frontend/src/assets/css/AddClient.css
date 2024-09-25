@@ -1,0 +1,24 @@
+/* addclient.css */
+
+@import './global.css';
+
+/* Usando a classe .form-container já definida */
+
+
+button {
+  /* Aplicando as classes btn e btn-success */
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: #fff;
+  background-color: var(--success-color);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+  width: 100%;
+}
+
+button:hover {
+  background-color: var(--success-color-hover);
+}

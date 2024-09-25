@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
+import '../assets/css/Home.css';
 
 function Home() {
   const [clients, setClients] = useState([]);
@@ -9,7 +10,6 @@ function Home() {
     fetchClients(); // Carregar clientes ao montar o componente
   }, []);
 
-  // Função para buscar clientes
   const fetchClients = async () => {
     try {
       const response = await api.get('/api/clientes');
@@ -19,7 +19,6 @@ function Home() {
     }
   };
 
-  // Função para excluir um cliente
   const deleteClient = async (id) => {
     try {
       await api.delete(`/api/clientes/${id}`);
@@ -30,16 +29,22 @@ function Home() {
   };
 
   return (
-    <div>
-      <Link to="/add-client">Adicionar Cliente</Link>
+    <div className="container">
+      <header>
+        <h1>Gerenciamento de Clientes</h1>
+        <Link to="/add-client" className="btn-add-client">Adicionar Cliente</Link>
+      </header>
+
       <h2>Lista de Clientes</h2>
       <p>Quantidade de clientes: {clients.length}</p>
-      <ul>
+      <ul className="client-list">
         {clients.map(client => (
-          <li key={client._id}>
-            <strong>{client.name}</strong> - {client.email} - {client.phone} - Assinatura: {client.subscriptionType}
-            <Link to={`/edit-client/${client._id}`}>Editar</Link>
-            <button onClick={() => deleteClient(client._id)}>Excluir</button>
+          <li key={client._id} className="client-item">
+            <span><strong>{client.name}</strong> - {client.email} - {client.phone} - Assinatura: {client.subscriptionType}</span>
+            <div className="actions">
+              <Link to={`/edit-client/${client._id}`} className="btn-edit">Editar</Link>
+              <button onClick={() => deleteClient(client._id)} className="btn-delete">Excluir</button>
+            </div>
           </li>
         ))}
       </ul>
