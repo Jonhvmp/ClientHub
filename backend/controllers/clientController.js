@@ -10,15 +10,17 @@ exports.createClient = async (req, res) => {
   }
 };
 
-// Buscar todos os clientes
+// Rota para obter todos os clientes
 exports.getClients = async (req, res) => {
   try {
-    const clients = await Client.find();
-    res.status(200).json(clients);
+    const clients = await Client.find();  // Buscando clientes do MongoDB
+    res.json(clients);  // Retornando resposta como JSON
   } catch (error) {
-    res.status(400).json({ message: 'Erro ao buscar clientes', error });
+    res.status(500).json({ error: 'Erro ao buscar clientes' });
   }
 };
+
+
 
 // Atualizar um cliente
 exports.updateClient = async (req, res) => {

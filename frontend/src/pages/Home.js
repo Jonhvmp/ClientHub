@@ -6,7 +6,7 @@ function Home() {
 
   useEffect(() => {
     // Verifique se o caminho da API está correto
-    api.get('/clientes')  // Altere para '/clientes' se o backend estiver esperando essa rota
+    api.get('/api/clientes')  // Atualize para '/api/clientes'
       .then(response => {
         setClients(response.data);  // Assumindo que os dados dos clientes estão na resposta
       })
