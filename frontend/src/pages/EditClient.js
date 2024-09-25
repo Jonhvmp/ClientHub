@@ -66,7 +66,7 @@ function EditClient() {
           <option value="semestral">Semestral</option>
           <option value="anual">Anual</option>
         </select>
-        <button type="submit">Atualizar Cliente</button>
+        <button type="submit" class="btn-edit-submit">Atualizar Cliente</button>
 
         {/* Button voltar */}
         <button onClick={() => navigate('/')} className="btn-back">Voltar</button>

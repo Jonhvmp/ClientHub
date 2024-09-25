@@ -17,8 +17,13 @@ button {
   cursor: pointer;
   transition: background-color var(--transition-speed);
   width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-button:hover {
-  background-color: var(--success-color-hover);
+.btn-add-submit {
+  background-color: green;
+}
+
+.btn-add-submit:hover {
+  background-color: darkgreen;
 }
