@@ -2,141 +2,103 @@
 
 @import './global.css';
 
-/* Container principal */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: var(--background-light);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  transition: all 0.3s ease-in-out;
-}
-
-.container:hover {
-  box-shadow: var(--box-shadow-hover);
-}
-
-/* Estilização do header */
 header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-h1 {
-  font-size: 2rem;
-  color: var(--primary-color);
+header h1 {
+  flex: 1 1 100%;
+  margin-bottom: 10px;
 }
 
 .p-total-clientes {
   padding: 7px 0px;
   font-size: 1.1rem;
-  color: var(--text-dark);
+  color: var(--secondary-text-color);
 }
 
-/* Botão de adicionar cliente */
 .btn-add-client {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 10px 15px;
   border-radius: var(--border-radius);
   text-decoration: none;
   color: #fff;
   background-color: var(--success-color);
-  transition: background-color var(--transition-speed), transform 0.3s ease;
-  box-shadow: var(--box-shadow);
-  font-weight: bold;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
 }
 
 .btn-add-client:hover {
   background-color: var(--success-color-hover);
-  transform: scale(1.05);
-  box-shadow: var(--box-shadow-hover);
+  transform: translateY(-2px);
 }
 
-/* Lista de clientes */
 .client-list {
-  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
   padding: 0;
+  list-style: none;
 }
 
-/* Estilização do item da lista de clientes */
 .client-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background-color: #fff;
-  padding: 15px;
-  margin-bottom: 10px;
+  padding: 20px;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform var(--transition-speed);
 }
 
 .client-item:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--box-shadow-hover);
+  transform: translateY(-5px);
 }
 
-/* Botões de ação (editar e excluir) */
+.client-item span {
+  display: block;
+  margin-bottom: 15px;
+  color: var(--text-color);
+}
+
 .actions {
   display: flex;
-  align-items: center;
+  gap: 10px;
 }
 
-.actions button,
 .actions .btn-edit,
 .actions .btn-delete {
-  margin-left: 10px;
+  display: inline-block;
   padding: 8px 12px;
   border-radius: var(--border-radius);
   text-decoration: none;
-  font-weight: bold;
-  transition: background-color var(--transition-speed), transform 0.3s ease;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.actions .btn-edit:hover,
+.actions .btn-delete:hover {
+  transform: translateY(-2px);
 }
 
 /* Botão de editar */
 .btn-edit {
-  color: #000;
   background-color: var(--warning-color);
-  box-shadow: var(--box-shadow);
+  color: #fff;
 }
 
 .btn-edit:hover {
   background-color: var(--warning-color-hover);
-  transform: scale(1.05);
-  box-shadow: var(--box-shadow-hover);
 }
 
 /* Botão de excluir */
 .btn-delete {
-  color: #fff;
   background-color: var(--danger-color);
+  color: #fff;
 }
 
 .btn-delete:hover {
   background-color: var(--danger-color-hover);
-  transform: scale(1.05);
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .client-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .actions {
-    margin-top: 10px;
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  .btn-add-client {
-    width: 100%;
-    text-align: center;
-    padding: 12px;
-    font-size: 1rem;
-  }
 }

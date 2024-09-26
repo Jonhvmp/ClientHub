@@ -1,29 +1,103 @@
-/* addclient.css */
+/* AddClient.css */
 
 @import './global.css';
 
-/* Usando a classe .form-container já definida */
+/* Estilizando o container principal */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
 
+/* Título */
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: var(--text-color);
+}
 
-button {
-  /* Aplicando as classes btn e btn-success */
+/* Estilos para o formulário */
+form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Campos de entrada */
+form input,
+form select {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: border-color var(--transition-speed);
+}
+
+form input:focus,
+form select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* Botões */
+form .btn-add-client,
+form .btn-back {
   display: inline-block;
-  padding: 10px 15px;
+  padding: 12px 20px;
   border-radius: var(--border-radius);
   text-decoration: none;
   color: #fff;
-  background-color: var(--success-color);
-  border: none;
   cursor: pointer;
-  transition: background-color var(--transition-speed);
-  width: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: none;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
+  font-size: 1rem;
 }
 
-.btn-add-submit {
-  background-color: green;
+form .btn-add-client {
+  background-color: var(--success-color);
 }
 
-.btn-add-submit:hover {
-  background-color: darkgreen;
+form .btn-add-client:hover {
+  background-color: var(--success-color-hover);
+  transform: translateY(-2px);
+}
+
+form .btn-back {
+  background-color: var(--primary-color);
+}
+
+form .btn-back:hover {
+  background-color: var(--primary-color-hover);
+  transform: translateY(-2px);
+}
+
+/* Alinhamento dos botões */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  form {
+    padding: 20px;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+
+  form .btn-add-client,
+  form .btn-back {
+    width: 100%;
+    text-align: center;
+  }
 }

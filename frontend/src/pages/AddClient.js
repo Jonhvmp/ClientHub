@@ -53,10 +53,11 @@ function AddClient() {
           <option value="semestral">Semestral</option>
           <option value="anual">Anual</option>
         </select>
-        <button type="submit" className="btn-add-client">Adicionar Cliente</button>
 
-        {/* Button voltar */}
-        <button onClick={() => navigate('/')} className="btn-back">Voltar</button>
+        <div className="form-buttons">
+          <button type="submit" className="btn-add-client">Adicionar Cliente</button>
+          <button type="button" onClick={() => navigate('/')} className="btn-back">Voltar</button>
+        </div>
       </form>
     </div>
   );

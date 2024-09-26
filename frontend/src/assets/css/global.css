@@ -1,22 +1,23 @@
 /* global.css */
 
 :root {
-  --primary-color: #007bff;
-  --primary-color-hover: #0056b3;
-  --secondary-color: #28a745;
-  --secondary-color-hover: #218838;
+  --primary-color: #4a90e2;
+  --primary-color-hover: #357ab8;
+  --secondary-color: #50e3c2;
+  --secondary-color-hover: #3bc1a5;
   --success-color: #28a745;
   --success-color-hover: #218838;
   --danger-color: #dc3545;
   --danger-color-hover: #c82333;
-  --warning-color: #ffc107;
-  --warning-color-hover: #e0a800;
-  --font-family: 'Arial', sans-serif;
+  --warning-color: #f5a623;
+  --warning-color-hover: #d48806;
   --text-color: #333;
-  --background-color: #f4f4f4;
-  --border-radius: 5px;
+  --secondary-text-color: #666;
+  --background-color: #f9f9f9;
+  --border-radius: 8px;
   --transition-speed: 0.3s;
-  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 * {
@@ -29,10 +30,12 @@ body {
   font-family: var(--font-family);
   background-color: var(--background-color);
   color: var(--text-color);
+  line-height: 1.6;
 }
 
 h1, h2 {
   color: var(--text-color);
+  margin-bottom: 10px;
 }
 
 .container {
@@ -42,24 +45,22 @@ h1, h2 {
 }
 
 button, input, select {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: var(--border-radius);
-  font-size: 16px;
-  width: 100%;
+  font-family: var(--font-family);
 }
 
-button {
-  background-color: var(--primary-color);
+button, .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  text-decoration: none;
   color: #fff;
   cursor: pointer;
   border: none;
-  transition: background-color var(--transition-speed);
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
 }
 
-button:hover {
-  background-color: var(--primary-color-hover);
+button:hover, .btn:hover {
+  transform: translateY(-2px);
 }
 
 a {
@@ -68,15 +69,6 @@ a {
 }
 
 /* Classes de botão reutilizáveis */
-.btn {
-  display: inline-block;
-  padding: 10px 15px;
-  border-radius: var(--border-radius);
-  text-decoration: none;
-  color: #fff;
-  transition: background-color var(--transition-speed);
-}
-
 .btn-primary {
   background-color: var(--primary-color);
 }
@@ -103,7 +95,6 @@ a {
 
 .btn-warning {
   background-color: var(--warning-color);
-  color: #000;
 }
 
 .btn-warning:hover {
@@ -124,7 +115,33 @@ a {
   flex-direction: column;
   gap: 15px;
   background-color: #fff;
-  padding: 20px;
+  padding: 25px;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
+}
+
+.form-container input,
+.form-container select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+}
+
+.form-container button {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  background-color: var(--primary-color);
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
+  width: auto;
+  align-self: flex-end;
+}
+
+.form-container button:hover {
+  background-color: var(--primary-color-hover);
+  transform: translateY(-2px);
 }
