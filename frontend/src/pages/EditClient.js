@@ -7,14 +7,24 @@ function EditClient() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', phone: '', subscriptionType: '' });
+  const [loading, setLoading] = useState(true); // Adicionar estado de carregamento
+  const [error, setError] = useState(null); // Adicionar estado de erro
 
   useEffect(() => {
     const fetchClient = async () => {
       try {
         const response = await api.get(`/api/clientes/${id}`);
-        setForm(response.data);
+        setForm({
+          name: response.data.data.name || '',
+          email: response.data.data.email || '',
+          phone: response.data.data.phone || '',
+          subscriptionType: response.data.data.subscriptionType || ''
+        });
+        setLoading(false); // Carregamento concluído
       } catch (error) {
         console.error('Erro ao buscar cliente', error);
+        setError('Erro ao carregar dados do cliente');
+        setLoading(false); // Carregamento concluído
       }
     };
     fetchClient();
@@ -27,8 +37,12 @@ function EditClient() {
       navigate('/');
     } catch (error) {
       console.error('Erro ao atualizar cliente', error);
+      setError('Erro ao atualizar cliente');
     }
   };
+
+  if (loading) return <div>Carregando...</div>; // Mostrar mensagem de carregamento
+  if (error) return <div>{error}</div>; // Mostrar erro, se existir
 
   return (
     <div className="container">
