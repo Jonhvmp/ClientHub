@@ -1,51 +1,41 @@
+require('dotenv').config();
 const express = require('express');
-const cors = require('cors');  // Importe o CORS
-const connectDB = require('./config/db'); // Importe a função de conexão com o MongoDB
-const clientRoutes = require('./routes/clientRoutes'); // Importe as rotas de clientes
-const Client = require('./models/clientModel'); // Importe o modelo de cliente
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const connectDB = require('./config/db');
+const clientRoutes = require('./routes/clientRoutes');
+const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 const app = express();
 
-connectDB(); // Conectar ao MongoDB
+// Conectar ao MongoDB
+connectDB();
 
-// Habilitar CORS para todas as rotas
+// Middleware
+app.use(helmet()); // Adiciona cabeçalhos de segurança
+app.use(morgan('dev')); // Logging
 app.use(cors());
 app.use(express.json());
 
-// Usar as rotas de clientes
-app.use('/api', clientRoutes); // Adicione '/api' como prefixo para todas as rotas de clientes
+// Rotas
+app.use('/api/clientes', clientRoutes);
 
-// Uma Rota GET para listar todos os clientes
-app.get('/api/clientes', async (req, res) => {
-  try {
-    const clients = await Client.find(); // Buscar todos os clientes do MongoDB
-    res.json(clients); // Retornar os clientes como JSON
-  } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar clientes' });
-  }
-});
-
-// Rota GET para obter um cliente específico
-app.get('/api/clientes/:id', async (req, res) => {
-  try {
-    const client = await Client.findById(req.params.id);
-    if (!client) {
-      return res.status(404).json({ message: 'Cliente não encontrado' });
-    }
-    res.json(client);  // Certifique-se de que está retornando JSON
-  } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar cliente' });
-  }
-});
-
-
-// Rota principal para verificação do funcionamento da API
+// Rota principal
 app.get('/', (req, res) => {
-  res.send('API funcionando!');
+  res.json({ message: 'API funcionando!' });
 });
+
+// Middleware para rotas não encontradas
+app.use(notFound);
+
+// Middleware de tratamento de erros
+app.use(errorHandler);
 
 // Definir a porta do servidor e iniciar o servidor
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Servidor rodando na porta http://localhost:${port}`);
 });
+
+module.exports = app; // Para testes

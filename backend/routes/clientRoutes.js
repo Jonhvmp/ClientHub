@@ -1,14 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const clientController = require('../controllers/clientController');
+const { protect, authorize } = require('../middleware/auth');
 
-// Definir rotas CRUD para clientes
-router.post('/clientes', clientController.createClient);
-router.get('/clientes', clientController.getClients);
-router.put('/clientes/:id', clientController.updateClient);
-router.delete('/clientes/:id', clientController.deleteClient);
+// Rotas públicas
+router.get('/search', clientController.searchClients);
 
-// Rota para listar todos os clientes
-router.get('/clientes', clientController.getClients);
+// Rotas protegidas
+router.use(protect); // Certifique-se de que o `protect` está correto
+
+// Rotas para todos os usuários autenticados
+router
+  .route('/')
+  .get(clientController.getClients)
+  .post(clientController.createClient);
+
+router
+  .route('/:id')
+  .get(clientController.getClient)
+  .put(clientController.updateClient)
+  .delete(authorize('admin', 'manager'), clientController.deleteClient);
 
 module.exports = router;
