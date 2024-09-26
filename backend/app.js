@@ -32,11 +32,12 @@ app.get('/api/clientes/:id', async (req, res) => {
     if (!client) {
       return res.status(404).json({ message: 'Cliente não encontrado' });
     }
-    res.json(client);
+    res.json(client);  // Certifique-se de que está retornando JSON
   } catch (error) {
-    res.status(404).json({ message: 'Cliente não encontrado', error });
+    res.status(500).json({ error: 'Erro ao buscar cliente' });
   }
 });
+
 
 // Rota principal para verificação do funcionamento da API
 app.get('/', (req, res) => {

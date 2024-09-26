@@ -36,7 +36,7 @@ function Home() {
       </header>
 
       <h2>Lista de Clientes</h2>
-      <p>Quantidade de clientes: {clients.length}</p>
+      <p className="p-total-clientes">Quantidade de clientes: {clients.length}</p>
       <ul className="client-list">
         {clients.map(client => (
           <li key={client._id} className="client-item">
@@ -51,5 +51,6 @@ function Home() {
     </div>
   );
 }
+
 
 export default Home;

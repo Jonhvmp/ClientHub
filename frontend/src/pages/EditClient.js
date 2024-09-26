@@ -12,6 +12,7 @@ function EditClient() {
     const fetchClient = async () => {
       try {
         const response = await api.get(`/api/clientes/${id}`);
+        console.log('Response data:', response.data); // Debug para verificar o retorno
         setForm(response.data);
       } catch (error) {
         console.error('Erro ao buscar cliente', error);
@@ -66,7 +67,7 @@ function EditClient() {
           <option value="semestral">Semestral</option>
           <option value="anual">Anual</option>
         </select>
-        <button type="submit" class="btn-edit-submit">Atualizar Cliente</button>
+        <button type="submit" className="btn-edit-submit">Atualizar Cliente</button>
 
         {/* Button voltar */}
         <button onClick={() => navigate('/')} className="btn-back">Voltar</button>
@@ -74,5 +75,6 @@ function EditClient() {
     </div>
   );
 }
+
 
 export default EditClient;

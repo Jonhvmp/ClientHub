@@ -67,10 +67,6 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
 /* Classes de botão reutilizáveis */
 .btn {
   display: inline-block;
