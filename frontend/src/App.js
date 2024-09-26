@@ -1,19 +1,21 @@
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import Home from './pages/Home';
-import AddClient from './pages/AddClient';
-import EditClient from './pages/EditClient';
+import PrivateRoute from './utils/PrivateRoute';
+import Dashboard from './pages/Dashboard'; // Página protegida
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/add-client" element={<AddClient />} />
-          <Route path="/edit-client/:id" element={<EditClient />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Home />} />
+        </Route>
+      </Routes>
     </Router>
   );
 }
