@@ -1,23 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../services/api';
+import api from '../services/api'; // Usar a instância personalizada do Axios
 import '../assets/css/Home.css';
 
 function Home() {
-  const [clients, setClients] = useState([]);
-
-  useEffect(() => {
-    fetchClients(); // Carregar clientes ao montar o componente
-  }, []);
+  const [clients, setClients] = useState([]); // Inicializar como array vazia
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchClients = async () => {
     try {
-      const response = await api.get('/api/clientes');
-      setClients(response.data);
+      const token = localStorage.getItem('token'); // Certifique-se de que o token está sendo armazenado corretamente
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await api.get('/api/clientes', config); // Usando a instância 'api'
+      setClients(response.data.data); // Atribua o valor correto vindo da API
+      setLoading(false);
     } catch (error) {
-      console.error('Erro ao buscar clientes', error);
+      setError(error.message);
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
+  if (loading) return <div>Carregando...</div>;
+  if (error) return <div>Erro: {error}</div>;
 
   const deleteClient = async (id) => {
     try {
@@ -51,6 +64,5 @@ function Home() {
     </div>
   );
 }
-
 
 export default Home;

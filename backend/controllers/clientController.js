@@ -54,19 +54,30 @@ exports.updateClient = asyncHandler(async (req, res) => {
 
 // Excluir um cliente
 exports.deleteClient = asyncHandler(async (req, res) => {
-  const client = await Client.findById(req.params.id);
-  if (!client) {
-    res.status(404);
-    throw new Error('Cliente não encontrado');
+  try {
+    console.log(`Tentando excluir cliente com ID: ${req.params.id}`);
+    const client = await Client.findByIdAndDelete(req.params.id);
+
+    if (!client) {
+      res.status(404).json({ success: false, message: 'Cliente não encontrado' });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Cliente excluído com sucesso',
+    });
+
+    console.log(`Cliente com ID: ${req.params.id} foi excluído com sucesso`);
+  } catch (error) {
+    console.error(`Erro ao excluir cliente: ${error.message}`, error);
+    res.status(500).json({
+      success: false,
+      error: error.message, // Exibir a mensagem de erro detalhada
+    });
   }
-
-  await client.remove();
-
-  res.status(200).json({
-    success: true,
-    data: {}
-  });
 });
+
 
 // Buscar clientes por nome ou email
 exports.searchClients = asyncHandler(async (req, res) => {

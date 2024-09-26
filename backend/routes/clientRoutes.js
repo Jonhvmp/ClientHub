@@ -7,18 +7,17 @@ const { protect, authorize } = require('../middleware/auth');
 router.get('/search', clientController.searchClients);
 
 // Rotas protegidas
-router.use(protect); // Certifique-se de que o `protect` está correto
-
 // Rotas para todos os usuários autenticados
 router
   .route('/')
   .get(clientController.getClients)
   .post(clientController.createClient);
 
-router
+  router
   .route('/:id')
   .get(clientController.getClient)
   .put(clientController.updateClient)
-  .delete(authorize('admin', 'manager'), clientController.deleteClient);
+  .delete(clientController.deleteClient); // Remover authorize('admin', 'manager') temporariamente
+
 
 module.exports = router;

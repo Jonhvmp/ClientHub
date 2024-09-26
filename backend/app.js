@@ -9,6 +9,12 @@ const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 const app = express();
 
+// Fake login
+const fakeLogin = require('./routes/fakeLogin');
+app.use('/api', fakeLogin);
+console.log(`Rota fake-login: http://localhost:${process.env.PORT || 5000}/api/fake-login`);
+
+
 // Conectar ao MongoDB
 connectDB();
 
