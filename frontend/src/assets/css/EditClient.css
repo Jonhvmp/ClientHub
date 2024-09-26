@@ -7,6 +7,11 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 40px 20px;
+  /* Desabilitar seleção de texto */
+  user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
 /* Título */
@@ -15,6 +20,30 @@ h2 {
   margin-bottom: 30px;
   font-size: 2rem;
   color: var(--text-color);
+}
+
+/* Nome do cliente */
+.p-name-client {
+  font-size: 1.2rem;
+  padding: 7px 0px;
+  color: var(--secondary-text-color);
+  border-radius: 0 0 7px 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.p-name-client strong {
+  color: var(--text-color);
+  padding-left: 5px;
+}
+
+.p-name-client strong:hover {
+  color: var(--primary-color);
+  cursor: not-allowed;
 }
 
 /* Estilos para o formulário */

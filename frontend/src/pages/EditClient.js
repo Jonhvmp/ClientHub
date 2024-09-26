@@ -47,6 +47,7 @@ function EditClient() {
   return (
     <div className="container">
       <h2>Editar Cliente</h2>
+      <p className='p-name-client'>Atualize os dados do cliente: <strong>{form.name}</strong></p>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
