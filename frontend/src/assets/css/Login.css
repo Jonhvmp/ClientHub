@@ -1,3 +1,57 @@
 /* Login.css */
 
 @import './global.css';
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+}
+
+.error-message {
+  color: var(--danger-color);
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-login {
+  background-color: green;
+}
+
+.btn-login:hover {
+  background-color: darkgreen;
+}
+
+.btn-back {
+  background-color: var(--secondary-color);
+}
+
+.btn-back:hover {
+  background-color: var(--secondary-color-hover);
+}

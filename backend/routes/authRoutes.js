@@ -1,22 +1,34 @@
 const express = require('express');
 const { body } = require('express-validator');
 const User = require('../models/userModel');
-const generateToken = require('../config/jwt');
 const bcrypt = require('bcryptjs');
-const router = express.Router();
 const jwt = require('jsonwebtoken');
+const router = express.Router();
+const { validationResult } = require('express-validator');
 
 // Registro
-router.post('/register', async (req, res) => {
+router.post('/register', [
+  body('name').notEmpty().withMessage('Nome é obrigatório'),
+  body('email').isEmail().withMessage('Email inválido'),
+  body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres')
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const { name, email, password } = req.body;
-
   try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email já está em uso' });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
-    res.status(201).json({ message: 'Usuário registrado com sucesso!' });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.status(201).json({ message: 'Usuário registrado com sucesso!', token });
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao registrar usuário' });
+    res.status(500).json({ message: 'Erro ao registrar usuário', error });
   }
 });
 
@@ -42,31 +54,6 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Login Admin
-router.post('/login-admin', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email }); // Busca o usuário pelo e-mail
-    if (!user) {
-      return res.status(400).json({ message: 'Usuário não encontrado' });
-    } else if (user.role !== 'admin') {
-      return res.status(403).json({ message: 'Acesso negado' });
-    } // Verifica se o usuário é um administrador
-
-    const isMatch = await bcrypt.compare(password, user.password); // Compara as senhas
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Senha incorreta' });
-    } // Verifica se a senha está correta
-
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token }); // Retorna o token
-
-  } catch (error) { // Tratamento de erros
-    res.status(500).json({ message: 'Erro no servidor' });
-  }
-});
-
 // Esqueceu a senha (simples)
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
@@ -83,19 +70,29 @@ router.post('/forgot-password', async (req, res) => {
 });
 
 // Redefinir senha
-router.post('/reset-password', async (req, res) => {
+router.post('/reset-password', [
+  body('email').isEmail().withMessage('Email inválido'),
+  body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres'),
+  body('token').notEmpty().withMessage('Token é obrigatório')
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const { email, password, token } = req.body;
   try {
-    const user = await User.findOne ({ email });
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded.userId !== user._id) {
-      return res.status(401).json({ message: 'Token inválido' });
-      // Verifica se o token é válido
+    const user = await User.findOne({ email });
+
+    if (!user || decoded.userId !== user._id.toString()) {
+      return res.status(401).json({ message: 'Token inválido ou usuário não encontrado' });
     }
-    if (!user) {
-      return res.status(404).json({ message: 'Usuário não encontrado' });
-    }
-    // Lógica para redefinir a senha
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    await user.save();
+
     res.status(200).json({ message: 'Senha redefinida com sucesso' });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao redefinir a senha', error });

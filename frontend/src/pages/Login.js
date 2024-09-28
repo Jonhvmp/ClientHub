@@ -1,23 +1,35 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
 import '../assets/css/Login.css';
+import '../services/api'; // Importar a instância personalizada do Axios
 
-function Login() {
+const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     try {
-      const response = await api.post('/api/login', form);
-      // Armazena o token no localStorage (ou cookie HttpOnly, se preferir)
-      localStorage.setItem('token', response.data.token);
-      navigate('/dashboard'); // Redireciona para a área protegida
+      const response = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: form.email, password: form.password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Login efetuado com sucesso!', data);
+        // Redirecionar para outra página ou realizar outras ações
+      } else {
+        setErrors({ server: data.message || 'Erro ao efetuar login' });
+      }
     } catch (error) {
-      setErrors({ server: 'Credenciais inválidas, tente novamente.' });
+      setErrors({ server: 'Erro no servidor' });
     }
   };
 
@@ -46,11 +58,11 @@ function Login() {
         </div>
         <div className="form-buttons">
           <button type="submit" className="btn-login">Entrar</button>
-          <button type="button" onClick={() => navigate('/register')} className="btn-back">Registrar</button>
+          <button type="button" onClick={() => navigate('/register')}>Registrar</button>
         </div>
       </form>
     </div>
   );
-}
+};
 
 export default Login;
