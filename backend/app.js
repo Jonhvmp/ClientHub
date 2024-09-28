@@ -56,37 +56,82 @@ app.post('/api/register', [
 
 // Rota de login
 app.post('/api/login', [
+  // Validações de entrada
   body('email').isEmail().withMessage('Email inválido'),
-  body('password').notEmpty().withMessage('Senha é obrigatória')
+  body('password').notEmpty().withMessage('Senha é obrigatória'),
 ], async (req, res) => {
+  console.log('Recebendo dados:', req.body); // Exibe o corpo completo da requisição
+  const { email, password } = req.body;
+
+  // Valida os erros de validação
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { email, password } = req.body;
-
   try {
-    const user = await User.findOne({ email }); // Verifica se o usuário existe
+    // Procurar o usuário no banco de dados
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
+      console.log('Usuário não encontrado:', email);
       return res.status(400).json({ message: 'Usuário não encontrado' });
-    } // Se o usuário não existir, retorna um erro
+    }
 
-    const isMatch = await bcrypt.compare(password, user.password); // Verifica se a senha está correta
-
+    // Comparar senha fornecida com a senha armazenada
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log('Senha incorreta para o email:', email);
       return res.status(400).json({ message: 'Senha incorreta' });
-    } // Se a senha estiver incorreta, retorna um erro
+    }
 
-    res.json({ message: 'Login efetuado com sucesso!' });
-  } catch (error) { // Se houver um erro no servidor
-    res.status(500).json({ message: 'Erro ao efetuar login' });
+    // Geração de token JWT
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    console.log('Login bem-sucedido:', email);
+
+    // Retorna o token para o cliente
+    res.json({ token });
+  } catch (error) {
+    console.error('Erro no servidor:', error);
+    res.status(500).json({ message: 'Erro no servidor' });
   }
 });
 
 // Middleware para rotas não encontradas e tratamento de erros
 app.use(notFound);
 app.use(errorHandler);
+
+// verificando erros de validação do bcrypt.compare() e bcrypt.hash()
+// const run = async () => {
+//   const email = 'jonhpaz08@gmail.com';
+//   const password = '12345678';
+//   const hashedPassword = await bcrypt.hash(password, 10);
+//   console.log('Senha criptografada:', hashedPassword);
+//   const isMatch = await bcrypt.compare('12345678', hashedPassword);
+//   console.log('Resultado da comparação:', isMatch);
+
+//   const user = await User.findOne({ email });
+//   if (user) {
+//     console.log('Usuário encontrado com o email:', email);
+//     const isMatch = await bcrypt.compare(password, user.password
+//     ); // Verifica a senha
+//     console.log('Resultado da comparação de senha:', isMatch);
+//   } else {
+//     console.log('Usuário não encontrado com o email:', email);
+//   } // Se o usuário não existir, exibe uma mensagem
+// };
+// run();
+
+// Adicione isso temporariamente no app.js, antes ou depois das rotas principais
+
+const testPassword = async () => {
+  const hash = '$2a$10$J2ODLDxgtoW5Y6HDeU5H1OK.mxM7xDLLtQeOBgxY3XrL03ZlDyVrK'; // Hash do MongoDB
+  const password = 'Senha123'; // Senha que você está testando
+
+  const isMatch = await bcrypt.compare(password, hash);
+  console.log('Resultado da comparação manual:', isMatch); // True ou False
+};
+
+testPassword();
 
 // Definir a porta do servidor e iniciar o servidor
 const port = process.env.PORT || 5000;

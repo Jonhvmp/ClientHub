@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api'; // Usando Axios
 import '../assets/css/Login.css';
-import '../services/api'; // Importar a instância personalizada do Axios
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -11,25 +11,24 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    console.log('Dados de entrada:', form);
+
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: form.email, password: form.password })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log('Login efetuado com sucesso!', data);
-        // Redirecionar para outra página ou realizar outras ações
-      } else {
-        setErrors({ server: data.message || 'Erro ao efetuar login' });
-      }
+      const response = await api.post('/api/login', form);
+      console.log('Resposta da API:', response.data);
+      navigate('/dashboard');
     } catch (error) {
-      setErrors({ server: 'Erro no servidor' });
+      if (error.response) {
+        // A requisição foi feita e o servidor respondeu com um status diferente de 2xx
+        console.error('Erro na resposta da API:', error.response.data);
+        setErrors(error.response.data);
+      } else if (error.request) {
+        // A requisição foi feita mas nenhuma resposta foi recebida
+        console.error('Nenhuma resposta recebida:', error.request);
+      } else {
+        // Algo aconteceu na configuração da requisição que disparou um erro
+        console.error('Erro ao configurar a requisição:', error.message);
+      }
     }
   };
 
