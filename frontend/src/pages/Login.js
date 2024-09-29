@@ -16,17 +16,19 @@ const Login = () => {
     try {
       const response = await api.post('/api/auth/login', form);
       console.log('Resposta da API:', response.data);
+
+      // Armazenar o token no localStorage ou sessionStorage
+      localStorage.setItem('token', response.data.token);
+
+      // Redirecionar para o dashboard
       navigate('/dashboard');
     } catch (error) {
       if (error.response) {
-        // A requisição foi feita e o servidor respondeu com um status diferente de 2xx
         console.error('Erro na resposta da API:', error.response.data);
         setErrors(error.response.data);
       } else if (error.request) {
-        // A requisição foi feita mas nenhuma resposta foi recebida
         console.error('Nenhuma resposta recebida:', error.request);
       } else {
-        // Algo aconteceu na configuração da requisição que disparou um erro
         console.error('Erro ao configurar a requisição:', error.message);
       }
     }

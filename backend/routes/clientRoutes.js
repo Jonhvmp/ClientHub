@@ -1,23 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const clientController = require('../controllers/clientController');
-const { protect, authorize } = require('../middleware/auth');
+const protect = require('../middleware/authMiddleware'); // Certifique-se de importar o middleware correto
 
 // Rotas públicas
-router.get('/search', clientController.searchClients);
+router.get('/search', clientController.searchClients); // Permite busca de clientes
 
-// Rotas protegidas
-// Rotas para todos os usuários autenticados
+// Rotas protegidas (usuários autenticados)
 router
   .route('/')
-  .get(clientController.getClients)
-  .post(clientController.createClient);
+  .get(protect, clientController.getClients) // Usuário deve estar autenticado para listar os próprios clientes
+  .post(protect, clientController.createClient); // Usuário deve estar autenticado para criar clientes
 
-  router
+router
   .route('/:id')
-  .get(clientController.getClient)
-  .put(clientController.updateClient)
-  .delete(clientController.deleteClient); // Remover authorize('admin', 'manager') temporariamente
-
+  .get(protect, clientController.getClient) // Usuário deve estar autenticado para ver um cliente
+  .put(protect, clientController.updateClient) // Usuário deve estar autenticado para atualizar um cliente
+  .delete(protect, clientController.deleteClient); // Usuário deve estar autenticado para excluir um cliente
 
 module.exports = router;
