@@ -5,13 +5,47 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
+// Middleware para validação de entrada
+const validate = (method) => {
+  switch (method) {
+    case 'register': {
+      return [
+        body('name').notEmpty().withMessage('Nome é obrigatório'),
+        body('email').isEmail().withMessage('Email inválido'),
+        body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres')
+      ];
+    }
+    case 'login': {
+      return [
+        body('email').isEmail().withMessage('Email inválido'),
+        body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres')
+      ];
+    }
+    case 'forgot-password': {
+      return [
+        body('email').isEmail().withMessage('Email inválido')
+      ];
+    }
+    case 'reset-password': {
+      return [
+        body('email').isEmail().withMessage('Email inválido'),
+        body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres'),
+        body('token').notEmpty().withMessage('Token é obrigatório')
+      ];
+    }
+  }
+};
+
 // Registro
 router.post('/register', [
   body('name').notEmpty().withMessage('Nome é obrigatório'),
   body('email').isEmail().withMessage('Email inválido'),
   body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres')
+
 ], async (req, res) => {
+
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     console.log('Erros de validação no registro:', errors.array());
     return res.status(400).json({ errors: errors.array() });

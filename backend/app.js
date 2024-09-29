@@ -11,6 +11,9 @@ const authRoutes = require('./routes/authRoutes');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const User = require('./models/userModel');
 
+// Importando o módulo JWT
+const jwt = require('jsonwebtoken');
+
 const app = express();
 
 // Conectar ao MongoDB
@@ -33,11 +36,15 @@ app.get('/', (req, res) => {
 
 // Rota de registro
 app.post('/api/register', [
+  // Validações de entrada
   body('name').notEmpty().withMessage('Nome é obrigatório'),
   body('email').isEmail().withMessage('Email inválido'),
   body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres')
 ], async (req, res) => {
+  console.log('Recebendo dados:', req.body); // Exibe o corpo completo da requisição
+
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
@@ -45,11 +52,29 @@ app.post('/api/register', [
   const { name, email, password } = req.body;
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
+    // Criar um novo usuário com a senha criptografada
+    const user = new User({
+      name,
+      email,
+      password,
+    });
+
+    // Salvar o usuário no banco de dados
     await user.save();
+
+    // Recebendo dados: {
+    //   name: 'Jonh',
+    //   email: 'Jonh1@gmail.com',
+    //   password: 'senha123',
+    //   confirmPassword: 'senha123'
+    // }
+    // Senha original: senha123
+    // Senha criptografada: $2a$10$ASjljkQGauuAXQI8HryRluQAkj2ciImDYrWXjr1tz7S5R0.QDOTyW
+    //                      $2a$10$mWln3Hk5SZxHYThBCGIqe.jcI1poRwtmg.qAsooqBk63YsQpQMvEC
+
     res.status(201).json({ message: 'Usuário registrado com sucesso!' });
   } catch (error) {
+    console.error('Erro ao registrar usuário:', error);
     res.status(500).json({ message: 'Erro ao registrar usuário' });
   }
 });
@@ -72,6 +97,7 @@ app.post('/api/login', [
   try {
     // Procurar o usuário no banco de dados
     const user = await User.findOne({ email: email.toLowerCase() });
+    console.log('Usuário encontrado:', user);
     if (!user) {
       console.log('Usuário não encontrado:', email);
       return res.status(400).json({ message: 'Usuário não encontrado' });
@@ -79,17 +105,24 @@ app.post('/api/login', [
 
     // Comparar senha fornecida com a senha armazenada
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log('Comparação de senha:', isMatch);
     if (!isMatch) {
       console.log('Senha incorreta para o email:', email);
       return res.status(400).json({ message: 'Senha incorreta' });
     }
 
     // Geração de token JWT
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({
+      userId: user._id
+    },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' });
+
     console.log('Login bem-sucedido:', email);
 
     // Retorna o token para o cliente
-    res.json({ token });
+    res.status(200).json({ token, message: 'Login bem-sucedido' });
+
   } catch (error) {
     console.error('Erro no servidor:', error);
     res.status(500).json({ message: 'Erro no servidor' });
@@ -123,15 +156,15 @@ app.use(errorHandler);
 
 // Adicione isso temporariamente no app.js, antes ou depois das rotas principais
 
-const testPassword = async () => {
-  const hash = '$2a$10$J2ODLDxgtoW5Y6HDeU5H1OK.mxM7xDLLtQeOBgxY3XrL03ZlDyVrK'; // Hash do MongoDB
-  const password = 'Senha123'; // Senha que você está testando
+// const testPassword = async () => {
+//   const hash = '$2a$10$J2ODLDxgtoW5Y6HDeU5H1OK.mxM7xDLLtQeOBgxY3XrL03ZlDyVrK'; // Hash do MongoDB
+//   const password = 'Senha123'; // Senha que você está testando
 
-  const isMatch = await bcrypt.compare(password, hash);
-  console.log('Resultado da comparação manual:', isMatch); // True ou False
-};
+//   const isMatch = await bcrypt.compare(password, hash);
+//   console.log('Resultado da comparação manual:', isMatch); // True ou False
+// };
 
-testPassword();
+// testPassword();
 
 // Definir a porta do servidor e iniciar o servidor
 const port = process.env.PORT || 5000;
