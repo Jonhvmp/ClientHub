@@ -1,11 +1,14 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Home from './pages/Home';
-import PrivateRoute from './utils/PrivateRoute';
-import Dashboard from './pages/Dashboard'; // Página protegida
-import AddClient from './pages/AddClient';
-import EditClient from './pages/EditClient';
+import Dashboard from './pages/Dashboard';
+import ClientList from './pages/ClientList';
+import ClientCreate from './pages/ClientCreate';
+import ClientEdit from './pages/ClientEdit';
+import ClientView from './pages/ClientView';
+import ClientSearch from './pages/ClientSearch';
+import Profile from './pages/Profile';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -13,13 +16,13 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-
-        <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/add-client" element={<AddClient />} />
-            <Route path="/edit-client/:id" element={<EditClient />} />
-          </Route>
+        <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/clientes" element={<PrivateRoute><ClientList /></PrivateRoute>} />
+        <Route path="/clientes/novo" element={<PrivateRoute><ClientCreate /></PrivateRoute>} />
+        <Route path="/clientes/:id/editar" element={<PrivateRoute><ClientEdit /></PrivateRoute>} />
+        <Route path="/clientes/:id" element={<PrivateRoute><ClientView /></PrivateRoute>} />
+        <Route path="/clientes/search" element={<ClientSearch />} />
+        <Route path="/perfil" element={<PrivateRoute><Profile /></PrivateRoute>} />
       </Routes>
     </Router>
   );
