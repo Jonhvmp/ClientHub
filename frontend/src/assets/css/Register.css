@@ -41,11 +41,11 @@ input {
 }
 
 .btn-register {
-  background-color: var(--primary-color);
+  background-color: green;
 }
 
 .btn-register:hover {
-  background-color: var(--primary-color-hover);
+  background-color: darkgreen;
 }
 
 .btn-back {

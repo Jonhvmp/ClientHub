@@ -13,11 +13,9 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Home />} />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/" element={<Home />} />
             <Route path="/add-client" element={<AddClient />} />
             <Route path="/edit-client/:id" element={<EditClient />} />
           </Route>

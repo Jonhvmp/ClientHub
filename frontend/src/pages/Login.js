@@ -57,7 +57,7 @@ const Login = () => {
         </div>
         <div className="form-buttons">
           <button type="submit" className="btn-login">Entrar</button>
-          <button type="button" onClick={() => navigate('/register')}>Registrar</button>
+          <button type="button" onClick={() => navigate('/register')} className='btn-back'>Registrar</button>
         </div>
       </form>
     </div>

@@ -38,10 +38,7 @@ const validate = (method) => {
 
 // Registro
 router.post('/register', [
-  body('name').notEmpty().withMessage('Nome é obrigatório'),
-  body('email').isEmail().withMessage('Email inválido'),
-  body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres')
-
+  validate('register')
 ], async (req, res) => {
 
   const errors = validationResult(req);
@@ -60,8 +57,7 @@ router.post('/register', [
       return res.status(400).json({ message: 'Email já está em uso' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(`Senha criptografada para ${email}:`, hashedPassword);
+    // A senha já esta sendo criptografada no model
 
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
@@ -77,7 +73,7 @@ router.post('/register', [
 
 // Login
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  validate('login'); // Validação de entrada
 
   console.log('Recebendo dados:', { email, password });
 
@@ -98,6 +94,8 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
+    req.session.user = user;
+    console.log(`Login bem-sucedido para: ${email}`);
   } catch (error) {
     console.error('Erro ao processar o login:', error);
     res.status(500).json({ message: 'Erro no servidor' });
@@ -106,7 +104,8 @@ router.post('/login', async (req, res) => {
 
 // Esqueceu a senha
 router.post('/forgot-password', async (req, res) => {
-  const { email } = req.body;
+  validate('forgot-password');  // Validação de entrada
+
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -125,9 +124,7 @@ router.post('/forgot-password', async (req, res) => {
 
 // Redefinir senha
 router.post('/reset-password', [
-  body('email').isEmail().withMessage('Email inválido'),
-  body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres'),
-  body('token').notEmpty().withMessage('Token é obrigatório')
+  validate('reset-password')
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
