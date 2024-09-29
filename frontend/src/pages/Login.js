@@ -14,7 +14,7 @@ const Login = () => {
     console.log('Dados de entrada:', form);
 
     try {
-      const response = await api.post('/api/login', form);
+      const response = await api.post('/api/auth/login', form);
       console.log('Resposta da API:', response.data);
       navigate('/dashboard');
     } catch (error) {

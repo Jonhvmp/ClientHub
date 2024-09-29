@@ -5,46 +5,42 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-// Middleware para validação de entrada
+// Função para validar entradas com base na rota
 const validate = (method) => {
   switch (method) {
-    case 'register': {
+    case 'register':
       return [
         body('name').notEmpty().withMessage('Nome é obrigatório'),
         body('email').isEmail().withMessage('Email inválido'),
         body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres')
       ];
-    }
-    case 'login': {
+    case 'login':
       return [
         body('email').isEmail().withMessage('Email inválido'),
         body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres')
       ];
-    }
-    case 'forgot-password': {
+    case 'forgot-password':
       return [
         body('email').isEmail().withMessage('Email inválido')
       ];
-    }
-    case 'reset-password': {
+    case 'reset-password':
       return [
         body('email').isEmail().withMessage('Email inválido'),
         body('password').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres'),
         body('token').notEmpty().withMessage('Token é obrigatório')
       ];
-    }
   }
 };
 
-// Registro
-router.post('/register', [
-  validate('register')
-], async (req, res) => {
+// Teste para verificação da API de autenticação
+router.get('/', (req, res) => {
+  res.json({ message: 'API de autenticação funcionando!' });
+});
 
+// Registro de usuário
+router.post('/register', validate('register'), async (req, res) => {
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
-    console.log('Erros de validação no registro:', errors.array());
     return res.status(400).json({ errors: errors.array() });
   }
 
@@ -53,49 +49,43 @@ router.post('/register', [
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log(`Tentativa de registro com email já existente: ${email}`);
       return res.status(400).json({ message: 'Email já está em uso' });
     }
 
-    // A senha já esta sendo criptografada no model
+    const hashedPassword = await bcrypt.hash(password, 10); // Corrigindo para hash da senha
 
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    console.log(`Usuário registrado com sucesso: ${email}`);
     res.status(201).json({ message: 'Usuário registrado com sucesso!', token });
   } catch (error) {
     console.error('Erro ao registrar usuário:', error);
-    res.status(500).json({ message: 'Erro ao registrar usuário', error });
+    res.status(500).json({ message: 'Erro ao registrar usuário' });
   }
 });
 
-// Login
-router.post('/login', async (req, res) => {
-  validate('login'); // Validação de entrada
+// Login de usuário
+router.post('/login', validate('login'), async (req, res) => {
+  const { email, password } = req.body;
 
-  console.log('Recebendo dados:', { email, password });
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email e senha são obrigatórios.' });
+  }
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      console.log(`Usuário não encontrado para o email: ${email}`);
       return res.status(400).json({ message: 'Usuário não encontrado' });
     }
 
-    console.log('Senha armazenada no banco:', user.password);
-
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.log(`Senha incorreta para o email: ${email}`);
       return res.status(400).json({ message: 'Senha incorreta' });
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
-    req.session.user = user;
-    console.log(`Login bem-sucedido para: ${email}`);
   } catch (error) {
     console.error('Erro ao processar o login:', error);
     res.status(500).json({ message: 'Erro no servidor' });
@@ -103,32 +93,27 @@ router.post('/login', async (req, res) => {
 });
 
 // Esqueceu a senha
-router.post('/forgot-password', async (req, res) => {
-  validate('forgot-password');  // Validação de entrada
+router.post('/forgot-password', validate('forgot-password'), async (req, res) => {
+  const { email } = req.body;
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      console.log(`Tentativa de redefinir senha para email não encontrado: ${email}`);
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
     // Lógica para envio de email de redefinição de senha (a ser implementada)
-    console.log(`Email de redefinição de senha enviado para: ${email}`);
     res.status(200).json({ message: 'Email de redefinição enviado' });
   } catch (error) {
     console.error('Erro ao enviar email de redefinição de senha:', error);
-    res.status(500).json({ message: 'Erro ao enviar email', error });
+    res.status(500).json({ message: 'Erro ao enviar email' });
   }
 });
 
 // Redefinir senha
-router.post('/reset-password', [
-  validate('reset-password')
-], async (req, res) => {
+router.post('/reset-password', validate('reset-password'), async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log('Erros de validação na redefinição de senha:', errors.array());
     return res.status(400).json({ errors: errors.array() });
   }
 
@@ -139,7 +124,6 @@ router.post('/reset-password', [
     const user = await User.findOne({ email });
 
     if (!user || decoded.userId !== user._id.toString()) {
-      console.log('Token inválido ou usuário não encontrado para email:', email);
       return res.status(401).json({ message: 'Token inválido ou usuário não encontrado' });
     }
 
@@ -147,11 +131,10 @@ router.post('/reset-password', [
     user.password = hashedPassword;
     await user.save();
 
-    console.log(`Senha redefinida com sucesso para ${email}`);
     res.status(200).json({ message: 'Senha redefinida com sucesso' });
   } catch (error) {
     console.error('Erro ao redefinir senha:', error);
-    res.status(500).json({ message: 'Erro ao redefinir a senha', error });
+    res.status(500).json({ message: 'Erro ao redefinir a senha' });
   }
 });
 

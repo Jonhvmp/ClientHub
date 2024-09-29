@@ -26,8 +26,7 @@ app.use('/api/clientes', clientRoutes);
 app.use('/api/auth', authRoutes);
 
 // Rotas de autenticação
-app.use('/api/register', authRoutes);
-app.use('/api/login', authRoutes);
+app.use('/api/auth', authRoutes);
 
 // Rota de teste
 app.get('/', (req, res) => {
