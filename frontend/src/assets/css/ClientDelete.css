@@ -1,0 +1,79 @@
+/* ClientDelete.css */
+
+@import './global.css';
+
+.client-delete-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  color: #dc3545;
+  margin-bottom: 20px;
+}
+
+.confirmation-message {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-message h2 {
+  margin-bottom: 15px;
+}
+
+.confirmation-message p {
+  margin: 5px 0;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 10px;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #c82333;
+}
+
+.btn-delete:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #0056b3;
+}
+
+.loading, .error-message {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: red;
+}
+

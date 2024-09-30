@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
+const User = require('../models/userModel'); // Certifique-se de que o caminho está correto
 
 // Middleware para proteger rotas, verificando o token JWT
 const protect = asyncHandler(async (req, res, next) => {
@@ -8,17 +9,22 @@ const protect = asyncHandler(async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select('-password');
-      next();
-      console.log('Token verificado com sucesso' + token);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET); // Decodifica o token JWT
+
+      req.user = await User.findById(decoded.id).select('-password'); // Busca o usuário no banco de dados
+
+      if (!req.user) {
+        return res.status(401).json({ message: 'Usuário não encontrado' });
+      }
+
+      console.log('Token verificado com sucesso:', token);
+      next(); // Passa para o próximo middleware
     } catch (error) {
-      res.status(401);
-      throw new Error('Não autorizado, token falhou');
+      console.error('Erro ao verificar o token:', error);
+      return res.status(401).json({ message: 'Não autorizado, token inválido' });
     }
   } else {
-    res.status(401);
-    throw new Error('Não autorizado, sem token');
+    return res.status(401).json({ message: 'Não autorizado, sem token' });
   }
 });
 
@@ -26,10 +32,9 @@ const protect = asyncHandler(async (req, res, next) => {
 const authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      res.status(403);
-      throw new Error('Acesso negado: você não tem permissão');
+      return res.status(403).json({ message: 'Acesso negado: você não tem permissão' });
     }
-    next();
+    next(); // Passa para o próximo middleware
   };
 };
 

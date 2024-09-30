@@ -1,6 +1,8 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "author": "Jonh Alex Paz de Lima",
+  "description": "Projeto de Gestão - Gerenciamento de Clientes recorrentes",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",

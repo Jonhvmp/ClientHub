@@ -1,29 +1,30 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
+const asyncHandler = require('express-async-handler'); // Para lidar com async errors
+const User = require('../models/User'); // Se você está buscando o usuário no banco de dados
 
-// Middleware de proteção (autenticação)
-const protect = async (req, res, next) => {
+exports.protect = asyncHandler(async (req, res, next) => {
   let token;
 
-  // Verifica se o token está no cabeçalho
+  // Verifica se o token está presente nos headers da requisição
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
-      // Extrai o token
+      // Extrai o token da requisição
       token = req.headers.authorization.split(' ')[1];
-      // Verifica o token JWT
+
+      // Verifica e decodifica o token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      // Adiciona o usuário à requisição (excluindo a senha)
+
+      // Atribui o usuário decodificado à requisição (se você buscar o usuário pelo ID)
       req.user = await User.findById(decoded.id).select('-password');
 
-      // Passa para o próximo middleware
       next();
     } catch (error) {
-      console.error('Erro de autenticação:', error);
-      res.status(401).json({ message: 'Token inválido, autorização negada' });
+      console.error(error);
+      res.status(401).json({ message: 'Token inválido ou não autorizado' });
     }
-  } else {
-    res.status(401).json({ message: 'Não autorizado, token não fornecido' });
   }
-};
 
-module.exports = protect;
+  if (!token) {
+    res.status(401).json({ message: 'Token não encontrado. Autorização negada.' });
+  }
+});

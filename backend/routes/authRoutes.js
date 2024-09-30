@@ -57,7 +57,8 @@ router.post('/register', validate('register'), async (req, res) => {
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Gerar token de autenticação
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
     res.status(201).json({ message: 'Usuário registrado com sucesso!', token });
   } catch (error) {
     console.error('Erro ao registrar usuário:', error);

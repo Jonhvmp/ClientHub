@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -5,10 +6,12 @@ import Dashboard from './pages/Dashboard';
 import ClientList from './pages/ClientList';
 import ClientCreate from './pages/ClientCreate';
 import ClientEdit from './pages/ClientEdit';
-import ClientView from './pages/ClientView';
+import ClientDetails from './pages/ClientDetails'; // Alterado
+import ClientDelete from './pages/ClientDelete';
 import ClientSearch from './pages/ClientSearch';
-import Profile from './pages/Profile';
-import PrivateRoute from './components/PrivateRoute';
+import UserProfile from './pages/UserProfile'; // Alterado
+import PrivateRoute from './utils/PrivateRoute';
+import Home from './pages/Home';
 
 function App() {
   return (
@@ -16,13 +19,19 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-        <Route path="/clientes" element={<PrivateRoute><ClientList /></PrivateRoute>} />
-        <Route path="/clientes/novo" element={<PrivateRoute><ClientCreate /></PrivateRoute>} />
-        <Route path="/clientes/:id/editar" element={<PrivateRoute><ClientEdit /></PrivateRoute>} />
-        <Route path="/clientes/:id" element={<PrivateRoute><ClientView /></PrivateRoute>} />
-        <Route path="/clientes/search" element={<ClientSearch />} />
-        <Route path="/perfil" element={<PrivateRoute><Profile /></PrivateRoute>} />
+        <Route path="/" element={<Home />} />
+
+        {/* Rotas privadas */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/clients" element={<ClientList />} />
+          <Route path="/clients/create" element={<ClientCreate />} />
+          <Route path="/clients/:id/edit" element={<ClientEdit />} />
+          <Route path="/clients/:id/details" element={<ClientDetails />} />
+          <Route path="/clients/:id/delete" element={<ClientDelete />} />
+          <Route path="/clients/search" element={<ClientSearch />} />
+          <Route path="/profile" element={<UserProfile />} />
+          </Route>
       </Routes>
     </Router>
   );

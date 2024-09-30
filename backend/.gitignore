@@ -3,6 +3,11 @@
 # env
 .env
 
+# ignorar uploads
+uploads/
+uploads/*
+/uploads
+
 # dependencies
 /node_modules
 node_modules

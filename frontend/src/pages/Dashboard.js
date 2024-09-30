@@ -18,9 +18,24 @@ const Dashboard = () => {
 
   // Função para buscar dados dos clientes e atualizar o estado
   const fetchClients = async () => {
+    const token = localStorage.getItem('token'); // Pegue o token JWT
+
+    if (!token) {
+      setError('Token não encontrado. Por favor, faça login novamente.');
+      setLoading(false);
+      return;
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,  // Inclui o token JWT no cabeçalho
+      },
+    };
+
     try {
-      const response = await api.get('/api/clientes'); // Chamada à API para buscar todos os clientes do usuário
+      const response = await api.get('/api/clients', config);
       const data = response.data.data;
+      console.log('Clientes obtidos:', response.data);
 
       setClients(data);
 
@@ -42,28 +57,29 @@ const Dashboard = () => {
       setError('Erro ao carregar os dados dos clientes. Tente novamente mais tarde.');
       setLoading(false);
     }
-  };
+  }
 
   // useEffect para buscar dados ao carregar a página
   useEffect(() => {
+    console.log('Fetching clients...');
     fetchClients();
   }, []);
 
   // Função para redirecionar para a página de adicionar cliente
   const handleAddClient = () => {
-    navigate('/clientes/novo');
+    navigate('/clients/create');
   };
 
   // Função para redirecionar para a página de edição de cliente
   const handleEditClient = (id) => {
-    navigate(`/clientes/${id}/editar`);
+    navigate(`/clients/${id}/edit`);
   };
 
   // Função para deletar cliente
   const handleDeleteClient = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
       try {
-        await api.delete(`/api/clientes/${id}`);
+        await api.delete(`/api/clients/${id}`);
         fetchClients(); // Atualiza a lista de clientes após a exclusão
       } catch (err) {
         console.error('Erro ao excluir cliente:', err);

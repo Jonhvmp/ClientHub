@@ -13,10 +13,10 @@ function Home() {
       const token = localStorage.getItem('token'); // Certifique-se de que o token está sendo armazenado corretamente
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `jwt ${token}`,
         },
       };
-      const response = await api.get('/api/clientes', config); // Usando a instância 'api'
+      const response = await api.get('/api/clients', config); // Usando a instância 'api'
       setClients(response.data.data); // Atribua o valor correto vindo da API
       setLoading(false);
     } catch (error) {
