@@ -6,6 +6,14 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const { registerUser, loginUser } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
+const rateLimit = require('express-rate-limit');
+
+// Rate limiter for forgot-password route
+const forgotPasswordLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 5, // limit each IP to 5 requests per windowMs
+  message: 'Too many requests, please try again later.'
+});
 
 // Função para validar entradas com base na rota
 const validate = (method) => {
@@ -50,7 +58,7 @@ router.get('/', protect, (req, res) => {
 });
 
 // Esqueceu a senha
-router.post('/forgot-password', validate('forgot-password'), async (req, res) => {
+router.post('/forgot-password', forgotPasswordLimiter, validate('forgot-password'), async (req, res) => {
   const { email } = req.body;
 
   try {
