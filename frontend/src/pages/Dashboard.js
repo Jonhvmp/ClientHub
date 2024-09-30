@@ -32,6 +32,8 @@ const Dashboard = () => {
       },
     };
 
+    console.log('Token JWT:', token);
+
     try {
       const response = await api.get('/api/clients', config);
       const data = response.data.data;

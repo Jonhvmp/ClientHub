@@ -85,8 +85,10 @@ router.post('/login', validate('login'), async (req, res) => {
       return res.status(400).json({ message: 'Senha incorreta' });
     }
 
+    // Gerar token de autenticação
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    // Enviar token no cabeçalho de resposta
+    res.json({ token }); // Enviar token no corpo da resposta
   } catch (error) {
     console.error('Erro ao processar o login:', error);
     res.status(500).json({ message: 'Erro no servidor' });
