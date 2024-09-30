@@ -78,7 +78,7 @@ router.post('/reset-password', validate('reset-password'), async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: { $eq: email } });
 
     if (!user || decoded.userId !== user._id.toString()) {
       return res.status(401).json({ message: 'Token inválido ou usuário não encontrado' });
