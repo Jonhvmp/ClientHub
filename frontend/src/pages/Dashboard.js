@@ -18,54 +18,48 @@ const Dashboard = () => {
 
   // Função para buscar dados dos clientes e atualizar o estado
   const fetchClients = async () => {
-    const token = localStorage.getItem('token'); // Pegue o token JWT
-
+  try {
+    const token = localStorage.getItem('token'); // Verifica se o token existe
     if (!token) {
-      setError('Token não encontrado. Por favor, faça login novamente.');
-      setLoading(false);
-      return;
+      throw new Error('Token não encontrado, faça login novamente.');
     }
 
+    // Adiciona o token JWT no cabeçalho da requisição
     const config = {
       headers: {
-        Authorization: `Bearer ${token}`,  // Inclui o token JWT no cabeçalho
+        Authorization: `Bearer ${token}`, // Certifique-se de que o token é enviado corretamente
       },
     };
 
-    console.log('Token JWT:', token);
+    const response = await api.get('/api/clients', config); // Requisição protegida com token
+    const data = response.data;
+    setClients(data);
 
-    try {
-      const response = await api.get('/api/clients', config);
-      const data = response.data.data;
-      console.log('Clientes obtidos:', response.data);
+    // Calcular métricas com base no status dos clientes
+    const activeClients = data.filter(client => client.subscriptionStatus === 'ativo').length;
+    const inactiveClients = data.filter(client => client.subscriptionStatus === 'inativo').length;
+    const pendingClients = data.filter(client => client.subscriptionStatus === 'pendente').length;
 
-      setClients(data);
+    setMetrics({
+      activeClients,
+      inactiveClients,
+      pendingClients,
+      totalClients: data.length,
+    });
 
-      // Calcular métricas com base no status dos clientes
-      const activeClients = data.filter(client => client.subscriptionStatus === 'ativo').length;
-      const inactiveClients = data.filter(client => client.subscriptionStatus === 'inativo').length;
-      const pendingClients = data.filter(client => client.subscriptionStatus === 'pendente').length;
-
-      setMetrics({
-        activeClients,
-        inactiveClients,
-        pendingClients,
-        totalClients: data.length,
-      });
-
-      setLoading(false);
-    } catch (err) {
-      console.error('Erro ao buscar clientes:', err);
-      setError('Erro ao carregar os dados dos clientes. Tente novamente mais tarde.');
-      setLoading(false);
-    }
+    setLoading(false);
+  } catch (err) {
+    console.error('Erro ao buscar clientes:', err);
+    setError('Erro ao carregar os dados dos clientes. Tente novamente mais tarde.');
+    setLoading(false);
   }
+};
 
-  // useEffect para buscar dados ao carregar a página
+
   useEffect(() => {
     console.log('Fetching clients...');
-    fetchClients();
-  }, []);
+    fetchClients(); // Chama a função de busca de clientes ao carregar o componente
+  }, []); // useEffect com array de dependências vazio para executar apenas uma vez ao carregar o componente
 
   // Função para redirecionar para a página de adicionar cliente
   const handleAddClient = () => {
@@ -81,7 +75,15 @@ const Dashboard = () => {
   const handleDeleteClient = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
       try {
-        await api.delete(`/api/clients/${id}`);
+        const token = localStorage.getItem('token'); // Obtém o token do localStorage
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        await api.delete(`/api/clients/${id}`, config); // Exclui cliente protegido pelo token
         fetchClients(); // Atualiza a lista de clientes após a exclusão
       } catch (err) {
         console.error('Erro ao excluir cliente:', err);

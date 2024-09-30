@@ -1,23 +1,27 @@
 const express = require('express');
+const {
+  createClient,
+  getClients,
+  getClient,
+  updateClient,
+  deleteClient,
+  searchClients
+} = require('../controllers/clientController');
+const { protect } = require('../middleware/authMiddleware');
+
 const router = express.Router();
-const clientController = require('../controllers/clientController');
-const { protect } = require('../middleware/auth');
 
-// Rotas protegidas por autenticação
-// router.route('/')
-//   .get(clientController.getClients) // Sem o `protect` para testar
-//   .post(clientController.createClient);
-
+// Aplicar o middleware 'protect' para proteger as rotas
 router.route('/')
-  .get(protect, clientController.getClients) // Listagem de clientes
-  .post(protect, clientController.createClient); // Criação de clientes
+  .post(protect, createClient) // Criação de clientes protegida
+  .get(protect, getClients); // Listagem de clientes protegida
 
 router.route('/:id')
-  .get(protect, clientController.getClient) // Visualização de cliente específico
-  .put(protect, clientController.updateClient) // Edição de cliente
-  .delete(protect, clientController.deleteClient); // Exclusão de cliente
+  .get(protect, getClient) // Obter um cliente específico
+  .put(protect, updateClient) // Atualizar cliente protegido
+  .delete(protect, deleteClient); // Excluir cliente protegido
 
 router.route('/search')
-  .get(protect, clientController.searchClients); // Busca de clientes
+  .get(protect, searchClients); // Busca de clientes protegida
 
 module.exports = router;

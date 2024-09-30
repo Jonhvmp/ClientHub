@@ -32,8 +32,15 @@ function Register() {
     }
 
     try {
-      await api.post('/api/register', form);
-      navigate('/login'); // Redireciona para a página de login após o registro
+      console.log('Dados do formulário:', form); // Adiciona log para inspecionar os dados do formulário
+      const response = await api.post('/api/auth/register', form);
+      const { token } = response.data;
+
+      // Armazenar o token no localStorage
+      localStorage.setItem('token', token);
+
+      // Redirecionar para o dashboard
+      navigate('/dashboard');
     } catch (error) {
       console.error('Erro ao registrar', error);
       setErrors({ server: 'Erro no servidor, tente novamente mais tarde.' });

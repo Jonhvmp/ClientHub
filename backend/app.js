@@ -1,3 +1,4 @@
+// app.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -6,7 +7,7 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 const clientRoutes = require('./routes/clientRoutes');
 const authRoutes = require('./routes/authRoutes');
-const path = require('path'); // Importação do módulo path
+const path = require('path');
 const userRoutes = require('./routes/userRouter');
 const { errorHandler } = require('./middleware/errorHandler');
 
@@ -17,14 +18,10 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(helmet()); // Segurança de cabeçalhos
-app.use(morgan('dev')); // Log das requisições
+app.use(helmet());
+app.use(morgan('dev'));
 app.use(cors());
-// app.use(cors({
-//   origin: process.env.CLIENT_URL, // Permitir apenas requisições do cliente
-//   credentials: true,
-// })); // Permitir requisições de diferentes origens
-app.use(express.json()); // Body parser para JSON
+app.use(express.json());
 
 // Rotas de autenticação e clientes
 app.use('/api/auth', authRoutes);

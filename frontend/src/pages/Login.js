@@ -17,20 +17,19 @@ const Login = () => {
       const response = await api.post('/api/auth/login', form);
       console.log('Resposta da API:', response.data);
 
+      const { token } = response.data;
+
       // Armazenar o token no localStorage ou sessionStorage
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('token', token);
 
       // Redirecionar para o dashboard
-      navigate('/dashboard');
+      window.location.href = '/dashboard';
     } catch (error) {
-      if (error.response) {
-        console.error('Erro na resposta da API:', error.response.data);
-        setErrors(error.response.data);
-      } else if (error.request) {
-        console.error('Nenhuma resposta recebida:', error.request);
-      } else {
-        console.error('Erro ao configurar a requisição:', error.message);
-      }
+      console.error('Erro ao fazer login:', error);
+      alert('Credenciais inválidas');
+
+      // Exibir mensagem de erro
+      setErrors({ server: 'Credenciais inválidas' });
     }
   };
 
