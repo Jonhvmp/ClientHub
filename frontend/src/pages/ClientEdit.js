@@ -32,9 +32,16 @@ const ClientEdit = () => {
   const fetchClientData = useCallback(async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await api.get(`/api/clients/${id}`);
-      Headers.set('Authorization', `Bearer ${token}`);
-      setFormData(response.data.data);
+      // Adiciona o token JWT ao cabeçalho da requisição
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      // Faz a requisição para obter os dados do cliente com o cabeçalho de autorização
+      const response = await api.get(`/api/clients/${id}`, config);
+      setFormData(response.data.data); // Atualiza os dados no formulário
       setLoading(false);
     } catch (err) {
       console.error('Erro ao buscar cliente:', err);
