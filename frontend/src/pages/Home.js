@@ -34,7 +34,7 @@ function Home() {
 
   const deleteClient = async (id) => {
     try {
-      await api.delete(`/api/clientes/${id}`);
+      await api.delete(`/api/clients/${id}`);
       fetchClients(); // Recarregar a lista de clientes após excluir
     } catch (error) {
       console.error('Erro ao excluir cliente', error);

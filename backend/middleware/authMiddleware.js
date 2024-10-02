@@ -16,7 +16,7 @@ const protect = asyncHandler(async (req, res, next) => {
       if (timeToExpire <= 0) {
         console.log('Token expirado');
       } else {
-        console.log(`Tempo restante para expirar: ${timeToExpire} segundos`);
+        console.log(`Tempo restante para expirar o Token: ${timeToExpire} segundos`);
       }
 
       req.user = await User.findById(decoded.id).select('-password');
