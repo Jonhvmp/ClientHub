@@ -3,21 +3,34 @@ const asyncHandler = require('express-async-handler');
 
 // Criar um novo cliente
 exports.createClient = asyncHandler(async (req, res) => {
-  const userId = req.user.id; // Obter o ID do usuário autenticado
-  const newClientData = { ...req.body, userId }; // Associar o cliente ao usuário
+  try {
+    console.log('Recebendo dados do cliente:', req.body); // Log para inspecionar os dados
+    const { name, email, phone, company, address, tags, subscriptionType, subscriptionStatus, customFields } = req.body;
 
-  // Validação extra: verifique se os campos obrigatórios estão presentes
-  if (!req.body.name || !req.body.email || !req.body.phone) {
-    return res.status(400).json({ success: false, message: 'Todos os campos obrigatórios devem ser preenchidos.' });
+    // Certifique-se de que todos os campos obrigatórios estão presentes
+    if (!name || !email) {
+      return res.status(400).json({ message: 'Nome e email são obrigatórios' });
+    }
+
+    const client = await Client.create({
+      name,
+      email,
+      phone,
+      company,
+      address,
+      tags,
+      subscriptionType,
+      subscriptionStatus,
+      customFields,
+    });
+
+    res.status(201).json(client);
+  } catch (error) {
+    console.error('Erro ao criar cliente:', error);
+    res.status(500).json({ message: 'Erro ao criar cliente' });
   }
-
-  const newClient = await Client.create(newClientData);
-
-  res.status(201).json({
-    success: true,
-    data: newClient,
-  });
 });
+
 
 // Obter todos os clientes do usuário autenticado
 exports.getClients = asyncHandler(async (req, res) => {

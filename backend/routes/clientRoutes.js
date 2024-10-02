@@ -16,6 +16,11 @@ router.route('/')
   .post(protect, createClient) // Criação de clientes protegida
   .get(protect, getClients); // Listagem de clientes protegida
 
+router.route('/clients')
+  .get(protect, getClients)
+  .post(protect, createClient);
+
+
 router.route('/:id')
   .get(protect, getClient) // Obter um cliente específico
   .put(protect, updateClient) // Atualizar cliente protegido

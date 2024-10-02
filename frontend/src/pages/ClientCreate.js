@@ -83,8 +83,9 @@ const ClientCreate = () => {
 
     try {
       // Chamada à API para adicionar um novo cliente
-      await api.post('/api/clientes', formData);
-      navigate('/clientes'); // Redirecionar para a lista de clientes após o sucesso
+      const response = await api.post('/api/clients', formData);
+      console.log('Resposta da API:', response.data);
+      navigate('/clients'); // Redirecionar para a lista de clientes após o sucesso
     } catch (err) {
       console.error('Erro ao adicionar cliente:', err);
       setError('Erro ao adicionar cliente. Verifique os dados e tente novamente.');
@@ -275,6 +276,10 @@ const ClientCreate = () => {
         <div className="form-buttons">
           <button type="submit" className="btn-primary" disabled={loading}>
             {loading ? 'Salvando...' : 'Salvar Cliente'}
+          </button>
+
+          <button type="button" className="btn-secondary" onClick={() => navigate('/clients')}>
+            Cancelar
           </button>
         </div>
       </form>

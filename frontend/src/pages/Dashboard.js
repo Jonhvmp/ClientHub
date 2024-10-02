@@ -30,10 +30,11 @@ const Dashboard = () => {
           Authorization: `Bearer ${token}`, // Certifique-se de que o token é enviado corretamente
         },
       };
+      console.log('Configuração de cabeçalho:', config);
 
       // Faz a requisição para buscar os clientes
       const response = await api.get('/api/clients', config); // Requisição protegida com token
-      const data = response.data.data; // Acessa a propriedade 'data' da resposta
+      const { data } = response.data; // Extrai a propriedade 'data' da resposta da API
 
       // Adiciona um log para verificar o formato dos dados retornados
       console.log('Dados retornados pela API:', data);
@@ -65,6 +66,7 @@ const Dashboard = () => {
       setLoading(false); // Define o estado de carregamento como falso em caso de erro
     }
   };
+
 
   useEffect(() => {
     console.log('Fetching clients...');

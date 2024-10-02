@@ -4,28 +4,30 @@ const User = require('../models/userModel');
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
-
-  // Verifica se o token está no header
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
-      // Captura o token após "Bearer"
       token = req.headers.authorization.split(' ')[1];
-
-      // Decodifica o token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Busca o usuário pelo ID do token
-      req.user = await User.findById(decoded.userId).select('-password');
+      // Verifica o tempo de expiração do token
+      const currentTime = Math.floor(Date.now() / 1000);
+      const timeToExpire = decoded.exp - currentTime;
 
-      // Verifica se o usuário existe
+      if (timeToExpire <= 0) {
+        console.log('Token expirado');
+      } else {
+        console.log(`Tempo restante para expirar: ${timeToExpire} segundos`);
+      }
+
+      req.user = await User.findById(decoded.id).select('-password');
+
       if (!req.user) {
         return res.status(401).json({ message: 'Usuário não encontrado' });
       }
 
-      // Permite seguir para a rota protegida
       next();
     } catch (error) {
-      console.error('Erro ao verificar o token:', error.message);
+      console.error(error);
       return res.status(401).json({ message: 'Token inválido ou expirado' });
     }
   } else {
