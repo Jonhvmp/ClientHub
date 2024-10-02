@@ -33,14 +33,14 @@ const Dashboard = () => {
 
       // Faz a requisição para buscar os clientes
       const response = await api.get('/api/clients', config); // Requisição protegida com token
-      const data = response.data;
+      const data = response.data.data; // Acessa a propriedade 'data' da resposta
 
       // Adiciona um log para verificar o formato dos dados retornados
       console.log('Dados retornados pela API:', data);
 
       // Verifica se data é um array
       if (!Array.isArray(data)) {
-        throw new Error('Dados dos clientes não estão no formato esperado.');
+        throw new Error('Os dados retornados não são um array.');
       }
 
       setClients(data); // Atualiza o estado com os dados dos clientes
