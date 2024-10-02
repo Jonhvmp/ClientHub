@@ -13,7 +13,7 @@ const ClientDetails = () => {
   // Função para buscar os dados do cliente
   const fetchClientData = useCallback(async () => {
     try {
-      const response = await api.get(`/api/clientes/${id}`);
+      const response = await api.get(`/api/clients/${id}`);
       setClient(response.data.data);
       setLoading(false);
     } catch (err) {
@@ -31,8 +31,8 @@ const ClientDetails = () => {
   const handleDeleteClient = async () => {
     if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
       try {
-        await api.delete(`/api/clientes/${id}`);
-        navigate('/clientes'); // Redireciona para a lista de clientes após a exclusão
+        await api.delete(`/api/clients/${id}`);
+        navigate('/clients'); // Redireciona para a lista de clientes após a exclusão
       } catch (err) {
         console.error('Erro ao excluir cliente:', err);
         setError('Erro ao excluir o cliente. Tente novamente.');
@@ -105,7 +105,7 @@ const ClientDetails = () => {
 
             {/* Ações de Edição e Exclusão */}
             <div className="actions">
-              <button className="btn-edit" onClick={() => navigate(`/clientes/${id}/editar`)}>
+              <button className="btn-edit" onClick={() => navigate(`/clients/${id}/edit`)}>
                 Editar Cliente
               </button>
               <button className="btn-delete" onClick={handleDeleteClient}>

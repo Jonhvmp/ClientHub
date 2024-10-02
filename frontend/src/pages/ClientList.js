@@ -18,7 +18,7 @@ const ClientList = () => {
   const fetchClients = useCallback(async (page = 1) => {
     try {
       setLoading(true);
-      const response = await api.get(`/api/clientes?query=${query}&page=${page}&limit=${clientsPerPage}`);
+      const response = await api.get(`/api/clients?query=${query}&page=${page}&limit=${clientsPerPage}`);
       const data = response.data.data;
 
       setClients(data);
@@ -38,17 +38,17 @@ const ClientList = () => {
 
   // Outras funções continuam as mesmas...
   const handleAddClient = () => {
-    navigate('/clientes/novo');
+    navigate('/clients/create');
   };
 
   const handleEditClient = (id) => {
-    navigate(`/clientes/${id}/editar`);
+    navigate(`/clients/${id}/edit`);
   };
 
   const handleDeleteClient = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
       try {
-        await api.delete(`/api/clientes/${id}`);
+        await api.delete(`/api/clients/${id}`);
         fetchClients(currentPage); // Atualiza a lista de clientes após a exclusão
       } catch (err) {
         console.error('Erro ao excluir cliente:', err);

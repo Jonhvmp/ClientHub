@@ -18,7 +18,7 @@ const ClientSearch = () => {
     setError(null);
 
     try {
-      const response = await api.get(`/api/clientes/search?query=${query}`);
+      const response = await api.get(`/api/clients/search?query=${query}`);
       setClients(response.data.data);
       setLoading(false);
     } catch (err) {
@@ -62,10 +62,10 @@ const ClientSearch = () => {
             <p><strong>Email:</strong> {client.email}</p>
             <p><strong>Tags:</strong> {client.tags || 'Nenhuma'}</p>
             <div className="client-actions">
-              <button className="btn-view" onClick={() => navigate(`/clientes/${client._id}`)}>
+              <button className="btn-view" onClick={() => navigate(`/clients/${client._id}`)}>
                 Ver Detalhes
               </button>
-              <button className="btn-edit" onClick={() => navigate(`/clientes/${client._id}/editar`)}>
+              <button className="btn-edit" onClick={() => navigate(`/clients/${client._id}/edit`)}>
                 Editar Cliente
               </button>
             </div>

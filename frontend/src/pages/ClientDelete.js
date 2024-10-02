@@ -15,7 +15,7 @@ const ClientDelete = () => {
   // Função para buscar os dados do cliente
   const fetchClientData = useCallback(async () => {
     try {
-      const response = await api.get(`/api/clientes/${id}`);
+      const response = await api.get(`/api/clients/${id}`);
       setClient(response.data.data);
       setLoading(false);
     } catch (err) {
@@ -35,8 +35,8 @@ const ClientDelete = () => {
     setDeleteError(null);
 
     try {
-      await api.delete(`/api/clientes/${id}`);
-      navigate('/clientes'); // Redireciona para a lista de clientes após a exclusão
+      await api.delete(`/api/clients/${id}`);
+      navigate('/clients'); // Redireciona para a lista de clientes após a exclusão
     } catch (err) {
       console.error('Erro ao excluir cliente:', err);
       setDeleteError('Erro ao excluir o cliente. Tente novamente mais tarde.');
@@ -73,7 +73,7 @@ const ClientDelete = () => {
             <button className="btn-delete" onClick={handleDeleteClient} disabled={deleting}>
               {deleting ? 'Excluindo...' : 'Confirmar Exclusão'}
             </button>
-            <button className="btn-cancel" onClick={() => navigate('/clientes')}>
+            <button className="btn-cancel" onClick={() => navigate('/clients')}>
               Cancelar
             </button>
           </div>

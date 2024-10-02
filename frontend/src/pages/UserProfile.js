@@ -180,6 +180,11 @@ const UserProfile = () => {
           <button type="submit" className="btn-primary" disabled={updating}>
             {updating ? 'Atualizando...' : 'Atualizar Perfil'}
           </button>
+
+          {/* Botão de Cancelar */}
+          <button type="button" className="btn-secondary">
+            Cancelar Atualização do Perfil
+          </button>
         </div>
       </form>
     </div>

@@ -32,7 +32,7 @@ const ClientEdit = () => {
   const fetchClientData = useCallback(async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await api.get(`/api/clientes/${id}`);
+      const response = await api.get(`/api/clients/${id}`);
       Headers.set('Authorization', `Bearer ${token}`);
       setFormData(response.data.data);
       setLoading(false);
@@ -103,8 +103,8 @@ const ClientEdit = () => {
 
     try {
       // Chamada à API para atualizar os dados do cliente
-      await api.put(`/api/clientes/${id}`, formData);
-      navigate('/clientes'); // Redirecionar para a lista de clientes após o sucesso
+      await api.put(`/api/clients/${id}`, formData);
+      navigate('/clients'); // Redirecionar para a lista de clientes após o sucesso
     } catch (err) {
       console.error('Erro ao atualizar cliente:', err);
       setUpdateError('Erro ao atualizar cliente. Verifique os dados e tente novamente.');
