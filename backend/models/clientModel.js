@@ -121,5 +121,9 @@ clientSchema.pre('save', function(next) {
   next();
 });
 
+// Índice único para email e userId
+clientSchema.index({ email: 1, userId: 1 }, { unique: true });
+
+// Criação e exportação do modelo
 const Client = mongoose.model('Client', clientSchema);
 module.exports = Client;

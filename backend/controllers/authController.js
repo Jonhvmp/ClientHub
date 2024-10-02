@@ -56,7 +56,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
   if (user && (await bcrypt.compare(password, user.password))) {
     // Gerar token JWT
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '30d',
     });
 
     res.json({

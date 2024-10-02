@@ -79,6 +79,9 @@ const ClientList = () => {
         <button className="btn-primary" onClick={handleAddClient}>
           Adicionar Cliente
         </button>
+        <button className="btn-secondary" onClick={() => navigate('/dashboard')}>
+          Voltar ao Dashboard
+        </button>
       </div>
 
       <div className="search-bar">
