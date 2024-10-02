@@ -40,6 +40,8 @@ exports.registerUser = asyncHandler(async (req, res) => {
 
   // Gerar token de autenticação
   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  console.log(token + "token")
+  console.log(user)
 
   res.status(201).json({ message: 'Usuário registrado com sucesso!', token });
 });

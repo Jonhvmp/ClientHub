@@ -18,43 +18,53 @@ const Dashboard = () => {
 
   // Função para buscar dados dos clientes e atualizar o estado
   const fetchClients = async () => {
-  try {
-    const token = localStorage.getItem('token'); // Verifica se o token existe
-    if (!token) {
-      throw new Error('Token não encontrado, faça login novamente.');
+    try {
+      const token = localStorage.getItem('token'); // Verifica se o token existe
+      if (!token) {
+        throw new Error('Token não encontrado, faça login novamente.');
+      }
+
+      // Adiciona o token JWT no cabeçalho da requisição
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`, // Certifique-se de que o token é enviado corretamente
+        },
+      };
+
+      // Faz a requisição para buscar os clientes
+      const response = await api.get('/api/clients', config); // Requisição protegida com token
+      const data = response.data;
+
+      // Adiciona um log para verificar o formato dos dados retornados
+      console.log('Dados retornados pela API:', data);
+
+      // Verifica se data é um array
+      if (!Array.isArray(data)) {
+        throw new Error('Dados dos clientes não estão no formato esperado.');
+      }
+
+      setClients(data); // Atualiza o estado com os dados dos clientes
+
+      // Calcula métricas com base no status dos clientes
+      const activeClients = data.filter(client => client.subscriptionStatus === 'ativo').length;
+      const inactiveClients = data.filter(client => client.subscriptionStatus === 'inativo').length;
+      const pendingClients = data.filter(client => client.subscriptionStatus === 'pendente').length;
+
+      // Define as métricas no estado
+      setMetrics({
+        activeClients,
+        inactiveClients,
+        pendingClients,
+        totalClients: data.length,
+      });
+
+      setLoading(false); // Define o estado de carregamento como falso
+    } catch (err) {
+      console.error('Erro ao buscar clientes:', err);
+      setError('Erro ao carregar os dados dos clientes. Tente novamente mais tarde.');
+      setLoading(false); // Define o estado de carregamento como falso em caso de erro
     }
-
-    // Adiciona o token JWT no cabeçalho da requisição
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`, // Certifique-se de que o token é enviado corretamente
-      },
-    };
-
-    const response = await api.get('/api/clients', config); // Requisição protegida com token
-    const data = response.data;
-    setClients(data);
-
-    // Calcular métricas com base no status dos clientes
-    const activeClients = data.filter(client => client.subscriptionStatus === 'ativo').length;
-    const inactiveClients = data.filter(client => client.subscriptionStatus === 'inativo').length;
-    const pendingClients = data.filter(client => client.subscriptionStatus === 'pendente').length;
-
-    setMetrics({
-      activeClients,
-      inactiveClients,
-      pendingClients,
-      totalClients: data.length,
-    });
-
-    setLoading(false);
-  } catch (err) {
-    console.error('Erro ao buscar clientes:', err);
-    setError('Erro ao carregar os dados dos clientes. Tente novamente mais tarde.');
-    setLoading(false);
-  }
-};
-
+  };
 
   useEffect(() => {
     console.log('Fetching clients...');
