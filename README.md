@@ -1,300 +1,296 @@
 # ClientHub
 
-ClientHub é um SaaS (Software como Serviço) completo e profissional para gerenciamento de clientes e assinaturas. Esta aplicação permite que empresas ou indivíduos gerenciem informações de clientes, tipos de assinatura, datas de expiração, renovação de assinaturas e muito mais, tudo através de uma interface web amigável e intuitiva.
+ClientHub is a complete and professional SaaS (Software as a Service) for client and subscription management. This application allows businesses or individuals to manage client information, subscription types, expiration dates, subscription renewals, and more, all through a friendly and intuitive web interface.
 
-## Índice
+## Table of Contents
 
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Pré-requisitos](#pré-requisitos)
-- [Instalação](#instalação)
+- [Technologies Used](#technologies-used)
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
   - [Backend](#backend)
   - [Frontend](#frontend)
-- [Uso](#uso)
-- [Funcionalidades](#funcionalidades)
-- [Testes](#testes)
-- [Implantação](#implantação)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
-- [Contato](#contato)
+- [Usage](#usage)
+- [Features](#features)
+- [Tests](#tests)
+- [Deployment](#deployment)
+- [Contribution](#contribution)
+- [License](#license)
+- [Contact](#contact)
 
-## Tecnologias Utilizadas
+## Technologies Used
 
 ### **Frontend**
 
-- **React.js**: Biblioteca JavaScript para construção de interfaces de usuário.
-- **Axios**: Cliente HTTP para comunicação com a API.
-- **React Router DOM**: Gerenciamento de rotas no frontend.
-- **Bootstrap** ou **Material-UI**: Frameworks CSS para estilização e responsividade.
+- **React.js**: JavaScript library for building user interfaces.
+- **Axios**: HTTP client for API communication.
+- **React Router DOM**: Route management in the frontend.
+- **TailwindCSS**: For an attractive and clean design..
 
 ### **Backend**
 
-- **Node.js** com **Express.js**: Ambiente de execução JavaScript para o servidor e framework minimalista para construção de APIs.
-- **MongoDB**: Banco de dados NoSQL para armazenamento de dados.
-- **Mongoose**: ODM (Object Data Modeling) para MongoDB e Node.js.
-- **JSON Web Tokens (JWT)**: Autenticação segura entre cliente e servidor.
+- **Node.js** with **Express.js**: JavaScript runtime environment for the server and minimalist framework for building APIs.
+- **MongoDB**: NoSQL database for data storage.
+- **Mongoose**: ODM (Object Data Modeling) for MongoDB and Node.js.
+- **JSON Web Tokens (JWT)**: Secure authentication between client and server.
 
-### **Outras Tecnologias**
+### **Other Technologies**
 
-- **Docker**: Containerização da aplicação para facilitar o desenvolvimento e implantação.
-- **Nginx**: Servidor web para servir o frontend em produção.
-- **Git**: Controle de versão.
-- **ESLint e Prettier**: Ferramentas para padronização e formatação de código.
+- **Docker**: Application containerization to facilitate development and deployment.
+- **Nginx**: Web server to serve the frontend in production.
+- **Git**: Version control.
+- **ESLint and Prettier**: Tools for code standardization and formatting.
 
-## Estrutura do Projeto
+## Project Structure
 
 ```
 clienthub/
 backend/
-├── node_modules/              # Módulos do Node.js
-├── config/                    # Configurações globais (ex: banco de dados, autenticação)
-│   ├── db.js                  # Configuração de conexão com banco de dados
-│   └── config.js              # Outras configurações globais
-├── controllers/               # Lógica de controle, comunicação entre rotas e modelos
-│   └── clientController.js    # Controlador de clientes
-├── models/                    # Definições de modelos e esquemas (ex: clientes, assinaturas)
-│   └── clientModel.js         # Modelo de clientes
-├── routes/                    # Definição de rotas para cada recurso
-│   └── clientRoutes.js        # Rotas relacionadas a clientes
-├── middlewares/               # Middlewares de autenticação, validação, etc.
-│   └── authMiddleware.js      # Middleware de autenticação
-├── services/                  # Lógica de serviços (ex: envio de e-mails, pagamentos)
-│   └── notificationService.js # Serviço para enviar notificações
-├── app.js                     # Arquivo principal para iniciar o servidor Express
-├── package.json               # Dependências do Node.js
-└── package-lock.json          # Bloqueio de versão das dependências
+├── node_modules/              # Node.js modules
+├── config/                    # Global configurations (e.g., database, authentication)
+│   ├── db.js                  # Database connection configuration
+│   └── config.js              # Other global configurations
+├── controllers/               # Control logic, communication between routes and models
+│   └── clientController.js    # Client controller
+├── models/                    # Model and schema definitions (e.g., clients, subscriptions)
+│   └── clientModel.js         # Client model
+├── routes/                    # Route definitions for each resource
+│   └── clientRoutes.js        # Client-related routes
+├── middlewares/               # Authentication, validation, etc., middlewares
+│   └── authMiddleware.js      # Authentication middleware
+├── services/                  # Service logic (e.g., email, payments)
+│   └── notificationService.js # Service for sending notifications
+├── app.js                     # Main file to start the Express server
+├── package.json               # Node.js dependencies
+└── package-lock.json          # Version lock for dependencies
 |
 frontend/
-├── node_modules/              # Módulos do NPM
-├── public/                    # Arquivos estáticos (html, imagens, favicon)
-│   ├── index.html             # Arquivo HTML principal
-│   └── manifest.json          # Configuração PWA
-├── src/                       # Código-fonte principal
-│   ├── assets/                # Arquivos estáticos (imagens, fontes, etc.)
-│   ├── components/            # Componentes reutilizáveis
-│   │   └── Navbar.js          # Exemplo de um componente
-│   ├── pages/                 # Páginas específicas (Ex: Home, Dashboard)
-│   │   └── Home.js            # Exemplo de uma página
-│   ├── services/              # Comunicação com o backend (requisições API)
-│   │   └── api.js             # Configuração do Axios
-│   ├── hooks/                 # Custom Hooks (lógica compartilhada entre componentes)
-│   │   └── useAuth.js         # Hook de autenticação
-│   ├── styles/                # Arquivos de estilização global (CSS ou SCSS)
-│   │   └── App.css            # Estilos globais
-│   ├── App.js                 # Componente principal da aplicação React
-│   ├── index.js               # Ponto de entrada do React
-│   └── .env                   # Variáveis de ambiente para o frontend
-├── package.json               # Dependências do frontend
-├── package-lock.json          # Bloqueio de versão das dependências
-|── .gitignore                 # Ignorar arquivos no controle de versão
+├── node_modules/              # NPM modules
+├── public/                    # Static files (HTML, images, favicon)
+│   ├── index.html             # Main HTML file
+│   └── manifest.json          # PWA configuration
+├── src/                       # Main source code
+│   ├── assets/                # Static files (images, fonts, etc.)
+│   ├── components/            # Reusable components
+│   │   └── Navbar.js          # Example of a component
+│   ├── pages/                 # Specific pages (e.g., Home, Dashboard)
+│   │   └── Home.js            # Example of a page
+│   ├── services/              # Backend communication (API requests)
+│   │   └── api.js             # Axios configuration
+│   ├── hooks/                 # Custom Hooks (shared logic between components)
+│   │   └── useAuth.js         # Authentication hook
+│   ├── styles/                # Global styling files (CSS or SCSS)
+│   │   └── App.css            # Global styles
+│   ├── App.js                 # Main React application component
+│   ├── index.js               # React entry point
+│   └── .env                   # Environment variables for the frontend
+├── package.json               # Frontend dependencies
+├── package-lock.json          # Version lock for dependencies
+|── .gitignore                 # Ignore files in version control
 ├── docker-compose.yml
 ├── README.md
 └── LICENSE
 ```
 
-## Pré-requisitos
+## Prerequisites
 
-- **Node.js** (versão 14 ou superior)
-- **npm** ou **yarn**
-- **MongoDB** (local ou em um serviço na nuvem como o MongoDB Atlas)
-- **Docker** e **Docker Compose** (opcional, mas recomendado para facilitar a configuração)
+- **Node.js** (version 14 or higher)
+- **npm** or **yarn**
+- **MongoDB** (local or cloud service like MongoDB Atlas)
+- **Docker** and **Docker Compose** (optional but recommended for easier setup)
 
-## Instalação
+## Installation
 
 ### Backend
 
-1. **Configuração Inicial**
+1. **Initial Setup**
 
    ```bash
    cd clienthub/backend
    ```
 
-2. **Instalar Dependências**
+2. **Install Dependencies**
 
    ```bash
    npm install
-   # ou
+   # or
    yarn install
    ```
 
-3. **Configurar Variáveis de Ambiente**
+3. **Set Up Environment Variables**
 
-   Renomeie o arquivo `.env.example` para `.env` e preencha as informações necessárias:
+   Rename the `.env.example` file to `.env` and fill in the required information:
 
    ```env
    PORT=5000
    MONGODB_URI=mongodb://localhost:27017/clienthub
-   JWT_SECRET=sua_chave_secreta_aqui
+   JWT_SECRET=your_secret_key_here
    ```
 
-4. **Executar a Aplicação**
+4. **Run the Application**
 
    ```bash
    npm run dev
-   # ou
+   # or
    yarn dev
    ```
 
 ### Frontend
 
-1. **Configuração Inicial**
+1. **Initial Setup**
 
    ```bash
    cd clienthub/frontend
    ```
 
-2. **Instalar Dependências**
+2. **Install Dependencies**
 
    ```bash
    npm install
-   # ou
+   # or
    yarn install
    ```
 
-3. **Configurar Variáveis de Ambiente**
+3. **Set Up Environment Variables**
 
-   Renomeie o arquivo `.env.example` para `.env` e preencha as informações necessárias:
+   Rename the `.env.example` file to `.env` and fill in the required information:
 
    ```env
    REACT_APP_API_URL=http://localhost:5000/api
    ```
 
-4. **Executar a Aplicação**
+4. **Run the Application**
 
    ```bash
    npm start
-   # ou
+   # or
    yarn start
    ```
 
-## Uso
+## Usage
 
-- Acesse o frontend em `http://localhost:3000` para interagir com a aplicação.
-- Utilize as funcionalidades de cadastro, edição, exclusão e visualização de clientes e assinaturas.
-- Para acessar rotas protegidas, é necessário realizar o login.
+- Access the frontend at `http://localhost:3000` to interact with the application.
+- Use the features to register, edit, delete, and view clients and subscriptions.
+- To access protected routes, you need to log in.
 
-## Funcionalidades
+## Features
 
-- **Gerenciamento de Clientes**
-  - Adicionar novos clientes.
-  - Editar informações existentes.
-  - Excluir clientes.
-  - Visualizar detalhes de clientes.
+- **Client Management**
+  - Add new clients.
+  - Edit existing client information.
+  - Delete clients.
+  - View client details.
 
-- **Gerenciamento de Assinaturas**
-  - Definir tipos de assinatura (mensal, trimestral).
-  - Renovar e rebaixar assinaturas.
-  - Notificações de assinaturas próximas do vencimento.
+- **Subscription Management**
+  - Define subscription types (monthly, quarterly).
+  - Renew or downgrade subscriptions.
+  - Notifications for subscriptions nearing expiration.
 
-- **Autenticação e Autorização**
-  - Sistema de login seguro com JWT.
-  - Proteção de rotas sensíveis.
+- **Authentication and Authorization**
+  - Secure login system with JWT.
+  - Protection of sensitive routes.
 
-- **Relatórios e Análises**
-  - Visualização de dados por meio de gráficos.
-  - Relatórios de assinaturas expiradas e próximas do vencimento.
+- **Reports and Analytics**
+  - Data visualization through charts.
+  - Reports on expired and soon-to-expire subscriptions.
 
-- **Pesquisa Avançada**
-  - Busca de clientes por nome, email ou telefone.
+- **Advanced Search**
+  - Search clients by name, email, or phone.
 
-- **Exportação de Dados**
-  - Exportar dados de clientes em formatos CSV ou JSON.
+- **Data Export**
+  - Export client data in CSV or JSON formats.
 
-## Testes
+## Tests
 
 ### Backend
 
-- **Testes Unitários e de Integração**
+- **Unit and Integration Tests**
 
   ```bash
   npm test
-  # ou
+  # or
   yarn test
   ```
 
 ### Frontend
 
-- **Testes de Componentes**
+- **Component Tests**
 
   ```bash
   npm test
-  # ou
+  # or
   yarn test
   ```
 
-## Implantação
+## Deployment
 
-### Usando Docker
+### Using Docker
 
-1. **Certifique-se de que o Docker e o Docker Compose estão instalados.**
+1. **Ensure Docker and Docker Compose are installed.**
 
-2. **Construir e Executar os Contêineres**
+2. **Build and Run the Containers**
 
-   Na raiz do projeto:
+   At the project root:
 
    ```bash
    docker-compose up --build
    ```
 
-3. **Acessar a Aplicação**
+3. **Access the Application**
 
    - Frontend: `http://localhost:80`
    - Backend: `http://localhost:5000`
 
-### Sem Docker
+### Without Docker
 
 1. **Backend**
 
-   - Configure um servidor para hospedar a API Node.js.
-   - Certifique-se de que o MongoDB está acessível.
-   - Configure as variáveis de ambiente de produção.
+   - Set up a server to host the Node.js API.
+   - Ensure MongoDB is accessible.
+   - Configure the production environment variables.
 
 2. **Frontend**
 
-   - Execute `npm run build` ou `yarn build` para gerar os arquivos estáticos.
-   - Sirva os arquivos estáticos usando um servidor web como Nginx ou Apache.
+   - Run `npm run build` or `yarn build` to generate the static files.
+   - Serve the static files using a web server like Nginx or Apache.
 
-3. **Configuração de Domínio e SSL**
+3. **Domain and SSL Setup**
 
-   - Configure seu domínio para apontar para o servidor.
-   - Implemente certificados SSL/TLS para segurança (exemplo: Let's Encrypt).
+   - Point your domain to the server.
+   - Implement SSL/TLS certificates for security (e.g., Let's Encrypt).
 
-## Contribuição
+## Contribution
 
-Contribuições são bem-vindas! Se você deseja contribuir com este projeto, por favor siga os passos abaixo:
+Contributions are welcome! If you would like to contribute to this project, please follow the steps below:
 
-1. **Fork o Repositório**
-2. **Crie uma Branch para sua Feature**
-
-   ```bash
-   git checkout -b minha-nova-feature
-   ```
-
-3. **Commit suas Alterações**
+1. **Fork the Repository**
+2. **Create a Branch for Your Feature**
 
    ```bash
-   git commit -m 'Adiciona nova funcionalidade X'
+   git checkout -b my-new-feature
    ```
 
-4. **Envie para o Repositório Remoto**
+3. **Commit Your Changes**
 
    ```bash
-   git push origin minha-nova-feature
+   git commit -m 'Add new feature X'
    ```
 
-5. **Abra um Pull Request**
+4. **Push to the Remote Repository**
 
-## Licença
+   ```bash
+   git push origin my-new-feature
+   ```
 
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+5. **Open a Pull Request**
 
-## Contato
+## License
 
-- **Autor**: [Jonh Alex]
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Contact
+
+- **Author**: [Jonh Alex]
 - **Email**: [it.jonhpaz@gmail.com]
 - **LinkedIn**: [https://www.linkedin.com/in/Jonhvmp](https://www.linkedin.com/in/Jonhvmp)
-- **Site Pessoal**: [https://www.github.com/jonhvmp](https://www.github.com/jonhvmp)
-
----
-
-Esperamos que o ClientHub atenda às suas necessidades de gerenciamento de clientes e assinaturas. Se você tiver alguma dúvida ou sugestão, não hesite em entrar em contato!
+- **Personal Website**: [https://www.github.com/jonhvmp](https://www.github.com/jonhvmp)

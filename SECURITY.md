@@ -2,26 +2,26 @@
 
 ## Supported Versions
 
-As versões abaixo são atualmente suportadas com atualizações de segurança. Incentivamos os usuários a manterem-se atualizados para garantir que estejam protegidos contra vulnerabilidades conhecidas.
+The following versions are currently supported with security updates. We encourage users to stay up to date to ensure they are protected against known vulnerabilities.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark:  |
+| 5.1.x   | :white_check_mark: |
 | 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark:  |
+| 4.0.x   | :white_check_mark: |
 | < 4.0   | :x:                |
 
 ## Reporting a Vulnerability
 
-Se você identificar uma vulnerabilidade de segurança no repositório, siga as etapas abaixo para reportá-la:
+If you identify a security vulnerability in the repository, please follow the steps below to report it:
 
-1. **Envie um email para it.jonhpaz@gmail.com** com detalhes completos sobre a vulnerabilidade, incluindo:
-   - Versão do software afetada.
-   - Descrição clara da vulnerabilidade.
-   - Possíveis impactos e passos para reproduzir o problema (se aplicável).
+1. **Send an email to it.jonhpaz@gmail.com** with full details of the vulnerability, including:
+   - Affected software version.
+   - Clear description of the vulnerability.
+   - Potential impact and steps to reproduce the issue (if applicable).
 
-2. **Aguarde confirmação:** Você receberá uma confirmação de recebimento em até 48 horas.
+2. **Wait for confirmation:** You will receive a confirmation of receipt within 48 hours.
 
-3. **Processo de avaliação:** Nossa equipe de segurança irá investigar o problema reportado. Você receberá atualizações periódicas sobre o status do relatório, geralmente dentro de 5 a 7 dias úteis.
+3. **Evaluation process:** Our security team will investigate the reported issue. You will receive periodic updates on the report's status, typically within 5 to 7 business days.
 
-4. **Resolução:** Se a vulnerabilidade for confirmada, trabalharemos para liberar uma correção em uma versão suportada. Caso contrário, explicaremos por que o problema não foi considerado uma vulnerabilidade.
+4. **Resolution:** If the vulnerability is confirmed, we will work to release a fix in a supported version. Otherwise, we will explain why the issue was not considered a vulnerability.
