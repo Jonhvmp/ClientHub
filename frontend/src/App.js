@@ -11,7 +11,6 @@ import ClientDelete from './pages/ClientDelete';
 import ClientSearch from './pages/ClientSearch';
 import UserProfile from './pages/UserProfile'; // Alterado
 import PrivateRoute from './utils/PrivateRoute';
-import Home from './pages/Home';
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
 
         {/* Rotas privadas */}
         <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/clients" element={<ClientList />} />
           <Route path="/clients/create" element={<ClientCreate />} />

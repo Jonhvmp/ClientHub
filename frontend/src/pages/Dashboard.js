@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api'; // Serviço Axios configurado para realizar chamadas à API
-import '../assets/css/Dashboard.css'; // Arquivo CSS para estilização
+import useDashboard from '../hooks/useDashboard';
+import '../assets/css/Dashboard.css';
+import api from '../services/api';
+
 
 const Dashboard = () => {
-  const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [metrics, setMetrics] = useState({
-    activeClients: 0,
-    inactiveClients: 0,
-    pendingClients: 0,
-    totalClients: 0,
-    lastAdded: null, // Novo campo para o último cliente adicionado
-  });
-
+  const { clients, fetchClients ,loading, error, metrics } = useDashboard();
   const navigate = useNavigate();
 
-  // Função para buscar dados dos clientes e atualizar o estado
-  const fetchClients = async () => {
+  const handleAddClient = () => {
+    navigate('/clients/create');
+  };
+
+  const handleEditClient = (id) => {
+    navigate(`/clients/${id}/edit`);
+  };
+
+ const handleDeleteClient = async (id) => {
+  if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -31,73 +31,18 @@ const Dashboard = () => {
         },
       };
 
-      const response = await api.get('/api/clients', config);
-      const { data } = response.data;
+      await api.delete(`/api/clients/${id}`, config);
 
-      // Verifica se data é um array
-      if (!Array.isArray(data)) {
-        throw new Error('Os dados retornados não são um array.');
-      }
+      alert('Cliente excluído com sucesso.');
 
-      setClients(data); // Atualiza o estado com os dados dos clientes
-
-      // Calcula métricas com base no status dos clientes
-      const activeClients = data.filter(client => client.subscriptionStatus === 'ativo').length;
-      const inactiveClients = data.filter(client => client.subscriptionStatus === 'inativo').length;
-      const pendingClients = data.filter(client => client.subscriptionStatus === 'pendente').length;
-
-      // Obtém o último cliente adicionado
-      const lastAdded = data.length > 0 ? data[data.length - 1].name : 'Nenhum cliente';
-
-      setMetrics({
-        activeClients,
-        inactiveClients,
-        pendingClients,
-        totalClients: data.length,
-        lastAdded, // Atualiza o último cliente adicionado
-      });
-
-      setLoading(false);
+      // Atualiza a lista de clientes sem recarregar a página
+      fetchClients(); // Chama a função que busca os clientes novamente
     } catch (err) {
-      console.error('Erro ao buscar clientes:', err);
-      setError('Erro ao carregar os dados dos clientes. Tente novamente mais tarde.');
-      setLoading(false);
+      alert('Erro ao excluir o cliente. Tente novamente mais tarde.');
     }
-  };
+  }
+};
 
-  useEffect(() => {
-    fetchClients();
-  }, []);
-
-  // Função para redirecionar para a página de adicionar cliente
-  const handleAddClient = () => {
-    navigate('/clients/create');
-  };
-
-  // Função para redirecionar para a página de edição de cliente
-  const handleEditClient = (id) => {
-    navigate(`/clients/${id}/edit`);
-  };
-
-  // Função para deletar cliente
-  const handleDeleteClient = async (id) => {
-    if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
-      try {
-        const token = localStorage.getItem('token');
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
-        await api.delete(`/api/clients/${id}`, config);
-        fetchClients();
-      } catch (err) {
-        console.error('Erro ao excluir cliente:', err);
-        setError('Erro ao excluir o cliente. Tente novamente.');
-      }
-    }
-  };
 
   if (loading) {
     return <div className="loading">Carregando...</div>;
@@ -111,7 +56,6 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <h1>Dashboard</h1>
 
-      {/* Exibir resumo dos clientes */}
       <div className="metrics-container">
         <div className="metric-box">
           <h3>Clientes Ativos</h3>
@@ -135,14 +79,12 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Ações */}
       <div className="actions">
         <button className="btn-primary" onClick={handleAddClient}>
           Adicionar Cliente
         </button>
       </div>
 
-      {/* Lista de Clientes */}
       <div className="clients-list">
         <h2>Lista de Clientes</h2>
         {clients.length === 0 ? (
@@ -176,16 +118,6 @@ const Dashboard = () => {
             </tbody>
           </table>
         )}
-      </div>
-
-      {/* Exibir atividades recentes */}
-      <div className="recent-activities">
-        <h2>Atividades Recentes</h2>
-        {clients.map(client => (
-          <div key={client._id}>
-            <p>{client.name} foi atualizado em {new Date(client.updatedAt).toLocaleString()}</p>
-          </div>
-        ))}
       </div>
     </div>
   );
