@@ -100,7 +100,7 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {clients.map(client => (
+                {clients.map(client => (
                 <tr key={client._id}>
                   <td>{client.name}</td>
                   <td>{client.email}</td>
@@ -116,10 +116,21 @@ const Dashboard = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
         )}
+        </div>
+        {/* Exibir atividades recentes */}
+        <div className="recent-activities">
+          <h2>Atividades Recentes</h2>
+          {clients.map(client => (
+            <div key={client._id}>
+              <p><strong>
+                {client.name}
+              </strong> foi atualizado em {new Date(client.updatedAt).toLocaleString()}</p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
   );
 };
 
