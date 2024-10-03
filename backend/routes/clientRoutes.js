@@ -31,5 +31,4 @@ router.route('/:id')
   .delete(protect, deleteClient); // Excluir cliente protegido
 
 
-
 module.exports = router;

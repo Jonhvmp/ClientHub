@@ -25,7 +25,7 @@ ClientHub is a complete and professional SaaS (Software as a Service) for client
 - **React.js**: JavaScript library for building user interfaces.
 - **Axios**: HTTP client for API communication.
 - **React Router DOM**: Route management in the frontend.
-- **TailwindCSS**: For an attractive and clean design..
+- **TailwindCSS**: For an attractive and clean design.
 
 ### **Backend**
 

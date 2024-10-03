@@ -4,7 +4,6 @@ import useDashboard from '../hooks/useDashboard';
 import '../assets/css/Dashboard.css';
 import api from '../services/api';
 
-
 const Dashboard = () => {
   const { clients, fetchClients ,loading, error, metrics } = useDashboard();
   const navigate = useNavigate();
@@ -31,7 +30,11 @@ const Dashboard = () => {
         },
       };
 
-      await api.delete(`/api/clients/${id}`, config);
+      const response = await api.delete(`/api/clients/${id}`, config);
+
+      if (response.status !== 200) {
+        throw new Error('Erro ao excluir o cliente.');
+      }
 
       alert('Cliente excluído com sucesso.');
 
@@ -42,7 +45,6 @@ const Dashboard = () => {
     }
   }
 };
-
 
   if (loading) {
     return <div className="loading">Carregando...</div>;

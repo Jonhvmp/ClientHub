@@ -25,7 +25,7 @@ app.use(express.json());
 
 // Rotas de autenticação e clientes
 app.use('/api/auth', authRoutes);
-app.use('/api/clients', clientRoutes);
+app.use('/api', clientRoutes);
 app.use('/api/user', userRoutes);
 
 // Servir a pasta uploads como um diretório estático
