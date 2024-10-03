@@ -1,60 +1,29 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import useClientList from '../hooks/useClientList';
 import '../assets/css/ClientList.css';
 
 const ClientList = () => {
-  const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [query, setQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [clientsPerPage] = useState(5); // Número de clientes por página
-  const [totalClients, setTotalClients] = useState(0);
-
+  const {
+    clients,
+    loading,
+    error,
+    query,
+    setQuery,
+    currentPage,
+    clientsPerPage,
+    totalClients,
+    setCurrentPage,
+    handleDeleteClient,
+  } = useClientList();
   const navigate = useNavigate();
 
-  // Função para buscar clientes e atualizar o estado
-  const fetchClients = useCallback(async (page = 1) => {
-    try {
-      setLoading(true);
-      const response = await api.get(`/api/clients?query=${query}&page=${page}&limit=${clientsPerPage}`);
-      const data = response.data.data;
-
-      setClients(data);
-      setTotalClients(response.data.total); // Total de clientes retornados
-      setLoading(false);
-    } catch (err) {
-      console.error('Erro ao buscar clientes:', err);
-      setError('Erro ao carregar os dados dos clientes. Tente novamente mais tarde.');
-      setLoading(false);
-    }
-  }, [query, clientsPerPage]); // Adicionar dependências corretamente
-
-  // useEffect para buscar clientes ao carregar a página ou quando o query/página muda
-  useEffect(() => {
-    fetchClients(currentPage);
-  }, [currentPage, query, fetchClients]);
-
-  // Outras funções continuam as mesmas...
   const handleAddClient = () => {
     navigate('/clients/create');
   };
 
   const handleEditClient = (id) => {
     navigate(`/clients/${id}/edit`);
-  };
-
-  const handleDeleteClient = async (id) => {
-    if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
-      try {
-        await api.delete(`/api/clients/${id}`);
-        fetchClients(currentPage); // Atualiza a lista de clientes após a exclusão
-      } catch (err) {
-        console.error('Erro ao excluir cliente:', err);
-        setError('Erro ao excluir o cliente. Tente novamente.');
-      }
-    }
   };
 
   const handleSearch = (event) => {
@@ -108,7 +77,7 @@ const ClientList = () => {
               </tr>
             </thead>
             <tbody>
-              {clients.map(client => (
+              {clients.map((client) => (
                 <tr key={client._id}>
                   <td>{client.name}</td>
                   <td>{client.email}</td>
@@ -149,7 +118,7 @@ const Pagination = ({ clientsPerPage, totalClients, paginate, currentPage }) => 
   return (
     <div className="pagination">
       <ul>
-        {pageNumbers.map(number => (
+        {pageNumbers.map((number) => (
           <li key={number} className={currentPage === number ? 'active' : ''}>
             <button onClick={() => paginate(number)}>{number}</button>
           </li>

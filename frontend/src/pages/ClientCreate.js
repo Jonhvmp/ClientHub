@@ -1,97 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../services/api'; // Serviço Axios configurado
+import React from 'react';
+import useClientCreate from '../hooks/useClientCreate';
 import '../assets/css/ClientCreate.css'; // Arquivo CSS para estilização
+import { useNavigate } from 'react-router-dom';
 
 const ClientCreate = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    address: {
-      street: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      country: '',
-    },
-    tags: '',
-    subscriptionType: 'mensal',
-    subscriptionStatus: 'ativo',
-    customFields: [],
-  });
-
-  const [customField, setCustomField] = useState({ fieldName: '', fieldValue: '' });
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  // Função para lidar com as mudanças nos campos do formulário
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  // Função para lidar com mudanças em campos de endereço
-  const handleAddressChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      address: {
-        ...formData.address,
-        [name]: value,
-      },
-    });
-  };
-
-  // Função para lidar com campos personalizados
-  const handleCustomFieldChange = (e) => {
-    const { name, value } = e.target;
-    setCustomField({
-      ...customField,
-      [name]: value,
-    });
-  };
-
-  // Função para adicionar campos personalizados ao array
-  const addCustomField = () => {
-    if (customField.fieldName && customField.fieldValue) {
-      setFormData({
-        ...formData,
-        customFields: [...formData.customFields, customField],
-      });
-      setCustomField({ fieldName: '', fieldValue: '' }); // Limpar campo após adicionar
-    }
-  };
-
-  // Função para submeter o formulário
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    // Verifica se os campos obrigatórios estão preenchidos
-    if (!formData.name || !formData.email || !formData.phone) {
-      setError('Nome, email e telefone são obrigatórios.');
-      setLoading(false);
-      return;
-    }
-
-    try {
-      // Chamada à API para adicionar um novo cliente
-      const response = await api.post('/api/clients', formData);
-      console.log('Resposta da API:', response.data);
-      navigate('/clients'); // Redirecionar para a lista de clientes após o sucesso
-    } catch (err) {
-      console.error('Erro ao adicionar cliente:', err);
-      setError('Erro ao adicionar cliente. Verifique os dados e tente novamente.');
-      setLoading(false);
-    }
-  };
+  const {
+    formData,
+    customField,
+    error,
+    loading,
+    handleInputChange,
+    handleAddressChange,
+    handleCustomFieldChange,
+    addCustomField,
+    handleSubmit,
+  } = useClientCreate();
 
   return (
     <div className="client-create-container">
@@ -100,7 +24,6 @@ const ClientCreate = () => {
       {error && <div className="error-message">{error}</div>}
 
       <form onSubmit={handleSubmit}>
-        {/* Informações básicas */}
         <div className="form-group">
           <label>Nome*</label>
           <input
@@ -134,7 +57,6 @@ const ClientCreate = () => {
           />
         </div>
 
-        {/* Informações adicionais */}
         <div className="form-group">
           <label>Empresa</label>
           <input
@@ -156,7 +78,6 @@ const ClientCreate = () => {
           />
         </div>
 
-        {/* Endereço */}
         <div className="address-group">
           <h3>Endereço</h3>
           <div className="form-group">
@@ -206,7 +127,6 @@ const ClientCreate = () => {
           </div>
         </div>
 
-        {/* Tipo e status da assinatura */}
         <div className="form-group">
           <label>Tipo de Assinatura</label>
           <select
@@ -235,7 +155,6 @@ const ClientCreate = () => {
           </select>
         </div>
 
-        {/* Campos Personalizados */}
         <div className="custom-fields">
           <h3>Campos Personalizados</h3>
           <div className="form-group">
@@ -272,7 +191,6 @@ const ClientCreate = () => {
           )}
         </div>
 
-        {/* Botão de submit */}
         <div className="form-buttons">
           <button type="submit" className="btn-primary" disabled={loading}>
             {loading ? 'Salvando...' : 'Salvar Cliente'}

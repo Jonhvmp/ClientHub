@@ -21,6 +21,7 @@ function App() {
 
         {/* Rotas privadas */}
         <Route element={<PrivateRoute />}>
+          <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/clients" element={<ClientList />} />
           <Route path="/clients/create" element={<ClientCreate />} />

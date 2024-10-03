@@ -1,125 +1,23 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import api from '../services/api'; // Serviço Axios configurado
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import useClientEdit from '../hooks/useClientEdit';
 import '../assets/css/ClientEdit.css'; // Arquivo CSS para estilização
 
 const ClientEdit = () => {
   const { id } = useParams(); // Captura o ID do cliente da URL
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    address: {
-      street: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      country: '',
-    },
-    tags: '',
-    subscriptionType: 'mensal',
-    subscriptionStatus: 'ativo',
-    customFields: [],
-  });
-  const [customField, setCustomField] = useState({ fieldName: '', fieldValue: '' });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [updateError, setUpdateError] = useState(null);
-  const navigate = useNavigate();
+  const {
+    formData,
+    customField,
+    loading,
+    error,
+    updateError,
+    handleInputChange,
+    handleAddressChange,
+    handleCustomFieldChange,
+    addCustomField,
+    handleSubmit,
+  } = useClientEdit(id);
 
-  // Função para buscar os dados do cliente ao carregar a página
-  const fetchClientData = useCallback(async () => {
-    const token = localStorage.getItem('token');
-    try {
-      // Adiciona o token JWT ao cabeçalho da requisição
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      // Faz a requisição para obter os dados do cliente com o cabeçalho de autorização
-      const response = await api.get(`/api/clients/${id}`, config);
-      setFormData(response.data.data); // Atualiza os dados no formulário
-      setLoading(false);
-    } catch (err) {
-      console.error('Erro ao buscar cliente:', err);
-      setError('Erro ao carregar os dados do cliente. Tente novamente mais tarde.');
-      setLoading(false);
-    }
-  }, [id]); // Incluímos 'id' como dependência, já que pode mudar com a rota
-
-  useEffect(() => {
-    fetchClientData();
-  }, [fetchClientData]);
-
-  // Função para lidar com as mudanças nos campos do formulário
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  // Função para lidar com mudanças em campos de endereço
-  const handleAddressChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      address: {
-        ...formData.address,
-        [name]: value,
-      },
-    });
-  };
-
-  // Função para lidar com campos personalizados
-  const handleCustomFieldChange = (e) => {
-    const { name, value } = e.target;
-    setCustomField({
-      ...customField,
-      [name]: value,
-    });
-  };
-
-  // Função para adicionar campos personalizados ao array
-  const addCustomField = () => {
-    if (customField.fieldName && customField.fieldValue) {
-      setFormData({
-        ...formData,
-        customFields: [...formData.customFields, customField],
-      });
-      setCustomField({ fieldName: '', fieldValue: '' }); // Limpar campo após adicionar
-    }
-  };
-
-  // Função para submeter o formulário de edição
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setUpdateError(null);
-
-    // Verifica se os campos obrigatórios estão preenchidos
-    if (!formData.name || !formData.email || !formData.phone) {
-      setUpdateError('Nome, email e telefone são obrigatórios.');
-      setLoading(false);
-      return;
-    }
-
-    try {
-      // Chamada à API para atualizar os dados do cliente
-      await api.put(`/api/clients/${id}`, formData);
-      navigate('/clients'); // Redirecionar para a lista de clientes após o sucesso
-    } catch (err) {
-      console.error('Erro ao atualizar cliente:', err);
-      setUpdateError('Erro ao atualizar cliente. Verifique os dados e tente novamente.');
-      setLoading(false);
-    }
-  };
-
-  // Exibir mensagem de carregamento ou erro ao carregar dados
   if (loading) {
     return <div className="loading">Carregando dados do cliente...</div>;
   }
@@ -311,6 +209,10 @@ const ClientEdit = () => {
         <div className="form-buttons">
           <button type="submit" className="btn-primary" disabled={loading}>
             {loading ? 'Salvando...' : 'Salvar Alterações'}
+          </button>
+
+          <button className="btn-secondary" onClick={() => window.history.back()}>
+            Cancelar
           </button>
         </div>
       </form>

@@ -1,44 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import api from '../services/api'; // Serviço Axios configurado
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import useClientDetails from '../hooks/useClientDetails';
 import '../assets/css/ClientDetails.css'; // Estilização específica para esta página
+import { useNavigate } from 'react-router-dom';
 
 const ClientDetails = () => {
-  const { id } = useParams(); // Captura o ID do cliente da URL
-  const [client, setClient] = useState(null); // Armazena os dados do cliente
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
-
-  // Função para buscar os dados do cliente
-  const fetchClientData = useCallback(async () => {
-    try {
-      const response = await api.get(`/api/clients/${id}`);
-      setClient(response.data.data);
-      setLoading(false);
-    } catch (err) {
-      console.error('Erro ao buscar cliente:', err);
-      setError('Erro ao carregar os dados do cliente. Tente novamente mais tarde.');
-      setLoading(false);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    fetchClientData();
-  }, [fetchClientData]);
-
-  // Função para deletar o cliente
-  const handleDeleteClient = async () => {
-    if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
-      try {
-        await api.delete(`/api/clients/${id}`);
-        navigate('/clients'); // Redireciona para a lista de clientes após a exclusão
-      } catch (err) {
-        console.error('Erro ao excluir cliente:', err);
-        setError('Erro ao excluir o cliente. Tente novamente.');
-      }
-    }
-  };
+  const { id } = useParams(); // Captura o ID do cliente da URL
+  const { client, loading, error, handleDeleteClient } = useClientDetails(id);
 
   // Exibir carregamento ou erro
   if (loading) {
