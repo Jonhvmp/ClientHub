@@ -3,10 +3,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const StatsCard = ({ title, value, fromColor, toColor }) => {
+const StatsCard = ({ title, value, gradient }) => {
   return (
     <motion.div
-      className={`p-6 bg-gradient-to-r from-${fromColor}-500 to-${toColor}-500 text-white rounded-xl shadow-xl`}
+      className={`p-6 ${gradient} text-white rounded-xl shadow-xl`}
       whileHover={{ scale: 1.05 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >
