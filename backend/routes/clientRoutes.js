@@ -11,8 +11,8 @@ const { protect } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// Defina primeiro a rota de busca antes das rotas que lidam com :id para evitar conflito
-router.route('/search')
+// Defina a rota de busca antes da rota que lida com :id para evitar conflito
+router.route('/clients/search')
   .get(protect, searchClients); // Busca de clientes protegida
 
 router.route('/clients')
@@ -23,12 +23,5 @@ router.route('/clients/:id')
   .get(protect, getClient) // Obter um cliente específico por ID
   .put(protect, updateClient) // Atualizar cliente protegido
   .delete(protect, deleteClient); // Excluir cliente protegido
-
-// Rota de ( :id )
-router.route('/:id')
-  .get(protect, getClient) // Obter um cliente específico por ID
-  .put(protect, updateClient) // Atualizar cliente protegido
-  .delete(protect, deleteClient); // Excluir cliente protegido
-
 
 module.exports = router;

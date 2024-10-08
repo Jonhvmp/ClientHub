@@ -85,6 +85,11 @@ const Dashboard = () => {
         <button className="btn-primary" onClick={handleAddClient}>
           Adicionar Cliente
         </button>
+
+        {/* Botão de pesquisar clientes */}
+        <button className="btn-secondary" onClick={() => navigate('/clients/search')}>
+        Pesquisar Clientes
+      </button>
       </div>
 
       <div className="clients-list">

@@ -120,28 +120,32 @@ exports.deleteClient = asyncHandler(async (req, res) => {
 
 // Buscar clientes por nome, email ou tags (apenas dentro dos clientes do usuário autenticado)
 exports.searchClients = asyncHandler(async (req, res) => {
-  const { query, page = 1, limit = 10 } = req.query; // Adicionar paginação
-  const userId = req.user._id;
+  const { query, page = 1, limit = 10 } = req.query;
+  const userId = req.user ? req.user._id : null;
+
+  if (!userId) {
+    return res.status(401).json({ success: false, message: 'Usuário não autenticado.' });
+  }
 
   if (!query) {
     return res.status(400).json({ success: false, message: 'A query de busca é obrigatória.' });
   }
 
   try {
-    // Busca clientes com base na query e na paginação
+    console.log('Buscando clientes para o usuário:', userId, 'com a query:', query);
+
     const clients = await Client.find({
       userId,
       $or: [
-        { name: { $regex: query, $options: 'i' } }, // Busca por nome
-        { email: { $regex: query, $options: 'i' } }, // Busca por email
-        { tags: { $regex: query, $options: 'i' } }   // Busca por tags
+        { name: { $regex: query, $options: 'i' } },
+        { email: { $regex: query, $options: 'i' } },
+        { tags: { $regex: query, $options: 'i' } }
       ]
     })
-      .select('-__v') // Remove o campo `__v` dos resultados
-      .limit(limit * 1) // Limita o número de clientes por página
-      .skip((page - 1) * limit); // Pula os resultados das páginas anteriores
+      .select('-__v')
+      .limit(limit)
+      .skip((page - 1) * limit);
 
-    // Contagem total de documentos que correspondem à query
     const total = await Client.countDocuments({
       userId,
       $or: [
@@ -151,17 +155,16 @@ exports.searchClients = asyncHandler(async (req, res) => {
       ]
     });
 
-    // Retorna o resultado paginado
     res.status(200).json({
       success: true,
-      count: clients.length, // Número de clientes retornados na página atual
-      total, // Total de clientes encontrados com base na query
-      currentPage: parseInt(page, 10), // Página atual
-      totalPages: Math.ceil(total / limit), // Número total de páginas
-      data: clients, // Lista de clientes retornados
+      count: clients.length,
+      total,
+      currentPage: parseInt(page, 10),
+      totalPages: Math.ceil(total / limit),
+      data: clients,
     });
   } catch (error) {
-    console.error(error);
+    console.error('Erro ao realizar a busca:', error);
     res.status(500).json({
       success: false,
       message: 'Erro ao realizar a busca. Tente novamente mais tarde.',

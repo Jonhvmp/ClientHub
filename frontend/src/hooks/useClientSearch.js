@@ -19,7 +19,18 @@ const useClientSearch = () => {
       setError(null);
 
       try {
-        const response = await api.get(`/api/clients/search?query=${query}`);
+        const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token não encontrado. Faça login novamente.');
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        };
+
+      const response = await api.get(`/api/clients/search?query=${query}`, config);
         setClients(response.data.data);
         setLoading(false);
       } catch (err) {
@@ -29,12 +40,12 @@ const useClientSearch = () => {
       }
     }, 1500); // Espera de 1.5 segundos após o usuário parar de digitar
 
-    return () => clearTimeout(handler); // Limpa o timeout anterior
+    return handler;
   }, [query]);
 
   useEffect(() => {
-    const fetchHandler = debounceFetchClients();
-    return fetchHandler; // Executa e limpa o debounce conforme necessário
+    const handler = debounceFetchClients();
+    return () => clearTimeout(handler); // Limpa o timeout anterior ao sair do efeito ou se o query mudar
   }, [debounceFetchClients]);
 
   const handleSearchChange = (e) => {
