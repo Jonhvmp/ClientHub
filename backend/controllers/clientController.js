@@ -4,8 +4,8 @@ const asyncHandler = require('express-async-handler');
 // Criar um novo cliente
 exports.createClient = asyncHandler(async (req, res) => {
   try {
-    console.log('Recebendo dados do cliente:', req.body); // Log para inspecionar os dados
-    const { name, email, phone, company, address, tags, subscriptionType, subscriptionStatus, customFields } = req.body;
+    // console.log('Recebendo dados do cliente:', req.body); // Log para inspecionar os dados
+    const { name, email, phone, company, address, tags, subscriptionType, subscriptionStatus, customFields, status } = req.body;
 
     // Certifique-se de que todos os campos obrigatórios estão presentes
     if (!name || !email) {
@@ -29,7 +29,8 @@ exports.createClient = asyncHandler(async (req, res) => {
       subscriptionType,
       subscriptionStatus,
       customFields,
-      userId: req.user._id // Certifique-se de salvar o userId também
+      status, // Certifique-se de adicionar status aqui
+      userId: req.user._id
     });
 
     res.status(201).json(client);
@@ -67,6 +68,7 @@ exports.getClients = asyncHandler(async (req, res) => {
     data: clients,
   });
 });
+
 
 // Obter um cliente específico associado ao usuário autenticado
 exports.getClient = asyncHandler(async (req, res) => {

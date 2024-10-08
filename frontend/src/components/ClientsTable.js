@@ -29,7 +29,7 @@ const ClientsTable = ({ clients, handleEditClient, handleDeleteClient, deleteLoa
             >
               <td className="p-4 text-center">{client.name}</td>
               <td className="p-4 text-center">{client.email}</td>
-              <td className="p-4 text-center">{client.subscriptionStatus}</td>
+              <td className="p-4 text-center">{client.status}</td>
               <td className="p-4 flex justify-center gap-2">
                 <motion.button
                   className="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600"

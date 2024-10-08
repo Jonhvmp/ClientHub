@@ -82,3 +82,7 @@ form {
 .alert.success {
   @apply bg-green-500 text-white;
 }
+
+.subscriptDiv {
+  @apply flex gap-6;
+}

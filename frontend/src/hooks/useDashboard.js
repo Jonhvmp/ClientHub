@@ -35,9 +35,9 @@ const useDashboard = () => {
 
       setClients(data);
 
-      const activeClients = data.filter(client => client.subscriptionStatus === 'ativo').length;
-      const inactiveClients = data.filter(client => client.subscriptionStatus === 'inativo').length;
-      const pendingClients = data.filter(client => client.subscriptionStatus === 'pendente').length;
+      const activeClients = data.filter(client => client.status === 'ativo').length;
+      const inactiveClients = data.filter(client => client.status === 'inativo').length;
+      const pendingClients = data.filter(client => client.status === 'pendente').length;
       const lastAdded = data.length > 0 ? data[data.length - 1].name : 'Nenhum cliente';
 
       setMetrics({
@@ -63,3 +63,4 @@ const useDashboard = () => {
 };
 
 export default useDashboard;
+

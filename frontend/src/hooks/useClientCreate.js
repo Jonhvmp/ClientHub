@@ -65,6 +65,9 @@ const useClientCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.status) {
+      formData.status = 'ativo'; // Define um valor padrão se necessário
+    }
     setLoading(true);
     setError(null);
 

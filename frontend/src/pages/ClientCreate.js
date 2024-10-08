@@ -1,6 +1,7 @@
 // Arquivo: ClientCreate.js
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import useClientCreate from '../hooks/useClientCreate';
 import '../assets/css/ClientCreate.css';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +10,7 @@ import ClientForm from '../components/ClientForm';
 import AddressForm from '../components/AddressForm';
 import CustomFields from '../components/CustomFields';
 import FormButtons from '../components/FormButtons';
+import SubscriptionFields from '../components/SubscriptionFields';
 
 const ClientCreate = () => {
   const navigate = useNavigate();
@@ -35,6 +37,9 @@ const ClientCreate = () => {
         handleCustomFieldChange={handleCustomFieldChange}
         addCustomField={addCustomField}
       />
+      <motion.div className='subscriptDiv'>
+        <SubscriptionFields formData={formData} handleInputChange={handleInputChange} />
+      </motion.div>
       <FormButtons handleSubmit={handleSubmit} loading={loading} navigate={navigate} />
     </div>
   );
