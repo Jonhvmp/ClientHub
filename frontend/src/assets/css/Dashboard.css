@@ -1,55 +1,58 @@
-/* Custom Tailwind CSS tweaks */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Dashboard.css */
 
-/* Custom animations */
-/* @keyframes neon-glow {
-  0%, 100% {
-    text-shadow: 0 0 8px rgba(0, 255, 234, 0.5), 0 0 20px rgba(0, 255, 234, 0.3);
-  }
-  50% {
-    text-shadow: 0 0 20px rgba(0, 255, 234, 1), 0 0 30px rgba(0, 255, 234, 0.8);
-  }
+/* Métricas */
+.dashboard-container h1 {
+  @apply text-5xl font-bold mb-8 text-center tracking-wider text-white;
 }
 
-h1 {
-  animation: neon-glow 1.5s infinite alternate;
-} */
-
-/* Tailwind customization */
-.clients-table tr:hover {
-  @apply bg-gray-200 transition-transform transform scale-105;
+.metrics-container {
+  @apply grid gap-6 mb-12 md:grid-cols-3 lg:grid-cols-5;
 }
 
-.clients-table th {
+.metric-box {
+  @apply p-6 text-white rounded-xl shadow-xl;
+}
+
+/* Botões de ação */
+.actions {
+  @apply flex gap-4 mb-8;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105;
+}
+
+.btn-secondary {
+  @apply bg-gray-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-gray-700 transition-transform transform hover:scale-105;
+}
+
+/* Tabela de Clientes */
+.clients-table {
+  @apply min-w-full text-gray-800 bg-white rounded-lg shadow-lg overflow-hidden;
+}
+
+.clients-table thead {
   @apply bg-gray-900 text-white;
 }
 
+.clients-table th,
 .clients-table td {
-  @apply p-4 border-b border-gray-300;
+  @apply p-4;
 }
 
-/* Ajustando detalhes de responsividade */
-@media (max-width: 640px) {
-  .clients-table {
-    @apply block;
-  }
+.clients-table tr {
+  @apply border-b transition-all;
+}
 
-  .clients-table tr {
-    @apply block;
-  }
+.clients-table tr:hover {
+  @apply bg-gray-100;
+}
 
-  .clients-table th,
-  .clients-table td {
-    @apply block;
-  }
+/* Atividades Recentes */
+.recent-activities {
+  @apply mt-12;
+}
 
-  .clients-table th {
-    @apply bg-gray-900 text-white;
-  }
-
-  .clients-table td {
-    @apply p-4 border-b border-gray-300;
-  }
+.recent-activity-card {
+  @apply p-4 mb-4 bg-white rounded-lg shadow-md hover:bg-gray-50 transition-colors;
 }

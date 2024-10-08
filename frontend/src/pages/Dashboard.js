@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import api from '../services/api';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import useDashboard from '../hooks/useDashboard';
-import api from '../services/api';
+import StatsCard from '../components/StatsCard';
+import ClientsTable from '../components/ClientsTable';
+import RecentActivities from '../components/RecentActivities';
 import '../assets/css/Dashboard.css';
 
 const Dashboard = () => {
@@ -67,11 +70,6 @@ const Dashboard = () => {
     },
   };
 
-  const historyVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.6 } },
-  };
-
   return (
     <motion.div
       className="dashboard-container bg-gradient-to-b from-gray-900 to-gray-800 text-white min-h-screen p-8"
@@ -88,42 +86,11 @@ const Dashboard = () => {
 
       {/* Métricas */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
-        <motion.div
-          className="p-6 bg-gradient-to-r from-blue-500 to-teal-500 text-white rounded-xl shadow-xl"
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
-          <h3 className="text-xl">Clientes Ativos</h3>
-          <p className="text-4xl">{metrics.activeClients}</p>
-        </motion.div>
-        <motion.div
-          className="p-6 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-xl shadow-xl"
-          whileHover={{ scale: 1.05 }}
-        >
-          <h3 className="text-xl">Clientes Inativos</h3>
-          <p className="text-4xl">{metrics.inactiveClients}</p>
-        </motion.div>
-        <motion.div
-          className="p-6 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl shadow-xl"
-          whileHover={{ scale: 1.05 }}
-        >
-          <h3 className="text-xl">Clientes Pendentes</h3>
-          <p className="text-4xl">{metrics.pendingClients}</p>
-        </motion.div>
-        <motion.div
-          className="p-6 bg-gradient-to-r from-green-500 to-lime-500 text-white rounded-xl shadow-xl"
-          whileHover={{ scale: 1.05 }}
-        >
-          <h3 className="text-xl">Total de Clientes</h3>
-          <p className="text-4xl">{metrics.totalClients}</p>
-        </motion.div>
-        <motion.div
-          className="p-6 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl shadow-xl"
-          whileHover={{ scale: 1.05 }}
-        >
-          <h3 className="text-xl">Último Cliente Adicionado</h3>
-          <p className="text-lg">{metrics.lastAdded}</p>
-        </motion.div>
+        <StatsCard title="Clientes Ativos" value={metrics.activeClients} gradient="bg-gradient-to-r from-green-400 to-green-600" />
+        <StatsCard title="Clientes Inativos" value={metrics.inactiveClients} gradient="bg-gradient-to-r from-red-400 to-red-600" />
+        <StatsCard title="Clientes Pendentes" value={metrics.pendingClients} gradient="bg-gradient-to-r from-yellow-400 to-yellow-600" />
+        <StatsCard title="Total de Clientes" value={metrics.totalClients} gradient="bg-gradient-to-r from-blue-400 to-blue-600" />
+        <StatsCard title="Último Cliente Adicionado" value={metrics.lastAdded} gradient="bg-gradient-to-r from-purple-400 to-purple-600" />
       </div>
 
       {/* Botões de Ação */}
@@ -146,70 +113,10 @@ const Dashboard = () => {
       </div>
 
       {/* Tabela de Clientes */}
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <motion.table
-          className="min-w-full text-gray-800"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <thead className="bg-gray-900 text-white">
-            <tr>
-              <th className="p-4">Nome</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">Status</th>
-              <th className="p-4">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clients.map((client) => (
-              <motion.tr
-                key={client._id}
-                className="hover:bg-gray-100 transition-all"
-                whileHover={{ scale: 1.02 }}
-              >
-                <td className="p-4">{client.name}</td>
-                <td className="p-4">{client.email}</td>
-                <td className="p-4">{client.subscriptionStatus}</td>
-                <td className="p-4 flex gap-2">
-                  <motion.button
-                    className="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600"
-                    whileHover={{ scale: 1.1 }}
-                    onClick={() => handleEditClient(client._id)}
-                  >
-                    Editar
-                  </motion.button>
-                  <motion.button
-                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600"
-                    whileHover={{ scale: 1.1 }}
-                    onClick={() => handleDeleteClient(client._id)}
-                  >
-                    {deleteLoading ? 'Excluindo...' : 'Excluir'}
-                  </motion.button>
-                </td>
-              </motion.tr>
-            ))}
-          </tbody>
-        </motion.table>
-      </div>
+      <ClientsTable clients={clients} handleEditClient={handleEditClient} handleDeleteClient={handleDeleteClient} deleteLoading={deleteLoading} />
 
       {/* Histórico de Atividades Recentes */}
-      <div className="recent-activities mt-12">
-        <h2 className="text-3xl font-bold mb-6">Atividades Recentes</h2>
-        {clients.map((client) => (
-          <motion.div
-            key={client._id}
-            className="p-4 mb-4 bg-white rounded-lg shadow-md hover:bg-gray-50 transition-colors"
-            initial="hidden"
-            animate="visible"
-            variants={historyVariants}
-          >
-            <p className="text-gray-700">
-              <strong>{client.name}</strong> foi atualizado em {new Date(client.updatedAt).toLocaleString()}
-            </p>
-          </motion.div>
-        ))}
-      </div>
+      <RecentActivities clients={clients} />
     </motion.div>
   );
 };
