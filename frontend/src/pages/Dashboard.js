@@ -86,10 +86,14 @@ const Dashboard = () => {
           Adicionar Cliente
         </button>
 
-        {/* Botão de pesquisar clientes */}
         <button className="btn-secondary" onClick={() => navigate('/clients/search')}>
         Pesquisar Clientes
-      </button>
+        </button>
+
+        {/* Botão de sair da conta */}
+        {/* <button className="btn-secondary" onClick={() => navigate('/logout')}>
+          Sair
+        </button> */}
       </div>
 
       <div className="clients-list">

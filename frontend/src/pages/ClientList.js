@@ -8,8 +8,8 @@ const ClientList = () => {
     clients,
     loading,
     error,
-    query,
-    setQuery,
+    // query,
+    // setQuery,
     currentPage,
     clientsPerPage,
     totalClients,
@@ -26,9 +26,9 @@ const ClientList = () => {
     navigate(`/clients/${id}/edit`);
   };
 
-  const handleSearch = (event) => {
-    setQuery(event.target.value);
-  };
+  // const handleSearch = (event) => {
+  //   setQuery(event.target.value);
+  // };
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -48,12 +48,15 @@ const ClientList = () => {
         <button className="btn-primary" onClick={handleAddClient}>
           Adicionar Cliente
         </button>
+        <button className="btn-secondary" onClick={() => navigate('/clients/search')}>
+        Pesquisar Clientes
+        </button>
         <button className="btn-secondary" onClick={() => navigate('/dashboard')}>
           Voltar ao Dashboard
         </button>
       </div>
 
-      <div className="search-bar">
+      {/* <div className="search-bar">
         <input
           type="text"
           placeholder="Buscar por nome ou email"
@@ -61,7 +64,7 @@ const ClientList = () => {
           onChange={handleSearch}
           className="search-input"
         />
-      </div>
+      </div> */}
 
       {clients.length === 0 ? (
         <p>Nenhum cliente encontrado.</p>
