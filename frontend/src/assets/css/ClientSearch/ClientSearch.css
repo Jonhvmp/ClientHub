@@ -1,6 +1,6 @@
 /* ClientSearch.css */
 
-@import './global.css';
+@import '../global.css';
 
 .client-search-container {
   width: 100%;

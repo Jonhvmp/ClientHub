@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api'; // Serviço Axios configurado
+import api from '../../services/api'; // Serviço Axios configurado
 
 const useClientDetails = (id) => {
   const [client, setClient] = useState(null); // Armazena os dados do cliente

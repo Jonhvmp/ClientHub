@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api'; // Serviço Axios configurado
+import api from '../../services/api'; // Serviço Axios configurado
 
-const useClientCreate = () => {
+const useClientEdit = (id) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,9 +22,30 @@ const useClientCreate = () => {
   });
 
   const [customField, setCustomField] = useState({ fieldName: '', fieldValue: '' });
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [updateError, setUpdateError] = useState(null);
   const navigate = useNavigate();
+
+  // Função para buscar os dados do cliente ao carregar a página
+  const fetchClientData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await api.put(`/api/clients/${id}`);
+      setFormData(response.data.data);
+      setLoading(false);
+    } catch (err) {
+      console.error('Erro ao buscar cliente:', err);
+      setError('Erro ao carregar os dados do cliente. Tente novamente mais tarde.');
+      setLoading(false);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    fetchClientData();
+  }, [fetchClientData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -65,25 +86,21 @@ const useClientCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.status) {
-      formData.status = 'ativo'; // Define um valor padrão se necessário
-    }
     setLoading(true);
-    setError(null);
+    setUpdateError(null);
 
     if (!formData.name || !formData.email || !formData.phone) {
-      setError('Nome, email e telefone são obrigatórios.');
+      setUpdateError('Nome, email e telefone são obrigatórios.');
       setLoading(false);
       return;
     }
 
     try {
-      const response = await api.post('/api/clients', formData);
-      console.log('Resposta da API:', response.data);
+      await api.put(`/api/clients/${id}`, formData);
       navigate('/clients');
     } catch (err) {
-      console.error('Erro ao adicionar cliente:', err);
-      setError('Erro ao adicionar cliente. Verifique os dados e tente novamente.');
+      console.error('Erro ao atualizar cliente:', err);
+      setUpdateError('Erro ao atualizar cliente. Verifique os dados e tente novamente.');
       setLoading(false);
     }
   };
@@ -91,8 +108,9 @@ const useClientCreate = () => {
   return {
     formData,
     customField,
-    error,
     loading,
+    error,
+    updateError,
     handleInputChange,
     handleAddressChange,
     handleCustomFieldChange,
@@ -101,4 +119,4 @@ const useClientCreate = () => {
   };
 };
 
-export default useClientCreate;
+export default useClientEdit;

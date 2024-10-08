@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import useClientList from '../hooks/useClientList';
-import '../assets/css/ClientList.css';
-import ClientsTable from '../components/ClientsTable';
+import useClientList from '../hooks/useClientList/useClientList';
+import '../assets/css/ClientList/ClientList.css';
+import ClientsTable from '../components/ClientsTable/ClientsTable';
 
 const ClientList = () => {
   const {

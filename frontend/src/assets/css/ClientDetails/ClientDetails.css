@@ -1,6 +1,6 @@
 /* ClientDetails.css */
 
-@import './global.css';
+@import '../global.css';
 
 .client-details-container {
   width: 100%;

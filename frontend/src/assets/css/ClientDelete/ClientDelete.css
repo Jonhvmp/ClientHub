@@ -1,6 +1,6 @@
 /* ClientDelete.css */
 
-@import './global.css';
+@import '../global.css';
 
 .client-delete-container {
   width: 100%;

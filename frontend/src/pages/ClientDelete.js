@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import useClientDelete from '../hooks/useClientDelete';
-import '../assets/css/ClientDelete.css'; // Estilização específica para esta página
+import useClientDelete from '../hooks/useClientDelete/useClientDelete';
+import '../assets/css/ClientDelete/ClientDelete.css'; // Estilização específica para esta página
 import { useNavigate } from 'react-router-dom';
 
 const ClientDelete = () => {

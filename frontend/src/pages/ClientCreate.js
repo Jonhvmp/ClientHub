@@ -2,15 +2,15 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import useClientCreate from '../hooks/useClientCreate';
-import '../assets/css/ClientCreate.css';
+import useClientCreate from '../hooks/useClientCreate/useClientCreate';
+import '../assets/css/ClientCreate/ClientCreate.css';
 import { useNavigate } from 'react-router-dom';
-import FormHeader from '../components/FormHeader';
-import ClientForm from '../components/ClientForm';
-import AddressForm from '../components/AddressForm';
-import CustomFields from '../components/CustomFields';
-import FormButtons from '../components/FormButtons';
-import SubscriptionFields from '../components/SubscriptionFields';
+import FormHeader from '../components/FormHeader/FormHeader';
+import ClientForm from '../components/ClientForm/ClientForm';
+import AddressForm from '../components/AddressForm/AddressForm';
+import CustomFields from '../components/CustomFields/CustomFields';
+import FormButtons from '../components/FormButtons/FormButtons';
+import SubscriptionFields from '../components/SubscriptionFields/SubscriptionFields';
 
 const ClientCreate = () => {
   const navigate = useNavigate();
@@ -40,6 +40,7 @@ const ClientCreate = () => {
       <motion.div className='subscriptDiv'>
         <SubscriptionFields formData={formData} handleInputChange={handleInputChange} />
       </motion.div>
+
       <FormButtons handleSubmit={handleSubmit} loading={loading} navigate={navigate} />
     </div>
   );

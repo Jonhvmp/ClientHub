@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api'; // Serviço Axios configurado
-import '../assets/css/UserProfile.css'; // Estilização específica para esta página
+import '../assets/css/UserProfile/UserProfile.css'; // Estilização específica para esta página
 
 const UserProfile = () => {
   const [user, setUser] = useState({

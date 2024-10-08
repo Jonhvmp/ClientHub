@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import api from '../services/api'; // Serviço Axios configurado
+import api from '../../services/api'; // Serviço Axios configurado
 
 const useClientSearch = () => {
   const [query, setQuery] = useState(''); // Armazena a string de busca

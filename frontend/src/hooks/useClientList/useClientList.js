@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import api from '../services/api'; // Serviço Axios configurado
+import api from '../../services/api'; // Serviço Axios configurado
 
 const useClientList = () => {
   const [clients, setClients] = useState([]);

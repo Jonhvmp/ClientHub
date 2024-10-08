@@ -1,6 +1,6 @@
-/* Register.css */
+/* Login.css */
 
-@import './global.css';
+@import '../global.css';
 
 .container {
   max-width: 400px;
@@ -40,11 +40,11 @@ input {
   justify-content: space-between;
 }
 
-.btn-register {
+.btn-login {
   background-color: green;
 }
 
-.btn-register:hover {
+.btn-login:hover {
   background-color: darkgreen;
 }
 

@@ -1,6 +1,6 @@
 /* ClientList.css */
 
-@import './global.css';
+@import '../global.css';
 
 .loading {
   color: #007bff;

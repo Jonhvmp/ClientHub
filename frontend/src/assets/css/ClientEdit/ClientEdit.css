@@ -1,6 +1,6 @@
 /* ClientEdit.css */
 
-@import './global.css';
+@import '../global.css';
 
 .client-edit-container {
   width: 100%;

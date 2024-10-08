@@ -1,6 +1,6 @@
 /* UserProfile.css */
 
-@import './global.css';
+@import '../global.css';
 
 .user-profile-container {
   width: 100%;

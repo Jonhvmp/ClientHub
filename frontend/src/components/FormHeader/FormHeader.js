@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import Alert from './Alert';
+import Alert from '../Alert/Alert';
 
 const FormHeader = ({ title, error }) => {
   return (
