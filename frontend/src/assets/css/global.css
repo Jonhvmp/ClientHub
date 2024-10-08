@@ -1,151 +1,76 @@
-/* global.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* Custom Styles */
+@layer base {
+  body {
+    @apply font-sans bg-gray-100 text-gray-800;
+    line-height: 1.6;
+  }
 
+  h1, h2 {
+    @apply text-gray-800 mb-4;
+  }
 
-:root {
-  --primary-color: #4a90e2;
-  --primary-color-hover: #357ab8;
-  --secondary-color: #50e3c2;
-  --secondary-color-hover: #3bc1a5;
-  --success-color: #28a745;
-  --success-color-hover: #218838;
-  --danger-color: #dc3545;
-  --danger-color-hover: #c82333;
-  --warning-color: #f5a623;
-  --warning-color-hover: #d48806;
-  --text-color: #333;
-  --secondary-text-color: #666;
-  --background-color: #f9f9f9;
-  --border-radius: 8px;
-  --transition-speed: 0.3s;
-  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  .container {
+    @apply max-w-screen-xl mx-auto p-8;
+  }
+
+  a {
+    @apply text-blue-600 no-underline;
+  }
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer components {
+  .btn {
+    @apply inline-block px-6 py-3 rounded-lg text-white font-bold cursor-pointer transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300;
+  }
+
+  .btn-secondary {
+    @apply bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300;
+  }
+
+  .form-container {
+    @apply flex flex-col gap-4 bg-white p-8 rounded-lg shadow-lg;
+  }
+
+  .form-container input,
+  .form-container select {
+    @apply p-3 border border-gray-300 rounded-lg text-base;
+  }
+
+  .metric-box {
+    @apply p-6 rounded-lg shadow-md text-white transition-transform duration-300;
+  }
 }
 
-body {
-  font-family: var(--font-family);
-  background-color: var(--background-color);
-  color: var(--text-color);
-  line-height: 1.6;
-}
+@layer utilities {
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
 
-h1, h2 {
-  color: var(--text-color);
-  margin-bottom: 10px;
-}
+  .table-header {
+    @apply bg-gray-800 text-white text-left;
+  }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
+  .table-cell {
+    @apply p-4 border-b border-gray-200;
+  }
 
-button, input, select {
-  font-family: var(--font-family);
-}
+  .metric-text {
+    @apply text-xl font-semibold mb-2;
+  }
 
-button, .btn {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: var(--border-radius);
-  text-decoration: none;
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  transition: background-color var(--transition-speed), transform var(--transition-speed);
-}
-
-button:hover, .btn:hover {
-  transform: translateY(-2px);
-}
-
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-/* Classes de botão reutilizáveis */
-.btn-primary {
-  background-color: var(--primary-color);
-}
-
-.btn-primary:hover {
-  background-color: var(--primary-color-hover);
-}
-
-.btn-secondary {
-  background-color: var(--secondary-color);
-}
-
-.btn-secondary:hover {
-  background-color: var(--secondary-color-hover);
-}
-
-.btn-success {
-  background-color: var(--success-color);
-}
-
-.btn-success:hover {
-  background-color: var(--success-color-hover);
-}
-
-.btn-warning {
-  background-color: var(--warning-color);
-}
-
-.btn-warning:hover {
-  background-color: var(--warning-color-hover);
-}
-
-.btn-danger {
-  background-color: var(--danger-color);
-}
-
-.btn-danger:hover {
-  background-color: var(--danger-color-hover);
-}
-
-/* Estilos para formulários */
-.form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  background-color: #fff;
-  padding: 25px;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-}
-
-.form-container input,
-.form-container select {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-}
-
-.form-container button {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: var(--border-radius);
-  background-color: var(--primary-color);
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  transition: background-color var(--transition-speed), transform var(--transition-speed);
-  width: auto;
-  align-self: flex-end;
-}
-
-.form-container button:hover {
-  background-color: var(--primary-color-hover);
-  transform: translateY(-2px);
+  .metric-value {
+    @apply text-3xl font-bold;
+  }
 }

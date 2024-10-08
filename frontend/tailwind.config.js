@@ -1,11 +1,11 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}", // Indica onde o Tailwind deve procurar os arquivos que usam as classes
+    './src/**/*.{html,js,jsx,ts,tsx}', // Certifique-se de incluir todos os arquivos onde Tailwind será usado
+    './src/assets/css/global.css', // Inclua o arquivo global.css
   ],
   theme: {
     extend: {},
   },
   plugins: [],
 };
-
