@@ -1,7 +1,9 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import useClientList from '../hooks/useClientList';
 import '../assets/css/ClientList.css';
+import ClientsTable from '../components/ClientsTable';
 
 const ClientList = () => {
   const {
@@ -17,6 +19,7 @@ const ClientList = () => {
     handleDeleteClient,
   } = useClientList();
   const navigate = useNavigate();
+  const deleteLoading = false;
 
   const handleAddClient = () => {
     navigate('/clients/create');
@@ -32,8 +35,31 @@ const ClientList = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Configuração da animação avançada do título
+  const titleVariants = {
+    hidden: { opacity: 0, y: -50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: 'spring', stiffness: 80, damping: 10, duration: 0.8 },
+    },
+  };
+
   if (loading) {
-    return <div className="loading">Carregando...</div>;
+    return <motion.div
+      className="loading"
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+    >
+
+      <motion.h1 className="text-5xl font-bold mb-8 text-center loading"
+        variants={titleVariants}
+      >
+        Carregando...
+      </motion.h1>
+
+    </motion.div>;
   }
 
   if (error) {
@@ -41,10 +67,20 @@ const ClientList = () => {
   }
 
   return (
-    <div className="client-list-container">
-      <h1>Clientes</h1>
+    <motion.div className="client-list-container"
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+    >
 
-      <div className="actions">
+      <motion.h1
+        className="text-5xl font-bold mb-8 text-center"
+        variants={titleVariants}
+      >
+        Clientes
+      </motion.h1>
+
+      <motion.div className="actions">
         <button className="btn-primary" onClick={handleAddClient}>
           Adicionar Cliente
         </button>
@@ -54,7 +90,7 @@ const ClientList = () => {
         <button className="btn-secondary" onClick={() => navigate('/dashboard')}>
           Voltar ao Dashboard
         </button>
-      </div>
+      </motion.div>
 
       {/* <div className="search-bar">
         <input
@@ -70,33 +106,8 @@ const ClientList = () => {
         <p>Nenhum cliente encontrado.</p>
       ) : (
         <>
-          <table className="clients-table">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {clients.map((client) => (
-                <tr key={client._id}>
-                  <td>{client.name}</td>
-                  <td>{client.email}</td>
-                  <td>{client.subscriptionStatus}</td>
-                  <td>
-                    <button className="btn-edit" onClick={() => handleEditClient(client._id)}>
-                      Editar
-                    </button>
-                    <button className="btn-delete" onClick={() => handleDeleteClient(client._id)}>
-                      Excluir
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {/* Tabela de Clientes */}
+          <ClientsTable clients={clients} handleEditClient={handleEditClient} handleDeleteClient={handleDeleteClient} deleteLoading={deleteLoading} />
 
           <Pagination
             clientsPerPage={clientsPerPage}
@@ -106,7 +117,7 @@ const ClientList = () => {
           />
         </>
       )}
-    </div>
+    </motion.div>
   );
 };
 
