@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import useClientSearch from '../hooks/useClientSearch/useClientSearch';
-import '../assets/css/ClientSearch/ClientSearch.css'; // Estilização específica para esta página
+import useClientSearch from '../../hooks/useClientSearch/useClientSearch';
+import '../../assets/css/ClientSearch/ClientSearch.css'; // Estilização específica para esta página
 
 const ClientSearch = () => {
   const { query, clients, loading, error, handleSearchChange } = useClientSearch();

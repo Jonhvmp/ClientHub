@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import api from '../services/api';
+import api from '../../services/api';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import useDashboard from '../hooks/useDashboard/useDashboard';
-import StatsCard from '../components/StatsCard/StatsCard';
-import ClientsTable from '../components/ClientsTable/ClientsTable';
-import RecentActivities from '../components/RecentActivities/RecentActivities';
-import '../assets/css/Dashboard/Dashboard.css';
+import useDashboard from '../../hooks/useDashboard/useDashboard';
+import StatsCard from '../../components/StatsCard/StatsCard';
+import ClientsTable from '../../components/ClientsTable/ClientsTable';
+import RecentActivities from '../../components/RecentActivities/RecentActivities';
+import '../../assets/css/Dashboard/Dashboard.css';
 
 const Dashboard = () => {
   const { clients, fetchClients, loading, error, metrics } = useDashboard();

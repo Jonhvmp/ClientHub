@@ -1,16 +1,16 @@
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './assets/css/global.css';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import ClientList from './pages/ClientList';
-import ClientCreate from './pages/ClientCreate';
-import ClientEdit from './pages/ClientEdit';
-import ClientDetails from './pages/ClientDetails'; // Alterado
-import ClientDelete from './pages/ClientDelete';
-import ClientSearch from './pages/ClientSearch';
-import UserProfile from './pages/UserProfile'; // Alterado
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
+import Dashboard from './pages/Dashboard/Dashboard';
+import ClientList from './pages/ClientList/ClientList';
+import ClientCreate from './pages/ClientCreate/ClientCreate';
+import ClientEdit from './pages/ClientEdit/ClientEdit';
+import ClientDetails from './pages/ClientDetails/ClientDetails'; // Alterado
+import ClientDelete from './pages/ClientDelete/ClientDelete';
+import ClientSearch from './pages/ClientSearch/ClientSearch';
+import UserProfile from './pages/UserProfile/UserProfile'; // Alterado
 import PrivateRoute from './utils/PrivateRoute';
 
 function App() {

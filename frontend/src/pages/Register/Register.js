@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
-import '../assets/css/Register/Register.css';
+import api from '../../services/api';
+import '../../assets/css/Register/Register.css';
 
 function Register() {
   const [form, setForm] = useState({

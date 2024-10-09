@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import useClientEdit from '../hooks/useClientEdit/useClientEdit';
-import '../assets/css/ClientEdit/ClientEdit.css'; // Arquivo CSS para estilização
+import useClientEdit from '../../hooks/useClientEdit/useClientEdit';
+import '../../assets/css/ClientEdit/ClientEdit.css'; // Arquivo CSS para estilização
 
 const ClientEdit = () => {
   const { id } = useParams(); // Captura o ID do cliente da URL

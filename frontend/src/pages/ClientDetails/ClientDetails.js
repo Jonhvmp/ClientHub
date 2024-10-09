@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import useClientDetails from '../hooks/useClientDetails/useClientDetails';
-import '../assets/css/ClientDetails/ClientDetails.css'; // Estilização específica para esta página
+import useClientDetails from '../../hooks/useClientDetails/useClientDetails';
+import '../../assets/css/ClientDetails/ClientDetails.css'; // Estilização específica para esta página
 import { useNavigate } from 'react-router-dom';
 
 const ClientDetails = () => {
