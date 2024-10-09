@@ -7,11 +7,14 @@ import StatsCard from '../../components/StatsCard/StatsCard';
 import ClientsTable from '../../components/ClientsTable/ClientsTable';
 import RecentActivities from '../../components/RecentActivities/RecentActivities';
 import '../../assets/css/Dashboard/Dashboard.css';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 
 const Dashboard = () => {
   const { clients, fetchClients, loading, error, metrics } = useDashboard();
   const navigate = useNavigate();
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [clientToDelete, setClientToDelete] = useState(null);
 
   const handleAddClient = () => {
     navigate('/clients/create');
@@ -21,34 +24,43 @@ const Dashboard = () => {
     navigate(`/clients/${id}/edit`);
   };
 
-  const handleDeleteClient = async (id) => {
-    if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
-      try {
-        setDeleteLoading(true);
-        const token = localStorage.getItem('token');
-        if (!token) {
-          throw new Error('Token não encontrado, faça login novamente.');
-        }
+  const handleOpenDeleteDialog = (id) => {
+    setClientToDelete(id);
+    setOpenDialog(true);
+  };
 
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
+  const handleCloseDeleteDialog = () => {
+    setOpenDialog(false);
+    setClientToDelete(null);
+  };
 
-        const response = await api.delete(`/api/clients/${id}`, config);
-
-        if (response.status !== 200) {
-          throw new Error('Erro ao excluir o cliente.');
-        }
-
-        alert('Cliente excluído com sucesso.');
-        fetchClients();
-      } catch (err) {
-        alert('Erro ao excluir o cliente. Tente novamente mais tarde.');
-      } finally {
-        setDeleteLoading(false);
+  const handleDeleteClient = async () => {
+    try {
+      setDeleteLoading(true);
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token não encontrado, faça login novamente.');
       }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await api.delete(`/api/clients/${clientToDelete}`, config);
+
+      if (response.status !== 200) {
+        throw new Error('Erro ao excluir o cliente.');
+      }
+
+      alert('Cliente excluído com sucesso.');
+      fetchClients();
+    } catch (err) {
+      alert('Erro ao excluir o cliente. Tente novamente mais tarde.');
+    } finally {
+      setDeleteLoading(false);
+      handleCloseDeleteDialog();
     }
   };
 
@@ -113,10 +125,33 @@ const Dashboard = () => {
       </div>
 
       {/* Tabela de Clientes */}
-      <ClientsTable clients={clients} handleEditClient={handleEditClient} handleDeleteClient={handleDeleteClient} deleteLoading={deleteLoading} />
+      <ClientsTable clients={clients} handleEditClient={handleEditClient} handleDeleteClient={handleOpenDeleteDialog} deleteLoading={deleteLoading} />
 
       {/* Histórico de Atividades Recentes */}
       <RecentActivities clients={clients} />
+
+      {/* Modal de confirmação de exclusão */}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirmar Exclusão"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Tem certeza que deseja excluir este cliente? Esta ação não poderá ser desfeita.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog} color="primary" className='btn-del-exit'>
+            Cancelar
+          </Button>
+          <Button onClick={handleDeleteClient} color="secondary" autoFocus disabled={deleteLoading}>
+            {deleteLoading ? 'Excluindo...' : 'Confirmar Exclusão'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </motion.div>
   );
 };
