@@ -10,6 +10,11 @@ form {
   @apply w-full max-w-md bg-white text-gray-800 p-8 rounded-lg shadow-lg mb-6;
 }
 
+/* Estilização do título */
+h1 {
+  @apply text-red-800;
+}
+
 .form-group label {
   @apply block text-sm font-medium mb-2;
 }
