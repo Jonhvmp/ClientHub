@@ -38,12 +38,14 @@ const useDashboard = () => {
       const activeClients = data.filter(client => client.status === 'ativo').length;
       const inactiveClients = data.filter(client => client.status === 'inativo').length;
       const pendingClients = data.filter(client => client.status === 'pendente').length;
+      const canceledClients = data.filter(client => client.status === 'cancelado').length;
       const lastAdded = data.length > 0 ? data[data.length - 1].name : 'Nenhum cliente';
 
       setMetrics({
         activeClients,
         inactiveClients,
         pendingClients,
+        canceledClients,
         totalClients: data.length,
         lastAdded,
       });

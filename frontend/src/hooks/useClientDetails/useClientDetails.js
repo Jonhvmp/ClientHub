@@ -6,6 +6,8 @@ const useClientDetails = (id) => {
   const [client, setClient] = useState(null); // Armazena os dados do cliente
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false); // Controle do modal de confirmação
   const navigate = useNavigate();
 
   // Função para buscar os dados do cliente
@@ -25,16 +27,28 @@ const useClientDetails = (id) => {
     fetchClientData();
   }, [fetchClientData]);
 
+  // Função para abrir o modal de confirmação de exclusão
+  const handleOpenDeleteDialog = () => {
+    setOpenDialog(true);
+  };
+
+  // Função para fechar o modal de confirmação de exclusão
+  const handleCloseDeleteDialog = () => {
+    setOpenDialog(false);
+  };
+
   // Função para deletar o cliente
   const handleDeleteClient = async () => {
-    if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
-      try {
-        await api.delete(`/api/clients/${id}`);
-        navigate('/clients'); // Redireciona para a lista de clientes após a exclusão
-      } catch (err) {
-        console.error('Erro ao excluir cliente:', err);
-        setError('Erro ao excluir o cliente. Tente novamente.');
-      }
+    try {
+      setDeleteLoading(true);
+      await api.delete(`/api/clients/${id}`);
+      navigate('/clients'); // Redireciona para a lista de clientes após a exclusão
+    } catch (err) {
+      console.error('Erro ao excluir cliente:', err);
+      setError('Erro ao excluir o cliente. Tente novamente.');
+    } finally {
+      setDeleteLoading(false);
+      setOpenDialog(false);
     }
   };
 
@@ -43,6 +57,10 @@ const useClientDetails = (id) => {
     loading,
     error,
     handleDeleteClient,
+    openDialog,
+    handleOpenDeleteDialog,
+    handleCloseDeleteDialog,
+    deleteLoading,
   };
 };
 
