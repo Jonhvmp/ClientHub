@@ -1,8 +1,17 @@
+// Arquivo: ClientDetails.js
+
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import useClientDetails from '../../hooks/useClientDetails/useClientDetails';
-import '../../assets/css/ClientDetails/ClientDetails.css'; // Estilização específica para esta página
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import useClientDetails from '../../hooks/useClientDetails/useClientDetails';
+import SubscriptionFields from '../../components/SubscriptionFields/SubscriptionFields';
+import ConfirmDelete from '../../components/ConfirmDelete/ConfirmDelete';
+import ClientInfo from '../../components/ClientInfo/ClientInfo';
+import ClientAddress from '../../components/ClientAddress/ClientAddress';
+import ClientCustomFields from '../../components/ClientCustomFields/ClientCustomFields';
+import ClientDocuments from '../../components/ClientDocuments/ClientDocuments';
+import '../../assets/css/ClientDetails/ClientDetails.css'; // Estilização específica para esta página
 
 const ClientDetails = () => {
   const navigate = useNavigate();
@@ -19,74 +28,47 @@ const ClientDetails = () => {
   }
 
   return (
-    <div className="client-details-container">
-      <h1>Detalhes do Cliente</h1>
+    <motion.div
+      className="client-details-container p-8 bg-gradient-to-b from-gray-900 to-gray-800 text-white min-h-screen"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      <h1 className="text-5xl font-bold mb-8 text-center">Detalhes do Cliente</h1>
 
       {client ? (
         <>
-          <div className="client-info">
-            <h2>{client.name}</h2>
-            <p><strong>Email:</strong> {client.email}</p>
-            <p><strong>Telefone:</strong> {client.phone}</p>
-            <p><strong>Empresa:</strong> {client.company || 'Não especificado'}</p>
-            <p><strong>Tags:</strong> {client.tags || 'Nenhuma'}</p>
+          <ClientInfo client={client} />
 
-            {/* Informações de Assinatura */}
-            <h3>Assinatura</h3>
-            <p><strong>Tipo:</strong> {client.subscriptionType}</p>
-            <p><strong>Status:</strong> {client.subscriptionStatus}</p>
+          {/* Informações de Assinatura */}
+          <h3 className="text-2xl font-semibold mt-6 mb-2">Assinatura</h3>
+          <SubscriptionFields formData={client} handleInputChange={() => {}} />
 
-            {/* Endereço */}
-            <h3>Endereço</h3>
-            <p>{client.address.street}, {client.address.city}</p>
-            <p>{client.address.state}, {client.address.zipCode}</p>
-            <p>{client.address.country}</p>
+          {/* Endereço */}
+          <ClientAddress address={client.address} />
 
-            {/* Campos Personalizados */}
-            <h3>Campos Personalizados</h3>
-            {client.customFields.length > 0 ? (
-              <ul>
-                {client.customFields.map((field, index) => (
-                  <li key={index}>
-                    <strong>{field.fieldName}:</strong> {field.fieldValue}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Nenhum campo personalizado adicionado.</p>
-            )}
+          {/* Campos Personalizados */}
+          <ClientCustomFields customFields={client.customFields} />
 
-            {/* Documentos Relacionados */}
-            <h3>Documentos Relacionados</h3>
-            {client.documents && client.documents.length > 0 ? (
-              <ul>
-                {client.documents.map((doc, index) => (
-                  <li key={index}>
-                    <a href={doc.url} target="_blank" rel="noopener noreferrer">
-                      {doc.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Nenhum documento relacionado.</p>
-            )}
+          {/* Documentos Relacionados */}
+          <ClientDocuments documents={client.documents} />
 
-            {/* Ações de Edição e Exclusão */}
-            <div className="actions">
-              <button className="btn-edit" onClick={() => navigate(`/clients/${id}/edit`)}>
-                Editar Cliente
-              </button>
-              <button className="btn-delete" onClick={handleDeleteClient}>
-                Excluir Cliente
-              </button>
-            </div>
+          {/* Ações de Edição e Exclusão */}
+        <div className="flex gap-4 mb-8">
+          <motion.button
+            className="bg-blue-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105"
+            whileHover={{ scale: 1.1 }}
+            onClick={() => navigate(`/clients/${id}/edit`)}
+          >
+            Adicionar Cliente
+          </motion.button>
+            <ConfirmDelete handleDelete={handleDeleteClient} itemName={client.name} />
           </div>
         </>
       ) : (
         <p>Cliente não encontrado.</p>
       )}
-    </div>
+    </motion.div>
   );
 };
 

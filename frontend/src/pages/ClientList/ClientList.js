@@ -10,8 +10,6 @@ const ClientList = () => {
     clients,
     loading,
     error,
-    // query,
-    // setQuery,
     currentPage,
     clientsPerPage,
     totalClients,
@@ -28,10 +26,6 @@ const ClientList = () => {
   const handleEditClient = (id) => {
     navigate(`/clients/${id}/edit`);
   };
-
-  // const handleSearch = (event) => {
-  //   setQuery(event.target.value);
-  // };
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -91,16 +85,6 @@ const ClientList = () => {
           Voltar ao Dashboard
         </button>
       </motion.div>
-
-      {/* <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Buscar por nome ou email"
-          value={query}
-          onChange={handleSearch}
-          className="search-input"
-        />
-      </div> */}
 
       {clients.length === 0 ? (
         <p>Nenhum cliente encontrado.</p>
