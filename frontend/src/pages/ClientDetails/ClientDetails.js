@@ -76,6 +76,15 @@ const ClientDetails = () => {
             >
               Excluir Cliente
             </motion.button>
+
+            {/* Botão de Voltar */}
+            <motion.button
+              className="bg-gray-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-gray-700 transition-transform transform hover:scale-105"
+              whileHover={{ scale: 1.1 }}
+              onClick={() => navigate('/dashboard')}
+            >
+              Ir para o Dashboard
+            </motion.button>
           </div>
 
           {/* Modal de confirmação de exclusão */}

@@ -2,8 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import useClientList from '../../hooks/useClientList/useClientList';
-import '../../assets/css/ClientList/ClientList.css';
 import ClientsTable from '../../components/ClientsTable/ClientsTable';
+import '../../assets/css/ClientList/ClientList.css';
 
 const ClientList = () => {
   const {
@@ -40,33 +40,31 @@ const ClientList = () => {
   };
 
   if (loading) {
-    return <motion.div
-      className="loading"
-      initial="hidden"
-      animate="visible"
-      exit="hidden"
-    >
-
-      <motion.h1 className="text-5xl font-bold mb-8 text-center loading"
-        variants={titleVariants}
+    return (
+      <motion.div
+        className="flex justify-center items-center min-h-screen text-white text-3xl"
+        initial="hidden"
+        animate="visible"
+        exit="hidden"
       >
-        Carregando...
-      </motion.h1>
-
-    </motion.div>;
+        <motion.h1 className="text-5xl font-bold mb-8" variants={titleVariants}>
+          Carregando...
+        </motion.h1>
+      </motion.div>
+    );
   }
 
   if (error) {
-    return <div className="error-message">{error}</div>;
+    return <div className="text-red-500 text-xl text-center mt-8">{error}</div>;
   }
 
   return (
-    <motion.div className="client-list-container"
+    <motion.div
+      className="client-list-container bg-gradient-to-b from-gray-900 to-gray-800 text-white min-h-screen p-8"
       initial="hidden"
       animate="visible"
       exit="hidden"
     >
-
       <motion.h1
         className="text-5xl font-bold mb-8 text-center"
         variants={titleVariants}
@@ -74,24 +72,43 @@ const ClientList = () => {
         Clientes
       </motion.h1>
 
-      <motion.div className="actions">
-        <button className="btn-primary" onClick={handleAddClient}>
+      <motion.div className="actions flex gap-4 mb-8 justify-center">
+        <motion.button
+          className="bg-green-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-green-800 transition-transform transform hover:scale-105 "
+          whileHover={{ scale: 1.1 }}
+          onClick={handleAddClient}
+        >
           Adicionar Cliente
-        </button>
-        <button className="btn-secondary" onClick={() => navigate('/clients/search')}>
-        Pesquisar Clientes
-        </button>
-        <button className="btn-secondary" onClick={() => navigate('/dashboard')}>
+        </motion.button>
+
+        <motion.button
+          className="bg-gray-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-gray-700 transition-transform transform hover:scale-105"
+          whileHover={{ scale: 1.1 }}
+          onClick={() => navigate('/clients/search')}
+        >
+          Pesquisar Clientes
+        </motion.button>
+
+        <motion.button
+          className="bg-indigo-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-105"
+          whileHover={{ scale: 1.1 }}
+          onClick={() => navigate('/dashboard')}
+        >
           Voltar ao Dashboard
-        </button>
+        </motion.button>
       </motion.div>
 
       {clients.length === 0 ? (
-        <p>Nenhum cliente encontrado.</p>
+        <p className="text-center text-xl mt-8">Nenhum cliente encontrado.</p>
       ) : (
         <>
           {/* Tabela de Clientes */}
-          <ClientsTable clients={clients} handleEditClient={handleEditClient} handleDeleteClient={handleDeleteClient} deleteLoading={deleteLoading} />
+          <ClientsTable
+            clients={clients}
+            handleEditClient={handleEditClient}
+            handleDeleteClient={handleDeleteClient}
+            deleteLoading={deleteLoading}
+          />
 
           <Pagination
             clientsPerPage={clientsPerPage}
@@ -114,11 +131,18 @@ const Pagination = ({ clientsPerPage, totalClients, paginate, currentPage }) => 
   }
 
   return (
-    <div className="pagination">
-      <ul>
+    <div className="pagination flex justify-center mt-8">
+      <ul className="flex gap-2">
         {pageNumbers.map((number) => (
-          <li key={number} className={currentPage === number ? 'active' : ''}>
-            <button onClick={() => paginate(number)}>{number}</button>
+          <li key={number} className={`${currentPage === number ? 'active' : ''}`}>
+            <button
+              onClick={() => paginate(number)}
+              className={`${
+                currentPage === number ? 'bg-blue-600' : 'bg-gray-600'
+              } text-white py-2 px-4 rounded-lg transition hover:bg-blue-700`}
+            >
+              {number}
+            </button>
           </li>
         ))}
       </ul>

@@ -56,11 +56,3 @@
 .recent-activity-card {
   @apply p-4 mb-4 bg-white rounded-lg shadow-md hover:bg-gray-50 transition-colors;
 }
-
-.p-6 {
-  cursor: not-allowed;
-  user-select: none; /* Prevent text selection */
-  -webkit-user-select: none; /* For Safari */
-  -moz-user-select: none; /* For Firefox */
-  -ms-user-select: none; /* For Internet Explorer/Edge */
-}
