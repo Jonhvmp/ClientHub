@@ -6,8 +6,8 @@ import useDashboard from '../../hooks/useDashboard/useDashboard';
 import StatsCard from '../../components/StatsCard/StatsCard';
 import ClientsTable from '../../components/ClientsTable/ClientsTable';
 import RecentActivities from '../../components/RecentActivities/RecentActivities';
+import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog/DeleteConfirmationDialog';
 import '../../assets/css/Dashboard/Dashboard.css';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 
 const Dashboard = () => {
   const { clients, fetchClients, loading, error, metrics } = useDashboard();
@@ -101,6 +101,7 @@ const Dashboard = () => {
         <StatsCard title="Clientes Ativos" value={metrics.activeClients} gradient="bg-gradient-to-r from-green-400 to-green-600" />
         <StatsCard title="Clientes Inativos" value={metrics.inactiveClients} gradient="bg-gradient-to-r from-red-400 to-red-600" />
         <StatsCard title="Clientes Pendentes" value={metrics.pendingClients} gradient="bg-gradient-to-r from-yellow-400 to-yellow-600" />
+        <StatsCard title="Clientes Cancelados" value={metrics.canceledClients} gradient="bg-gradient-to-r from-red-800 to-red-900" />
         <StatsCard title="Total de Clientes" value={metrics.totalClients} gradient="bg-gradient-to-r from-blue-400 to-blue-600" />
         <StatsCard title="Último Cliente Adicionado" value={metrics.lastAdded} gradient="bg-gradient-to-r from-purple-400 to-purple-600" />
       </div>
@@ -131,27 +132,12 @@ const Dashboard = () => {
       <RecentActivities clients={clients} />
 
       {/* Modal de confirmação de exclusão */}
-      <Dialog
+      <DeleteConfirmationDialog
         open={openDialog}
         onClose={handleCloseDeleteDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Confirmar Exclusão"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Tem certeza que deseja excluir este cliente? Esta ação não poderá ser desfeita.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog} color="primary" className='btn-del-exit'>
-            Cancelar
-          </Button>
-          <Button onClick={handleDeleteClient} color="secondary" autoFocus disabled={deleteLoading}>
-            {deleteLoading ? 'Excluindo...' : 'Confirmar Exclusão'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onConfirm={handleDeleteClient}
+        deleteLoading={deleteLoading}
+      />
     </motion.div>
   );
 };

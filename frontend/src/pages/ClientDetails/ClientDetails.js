@@ -1,22 +1,29 @@
-// Arquivo: ClientDetails.js
-
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import useClientDetails from '../../hooks/useClientDetails/useClientDetails';
 import SubscriptionFields from '../../components/SubscriptionFields/SubscriptionFields';
-import ConfirmDelete from '../../components/ConfirmDelete/ConfirmDelete';
 import ClientInfo from '../../components/ClientInfo/ClientInfo';
 import ClientAddress from '../../components/ClientAddress/ClientAddress';
 import ClientCustomFields from '../../components/ClientCustomFields/ClientCustomFields';
 import ClientDocuments from '../../components/ClientDocuments/ClientDocuments';
+import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog/DeleteConfirmationDialog.js';
 import '../../assets/css/ClientDetails/ClientDetails.css'; // Estilização específica para esta página
 
 const ClientDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams(); // Captura o ID do cliente da URL
-  const { client, loading, error, handleDeleteClient } = useClientDetails(id);
+  const { client, loading, error, handleDeleteClient, deleteLoading } = useClientDetails(id);
+
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleOpenDeleteDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDialog(false);
+  };
 
   // Exibir carregamento ou erro
   if (loading) {
@@ -54,16 +61,30 @@ const ClientDetails = () => {
           <ClientDocuments documents={client.documents} />
 
           {/* Ações de Edição e Exclusão */}
-        <div className="flex gap-4 mb-8">
-          <motion.button
-            className="bg-blue-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105"
-            whileHover={{ scale: 1.1 }}
-            onClick={() => navigate(`/clients/${id}/edit`)}
-          >
-            Adicionar Cliente
-          </motion.button>
-            <ConfirmDelete handleDelete={handleDeleteClient} itemName={client.name} />
+          <div className="flex gap-4 mb-8">
+            <motion.button
+              className="bg-blue-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105"
+              whileHover={{ scale: 1.1 }}
+              onClick={() => navigate(`/clients/${id}/edit`)}
+            >
+              Editar Cliente
+            </motion.button>
+            <motion.button
+              className="bg-red-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-red-700 transition-transform transform hover:scale-105"
+              whileHover={{ scale: 1.1 }}
+              onClick={handleOpenDeleteDialog}
+            >
+              Excluir Cliente
+            </motion.button>
           </div>
+
+          {/* Modal de confirmação de exclusão */}
+          <DeleteConfirmationDialog
+            open={openDialog}
+            onClose={handleCloseDeleteDialog}
+            onConfirm={handleDeleteClient}
+            deleteLoading={deleteLoading}
+          />
         </>
       ) : (
         <p>Cliente não encontrado.</p>
