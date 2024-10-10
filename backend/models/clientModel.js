@@ -37,7 +37,13 @@ const clientSchema = new mongoose.Schema({
     zipCode: String,
     country: String,
   },
-
+  // Múltiplos contatos associados
+  contacts: [{
+    name: String,
+    email: String,
+    phone: String,
+    role: String, // Ex: gerente, assistente, etc.
+  }],
   // Informações sobre a empresa (caso seja um cliente corporativo)
   company: {
     type: String,

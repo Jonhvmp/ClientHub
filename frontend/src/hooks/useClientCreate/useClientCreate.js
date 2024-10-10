@@ -18,6 +18,7 @@ const useClientCreate = () => {
     tags: '',
     subscriptionType: 'mensal',
     subscriptionStatus: 'ativo',
+    subscriptionDuration: 1, // Valor padrão (em meses)
     customFields: [],
   });
 

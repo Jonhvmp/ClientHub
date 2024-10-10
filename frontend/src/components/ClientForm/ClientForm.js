@@ -14,6 +14,7 @@ const ClientForm = ({ formData, handleInputChange }) => {
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
           required
+          placeholder='Ex: Jonh Alex'
         />
       </div>
       <div className="form-group mb-4">
@@ -25,6 +26,7 @@ const ClientForm = ({ formData, handleInputChange }) => {
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
           required
+          placeholder='Ex: username@gmail.com'
         />
       </div>
       <div className="form-group mb-4">
@@ -36,6 +38,7 @@ const ClientForm = ({ formData, handleInputChange }) => {
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
           required
+          placeholder='Ex: (99) 99999-9999'
         />
       </div>
       <div className="form-group mb-4">
@@ -46,6 +49,7 @@ const ClientForm = ({ formData, handleInputChange }) => {
           value={formData.company}
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
+          placeholder='Ex: ACME Inc.'
         />
       </div>
       <div className="form-group mb-4">
@@ -57,6 +61,7 @@ const ClientForm = ({ formData, handleInputChange }) => {
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
           placeholder="Ex: importante, lead, vip"
+          
         />
       </div>
     </form>

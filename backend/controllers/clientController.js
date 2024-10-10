@@ -132,6 +132,21 @@ exports.updateClient = asyncHandler(async (req, res) => {
   });
 });
 
+// Excluir um cliente (apenas se ele pertencer ao usuário)
+exports.deleteClient = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const client = await Client.findOneAndDelete({ _id: req.params.id, userId });
+
+  if (!client) {
+    return res.status(404).json({ success: false, message: 'Cliente não encontrado' });
+  }
+
+  res.status(200).json({
+    success: true,
+    message: 'Cliente excluído com sucesso',
+  });
+});
+
 // Buscar clientes por nome, email ou tags (apenas dentro dos clientes do usuário autenticado)
 exports.searchClients = asyncHandler(async (req, res) => {
   const { query, page = 1, limit = 10 } = req.query;
