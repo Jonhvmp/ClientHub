@@ -1,24 +1,42 @@
 const Client = require('../models/clientModel');
 const asyncHandler = require('express-async-handler');
 
+// Função para calcular a data de término da assinatura com base na duração
+const calculateSubscriptionEndDate = (startDate, duration) => {
+  const endDate = new Date(startDate);
+  endDate.setMonth(endDate.getMonth() + duration);
+  return endDate;
+};
+
 // Criar um novo cliente
 exports.createClient = asyncHandler(async (req, res) => {
   try {
-    // console.log('Recebendo dados do cliente:', req.body); // Log para inspecionar os dados
-    const { name, email, phone, company, address, tags, subscriptionType, subscriptionStatus, customFields, status } = req.body;
+    const {
+      name,
+      email,
+      phone,
+      company,
+      address,
+      tags,
+      subscriptionType,
+      subscriptionStatus,
+      subscriptionDuration = 1, // Valor padrão para duração mensal
+      customFields,
+      status
+    } = req.body;
 
-    // Certifique-se de que todos os campos obrigatórios estão presentes
     if (!name || !email) {
       return res.status(400).json({ message: 'Nome e email são obrigatórios' });
     }
 
-    // Verifica se já existe um cliente com o mesmo email e userId
     const existingClient = await Client.findOne({ email, userId: req.user._id });
     if (existingClient) {
       return res.status(400).json({ message: 'Cliente com este email já existe para este usuário.' });
     }
 
-    // Cria o novo cliente se não existir duplicado
+    const subscriptionStartDate = new Date();
+    const subscriptionEndDate = calculateSubscriptionEndDate(subscriptionStartDate, subscriptionDuration);
+
     const client = await Client.create({
       name,
       email,
@@ -28,8 +46,11 @@ exports.createClient = asyncHandler(async (req, res) => {
       tags,
       subscriptionType,
       subscriptionStatus,
+      subscriptionDuration,
+      subscriptionStartDate,
+      subscriptionEndDate,
       customFields,
-      status, // Certifique-se de adicionar status aqui
+      status,
       userId: req.user._id
     });
 
@@ -37,7 +58,6 @@ exports.createClient = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error('Erro ao criar cliente:', error);
 
-    // Trata erros de chave duplicada
     if (error.code === 11000) {
       return res.status(400).json({ message: 'Cliente com este email já existe.' });
     }
@@ -45,7 +65,6 @@ exports.createClient = asyncHandler(async (req, res) => {
     res.status(500).json({ message: 'Erro ao criar cliente', error: error.message });
   }
 });
-
 
 // Obter todos os clientes do usuário autenticado
 exports.getClients = asyncHandler(async (req, res) => {
@@ -68,7 +87,6 @@ exports.getClients = asyncHandler(async (req, res) => {
     data: clients,
   });
 });
-
 
 // Obter um cliente específico associado ao usuário autenticado
 exports.getClient = asyncHandler(async (req, res) => {
@@ -94,6 +112,15 @@ exports.updateClient = asyncHandler(async (req, res) => {
     return res.status(404).json({ success: false, message: 'Cliente não encontrado' });
   }
 
+  const {
+    subscriptionDuration,
+    subscriptionStartDate = client.subscriptionStartDate,
+  } = req.body;
+
+  if (subscriptionDuration) {
+    req.body.subscriptionEndDate = calculateSubscriptionEndDate(subscriptionStartDate, subscriptionDuration);
+  }
+
   client = await Client.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -102,21 +129,6 @@ exports.updateClient = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     data: client,
-  });
-});
-
-// Excluir um cliente (apenas se ele pertencer ao usuário)
-exports.deleteClient = asyncHandler(async (req, res) => {
-  const userId = req.user._id;
-  const client = await Client.findOneAndDelete({ _id: req.params.id, userId });
-
-  if (!client) {
-    return res.status(404).json({ success: false, message: 'Cliente não encontrado' });
-  }
-
-  res.status(200).json({
-    success: true,
-    message: 'Cliente excluído com sucesso',
   });
 });
 

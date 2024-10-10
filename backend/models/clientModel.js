@@ -38,14 +38,6 @@ const clientSchema = new mongoose.Schema({
     country: String,
   },
 
-  // Múltiplos contatos associados
-  contacts: [{
-    name: String,
-    email: String,
-    phone: String,
-    role: String, // Ex: gerente, assistente, etc.
-  }],
-
   // Informações sobre a empresa (caso seja um cliente corporativo)
   company: {
     type: String,
@@ -54,9 +46,9 @@ const clientSchema = new mongoose.Schema({
 
   // Customização de campos dinâmicos por usuário
   customFields: [{
-    fieldName: String, // Nome do campo
-    fieldValue: String, // Valor do campo
-    fieldType: String,  // Ex: texto, número, data
+    fieldName: String,
+    fieldValue: String,
+    fieldType: String,
   }],
 
   // Histórico de atividades/interações com o cliente
@@ -65,8 +57,8 @@ const clientSchema = new mongoose.Schema({
       type: Date,
       default: Date.now,
     },
-    action: String, // Ex: "Envio de proposta", "Reunião agendada"
-    notes: String,  // Observações da atividade
+    action: String,
+    notes: String,
   }],
 
   // Tags para categorização do cliente
@@ -74,10 +66,10 @@ const clientSchema = new mongoose.Schema({
 
   // Tipos de serviços específicos prestados ao cliente
   services: [{
-    serviceType: String,  // Ex: "Consultoria", "Manutenção"
-    serviceDetails: String, // Detalhes do serviço prestado
-    startDate: Date,  // Data de início do serviço
-    endDate: Date,    // Data de término do serviço (se aplicável)
+    serviceType: String,
+    serviceDetails: String,
+    startDate: Date,
+    endDate: Date,
   }],
 
   // Status da relação com o cliente
@@ -87,14 +79,36 @@ const clientSchema = new mongoose.Schema({
     default: 'ativo',
   },
 
+  // Informações de assinatura
+  subscriptionType: {
+    type: String,
+    enum: ['mensal', 'trimestral', 'semestral', 'anual'],
+    default: 'mensal',
+  },
+  subscriptionDuration: {
+    type: Number, // Duração da assinatura em meses (ex: 1, 3, 6, 12)
+    default: 1,   // Valor padrão para assinatura mensal
+  },
+  subscriptionStartDate: {
+    type: Date,
+    default: Date.now,
+  },
+
   // Upload de arquivos/documentos associados ao cliente
   documents: [{
     documentName: String,
-    documentUrl: String, // URL do documento no sistema
+    documentUrl: String,
     uploadedAt: {
       type: Date,
       default: Date.now,
     },
+    history: [{
+      action: String,
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    }],
   }],
 
   // Associado ao usuário
