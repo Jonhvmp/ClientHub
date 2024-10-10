@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FloppyDisk, ArrowLeft, Plus } from 'phosphor-react';
 import useClientEdit from '../../hooks/useClientEdit/useClientEdit';
-import '../../assets/css/ClientEdit/ClientEdit.css'; // Arquivo CSS para estilização
+import dayjs from 'dayjs';
+import '../../assets/css/ClientEdit/ClientEdit.css';
 
 const ClientEdit = () => {
   const { id } = useParams();
@@ -18,7 +19,19 @@ const ClientEdit = () => {
     handleCustomFieldChange,
     addCustomField,
     handleSubmit,
+    expirationDate,
+    calculateExpirationDate,
   } = useClientEdit(id);
+
+  const [subscriptionType, setSubscriptionType] = useState(formData.subscriptionType || 'mensal');
+  const [subscriptionDuration, setSubscriptionDuration] = useState(formData.subscriptionDuration || 1);
+  const [subscriptionDurationUnit, setSubscriptionDurationUnit] = useState(formData.subscriptionDurationUnit || 'meses');
+
+  useEffect(() => {
+    if (subscriptionType === 'personalizado') {
+      calculateExpirationDate(subscriptionDuration, subscriptionDurationUnit);
+    }
+  }, [subscriptionType, subscriptionDuration, subscriptionDurationUnit, calculateExpirationDate]);
 
   if (loading) {
     return (
@@ -142,44 +155,71 @@ const ClientEdit = () => {
           <label className="block text-sm font-medium text-#111827 mb-2">Tipo de Assinatura</label>
           <select
             name="subscriptionType"
-            value={formData.subscriptionType}
-            onChange={handleInputChange}
+            value={subscriptionType}
+            onChange={(e) => setSubscriptionType(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           >
             <option value="mensal">Mensal</option>
-            <option value="trimestral">Trimestral</option>
-            <option value="semestral">Semestral</option>
-            <option value="anual">Anual</option>
+            <option value="personalizado">Personalizado</option>
           </select>
         </motion.div>
 
+        {subscriptionType === 'personalizado' && (
+          <motion.div
+            className="form-group"
+            initial={{ opacity: 0, translateZ: -50 }}
+            animate={{ opacity: 1, translateZ: 0 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+          >
+            <label className="block text-sm font-medium text-#111827 mb-2">Duração da Assinatura</label>
+            <div className="flex gap-4">
+              <input
+                type="number"
+                name="subscriptionDuration"
+                value={subscriptionDuration}
+                onChange={(e) => setSubscriptionDuration(e.target.value)}
+                className="w-1/2 p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              />
+              <select
+                name="subscriptionDurationUnit"
+                value={subscriptionDurationUnit}
+                onChange={(e) => setSubscriptionDurationUnit(e.target.value)}
+                className="w-1/2 p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              >
+                <option value="dias">Dias</option>
+                <option value="semanas">Semanas</option>
+                <option value="meses">Meses</option>
+                <option value="anos">Anos</option>
+              </select>
+            </div>
+          </motion.div>
+        )}
+
+        {expirationDate && (
+          <div className="mt-4 text-sm text-green-500">
+            Expira em: {dayjs(expirationDate).format('DD/MM/YYYY [às] HH:mm')}
+          </div>
+        )}
+
+        {/* Status do cliente */}
         <motion.div
           className="form-group"
           initial={{ opacity: 0, translateZ: -50 }}
           animate={{ opacity: 1, translateZ: 0 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <label className="block text-sm font-medium text-#111827 mb-2">Duração da Assinatura</label>
-          <div className="flex gap-4">
-            <input
-              type="number"
-              name="subscriptionDuration"
-              value={formData.subscriptionDuration}
-              onChange={handleInputChange}
-              className="w-1/2 p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            />
-            <select
-              name="subscriptionDurationUnit"
-              value={formData.subscriptionDurationUnit}
-              onChange={handleInputChange}
-              className="w-1/2 p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            >
-              <option value="dias">Dias</option>
-              <option value="semanas">Semanas</option>
-              <option value="meses">Meses</option>
-              <option value="anos">Anos</option>
-            </select>
-          </div>
+          <label className="block text-sm font-medium text-#111827 mb-2">Status do Cliente</label>
+          <select
+            name="status"
+            value={formData.status}
+            onChange={handleInputChange}
+            className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+          >
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+            <option value="pendente">Pendente</option>
+            <option value="cancelado">Cancelado</option>
+          </select>
         </motion.div>
 
         {/* Campos Personalizados */}
@@ -205,7 +245,6 @@ const ClientEdit = () => {
               placeholder="Valor do campo"
               value={customField.fieldValue}
               onChange={handleCustomFieldChange}
-              style={{ backdropFilter: 'blur(100px)', color: '#111827' }}
               className="w-1/2 p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             />
             <motion.button
@@ -225,7 +264,7 @@ const ClientEdit = () => {
           className="form-buttons flex gap-4 mt-8"
           initial={{ opacity: 0, translateZ: -50 }}
           animate={{ opacity: 1, translateZ: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
+          transition={{ delay: 0.9, duration: 0.8 }}
         >
           <motion.button
             type="submit"
