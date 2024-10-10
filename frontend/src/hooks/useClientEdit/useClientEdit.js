@@ -17,6 +17,8 @@ const useClientEdit = (id) => {
     },
     tags: '',
     subscriptionType: 'mensal',
+    subscriptionDuration: 1,
+    subscriptionDurationUnit: 'meses',
     subscriptionStatus: 'ativo',
     customFields: [],
   });
@@ -33,7 +35,7 @@ const useClientEdit = (id) => {
       setLoading(true);
       setError(null);
 
-      const response = await api.put(`/api/clients/${id}`);
+      const response = await api.get(`/api/clients/${id}`);
       setFormData(response.data.data);
       setLoading(false);
     } catch (err) {

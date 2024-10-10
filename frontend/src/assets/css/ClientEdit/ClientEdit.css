@@ -5,3 +5,9 @@
 .clint-edit-container {
   @apply flex flex-col items-center justify-center mt-12;
 }
+
+.custom-fields {
+  backdrop-filter: blur(1400px);
+  background-color: #111827ed;
+  color: white;
+}

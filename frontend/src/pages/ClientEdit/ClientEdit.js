@@ -1,11 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { FloppyDisk, ArrowLeft, Plus } from 'phosphor-react';
 import useClientEdit from '../../hooks/useClientEdit/useClientEdit';
 import '../../assets/css/ClientEdit/ClientEdit.css'; // Arquivo CSS para estilização
 
 const ClientEdit = () => {
-  const { id } = useParams(); // Captura o ID do cliente da URL
+  const { id } = useParams();
   const {
     formData,
     customField,
@@ -20,7 +21,16 @@ const ClientEdit = () => {
   } = useClientEdit(id);
 
   if (loading) {
-    return <div className="flex justify-center items-center min-h-screen text-white text-3xl">Carregando dados do cliente...</div>;
+    return (
+      <motion.div
+        className="flex justify-center items-center min-h-screen text-white text-3xl"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        Carregando dados do cliente...
+      </motion.div>
+    );
   }
 
   if (error) {
@@ -29,7 +39,7 @@ const ClientEdit = () => {
 
   return (
     <motion.div
-      className="client-edit-container bg-gradient-to-b from-gray-900 to-gray-800 text-white min-h-screen p-8 flex flex-col items-center justify-center"
+      className="client-edit-container bg-gradient-to-b from-gray-900 to-gray-800 text-black min-h-screen p-8 flex flex-col items-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -45,15 +55,15 @@ const ClientEdit = () => {
 
       {updateError && <div className="text-red-500 text-xl mb-4 text-center">{updateError}</div>}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-lg">
         {/* Informações básicas */}
         <motion.div
           className="form-group"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          initial={{ opacity: 0, translateZ: -50 }}
+          animate={{ opacity: 1, translateZ: 0 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
         >
-          <label className="block text-sm font-medium text-#111928 mb-2">Nome*</label>
+          <label className="block text-sm font-medium text-#111827 mb-2">Nome*</label>
           <input
             type="text"
             name="name"
@@ -66,11 +76,11 @@ const ClientEdit = () => {
 
         <motion.div
           className="form-group"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          initial={{ opacity: 0, translateZ: -50 }}
+          animate={{ opacity: 1, translateZ: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <label className="block text-sm font-medium text-#111928 mb-2">Email*</label>
+          <label className="block text-sm font-medium text-#111827 mb-2">Email*</label>
           <input
             type="email"
             name="email"
@@ -83,11 +93,11 @@ const ClientEdit = () => {
 
         <motion.div
           className="form-group"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
+          initial={{ opacity: 0, translateZ: -50 }}
+          animate={{ opacity: 1, translateZ: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
         >
-          <label className="block text-sm font-medium text-#111928 mb-2">Telefone*</label>
+          <label className="block text-sm font-medium text-#111827 mb-2">Telefone*</label>
           <input
             type="text"
             name="phone"
@@ -98,108 +108,38 @@ const ClientEdit = () => {
           />
         </motion.div>
 
-        {/* Informações adicionais */}
-        <motion.div
-          className="form-group"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          <label className="block text-sm font-medium text-#111928 mb-2">Empresa</label>
-          <input
-            type="text"
-            name="company"
-            value={formData.company}
-            onChange={handleInputChange}
-            className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-          />
-        </motion.div>
-
-        <motion.div
-          className="form-group"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-        >
-          <label className="block text-sm font-medium text-#111928 mb-2">Tags (separadas por vírgula)</label>
-          <input
-            type="text"
-            name="tags"
-            value={formData.tags}
-            onChange={handleInputChange}
-            placeholder="Ex: importante, lead, vip"
-            className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-          />
-        </motion.div>
-
         {/* Endereço */}
         <motion.div
           className="address-group"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
+          initial={{ opacity: 0, translateZ: -50 }}
+          animate={{ opacity: 1, translateZ: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
         >
-          <h3 className="text-2xl font-semibold mt-6 mb-4 text-black">Endereço</h3>
-          <div className="form-group mb-4">
-            <label className="block text-sm font-medium text-111928 mb-2">Rua</label>
-            <input
-              type="text"
-              name="street"
-              value={formData.address.street}
-              onChange={handleAddressChange}
-              className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            />
-          </div>
-          <div className="form-group mb-4">
-            <label className="block text-sm font-medium text-111928 mb-2">Cidade</label>
-            <input
-              type="text"
-              name="city"
-              value={formData.address.city}
-              onChange={handleAddressChange}
-              className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            />
-          </div>
-          <div className="form-group mb-4">
-            <label className="block text-sm font-medium text-111928 mb-2">Estado</label>
-            <input
-              type="text"
-              name="state"
-              value={formData.address.state}
-              onChange={handleAddressChange}
-              className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            />
-          </div>
-          <div className="form-group mb-4">
-            <label className="block text-sm font-medium text-111928 mb-2">CEP</label>
-            <input
-              type="text"
-              name="zipCode"
-              value={formData.address.zipCode}
-              onChange={handleAddressChange}
-              className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            />
-          </div>
-          <div className="form-group mb-4">
-            <label className="block text-sm font-medium text-111928 mb-2">País</label>
-            <input
-              type="text"
-              name="country"
-              value={formData.address.country}
-              onChange={handleAddressChange}
-              className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-            />
-          </div>
+          <h3 className="text-2xl font-semibold mt-6 mb-4">Endereço</h3>
+          {['street', 'city', 'state', 'zipCode', 'country'].map((field) => (
+            <div key={field} className="form-group mb-4">
+              <label className="block text-sm font-medium text-#111827 mb-2">
+                {field.charAt(0).toUpperCase() + field.slice(1)}
+              </label>
+              <input
+                type="text"
+                name={field}
+                value={formData.address[field]}
+                onChange={handleAddressChange}
+                className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              />
+            </div>
+          ))}
         </motion.div>
 
-        {/* Tipo e status da assinatura */}
+        {/* Tipo e duração da assinatura */}
         <motion.div
           className="form-group"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
+          initial={{ opacity: 0, translateZ: -50 }}
+          animate={{ opacity: 1, translateZ: 0 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
         >
-          <label className="block text-sm font-medium text-111928 mb-2">Tipo de Assinatura</label>
+          <label className="block text-sm font-medium text-#111827 mb-2">Tipo de Assinatura</label>
           <select
             name="subscriptionType"
             value={formData.subscriptionType}
@@ -215,30 +155,39 @@ const ClientEdit = () => {
 
         <motion.div
           className="form-group"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9 }}
+          initial={{ opacity: 0, translateZ: -50 }}
+          animate={{ opacity: 1, translateZ: 0 }}
+          transition={{ delay: 0.7, duration: 0.8 }}
         >
-          <label className="block text-sm font-medium text-111928 mb-2">Status da Assinatura</label>
-          <select
-            name="subscriptionStatus"
-            value={formData.subscriptionStatus}
-            onChange={handleInputChange}
-            className="w-full p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-          >
-            <option value="ativo">Ativo</option>
-            <option value="inativo">Inativo</option>
-            <option value="pendente">Pendente</option>
-            <option value="cancelado">Cancelado</option>
-          </select>
+          <label className="block text-sm font-medium text-#111827 mb-2">Duração da Assinatura</label>
+          <div className="flex gap-4">
+            <input
+              type="number"
+              name="subscriptionDuration"
+              value={formData.subscriptionDuration}
+              onChange={handleInputChange}
+              className="w-1/2 p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            />
+            <select
+              name="subscriptionDurationUnit"
+              value={formData.subscriptionDurationUnit}
+              onChange={handleInputChange}
+              className="w-1/2 p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            >
+              <option value="dias">Dias</option>
+              <option value="semanas">Semanas</option>
+              <option value="meses">Meses</option>
+              <option value="anos">Anos</option>
+            </select>
+          </div>
         </motion.div>
 
         {/* Campos Personalizados */}
         <motion.div
           className="custom-fields"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.0 }}
+          initial={{ opacity: 0, translateZ: -50 }}
+          animate={{ opacity: 1, translateZ: 0 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
         >
           <h3 className="text-2xl font-semibold mt-6 mb-4">Campos Personalizados</h3>
           <div className="form-group flex gap-4 mb-4">
@@ -256,53 +205,47 @@ const ClientEdit = () => {
               placeholder="Valor do campo"
               value={customField.fieldValue}
               onChange={handleCustomFieldChange}
+              style={{ backdropFilter: 'blur(100px)', color: '#111827' }}
               className="w-1/2 p-3 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             />
-            <button
+            <motion.button
               type="button"
-              className="btn-add-custom-field bg-indigo-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-105"
+              className="bg-indigo-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 flex items-center gap-2"
               onClick={addCustomField}
+              whileHover={{ scale: 1.1 }}
             >
+              <Plus size={20} />
               Adicionar Campo
-            </button>
+            </motion.button>
           </div>
-
-          {formData.customFields.length > 0 && (
-            <div className="custom-fields-list">
-              <h4 className="text-xl font-semibold mb-4">Campos Personalizados Adicionados:</h4>
-              <ul className="list-disc ml-6">
-                {formData.customFields.map((field, index) => (
-                  <li key={index} className="mb-1">
-                    <strong>{field.fieldName}:</strong> {field.fieldValue}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </motion.div>
 
         {/* Botões de submit */}
         <motion.div
           className="form-buttons flex gap-4 mt-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1 }}
+          initial={{ opacity: 0, translateZ: -50 }}
+          animate={{ opacity: 1, translateZ: 0 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <button
+          <motion.button
             type="submit"
-            className="bg-green-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-green-700 transition-transform transform hover:scale-105"
+            className="bg-green-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-green-700 transition-transform transform hover:scale-105 flex items-center gap-2"
             disabled={loading}
+            whileHover={{ scale: 1.1 }}
           >
+            <FloppyDisk size={20} />
             {loading ? 'Salvando...' : 'Salvar Alterações'}
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
-            className="bg-gray-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-gray-700 transition-transform transform hover:scale-105"
+            className="bg-gray-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-gray-700 transition-transform transform hover:scale-105 flex items-center gap-2"
             onClick={() => window.history.back()}
+            whileHover={{ scale: 1.1 }}
           >
+            <ArrowLeft size={20} />
             Cancelar
-          </button>
+          </motion.button>
         </motion.div>
       </form>
     </motion.div>

@@ -1,12 +1,32 @@
 // Arquivo: ClientForm.js
 
 import React from 'react';
+import { motion } from 'framer-motion';
+import { User, EnvelopeSimple, Phone, Buildings, Tag } from 'phosphor-react';
+
+const iconVariants = {
+  hidden: { pathLength: 0, fill: "rgba(255, 255, 255, 0)" },
+  visible: { pathLength: 1, fill: "rgba(255, 255, 255, 1)", transition: { duration: 1.5 } },
+};
 
 const ClientForm = ({ formData, handleInputChange }) => {
   return (
-    <form className="w-full max-w-md bg-white text-gray-800 p-8 rounded-lg shadow-lg mb-6">
-      <div className="form-group mb-4">
-        <label className="block text-sm font-medium mb-2">Nome*</label>
+    <motion.form
+      className="w-full max-w-md bg-gray-900 text-gray-100 p-8 rounded-lg shadow-lg mb-6"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
+    >
+      <div className="form-group mb-4 flex items-center gap-3">
+        <motion.div
+          className="text-blue-500"
+          initial="hidden"
+          animate="visible"
+          variants={iconVariants}
+        >
+          <User size={24} weight="bold" />
+        </motion.div>
+        <label className="block text-sm font-medium">Nome*</label>
         <input
           type="text"
           name="name"
@@ -14,11 +34,21 @@ const ClientForm = ({ formData, handleInputChange }) => {
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
           required
-          placeholder='Ex: Jonh Alex'
+          placeholder="Ex: Jonh Alex"
+          style={{ backgroundColor: '#121928', color: 'white' }}
         />
       </div>
-      <div className="form-group mb-4">
-        <label className="block text-sm font-medium mb-2">Email*</label>
+
+      <div className="form-group mb-4 flex items-center gap-3">
+        <motion.div
+          className="text-blue-500"
+          initial="hidden"
+          animate="visible"
+          variants={iconVariants}
+        >
+          <EnvelopeSimple size={24} weight="bold" />
+        </motion.div>
+        <label className="block text-sm font-medium">Email*</label>
         <input
           type="email"
           name="email"
@@ -26,11 +56,21 @@ const ClientForm = ({ formData, handleInputChange }) => {
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
           required
-          placeholder='Ex: username@gmail.com'
+          placeholder="Ex: username@gmail.com"
+          style={{ backgroundColor: '#121928', color: 'white' }}
         />
       </div>
-      <div className="form-group mb-4">
-        <label className="block text-sm font-medium mb-2">Telefone*</label>
+
+      <div className="form-group mb-4 flex items-center gap-3">
+        <motion.div
+          className="text-blue-500"
+          initial="hidden"
+          animate="visible"
+          variants={iconVariants}
+        >
+          <Phone size={24} weight="bold" />
+        </motion.div>
+        <label className="block text-sm font-medium">Telefone*</label>
         <input
           type="text"
           name="phone"
@@ -38,22 +78,42 @@ const ClientForm = ({ formData, handleInputChange }) => {
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
           required
-          placeholder='Ex: (99) 99999-9999'
+          placeholder="Ex: (99) 99999-9999"
+          style={{ backgroundColor: '#121928', color: 'white' }}
         />
       </div>
-      <div className="form-group mb-4">
-        <label className="block text-sm font-medium mb-2">Empresa</label>
+
+      <div className="form-group mb-4 flex items-center gap-3">
+        <motion.div
+          className="text-blue-500"
+          initial="hidden"
+          animate="visible"
+          variants={iconVariants}
+        >
+          <Buildings size={24} weight="bold" />
+        </motion.div>
+        <label className="block text-sm font-medium">Empresa</label>
         <input
           type="text"
           name="company"
           value={formData.company}
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
-          placeholder='Ex: ACME Inc.'
+          placeholder="Ex: ACME Inc."
+          style={{ backgroundColor: '#121928', color: 'white' }}
         />
       </div>
-      <div className="form-group mb-4">
-        <label className="block text-sm font-medium mb-2">Tags (separadas por vírgula)</label>
+
+      <div className="form-group mb-4 flex items-center gap-3">
+        <motion.div
+          className="text-blue-500"
+          initial="hidden"
+          animate="visible"
+          variants={iconVariants}
+        >
+          <Tag size={24} weight="bold" />
+        </motion.div>
+        <label className="block text-sm font-medium">Tags (separadas por vírgula)</label>
         <input
           type="text"
           name="tags"
@@ -61,10 +121,10 @@ const ClientForm = ({ formData, handleInputChange }) => {
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
           placeholder="Ex: importante, lead, vip"
-          
+          style={{ backgroundColor: '#121928', color: 'white' }}
         />
       </div>
-    </form>
+    </motion.form>
   );
 };
 
