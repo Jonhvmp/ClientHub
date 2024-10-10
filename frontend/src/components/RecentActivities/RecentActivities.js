@@ -11,7 +11,7 @@ const RecentActivities = ({ clients }) => {
 
   return (
     <div className="recent-activities mt-12">
-      <h2 className="text-3xl font-bold mb-6">Atividades Recentes</h2>
+      <h2 className="text-3xl text-red-700 font-bold mb-6">Atividades Recentes</h2>
       {clients.map((client) => (
         <motion.div
           key={client._id}

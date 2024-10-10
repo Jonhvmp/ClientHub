@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { PencilSimple, Trash } from 'phosphor-react';
 
 const ClientsTable = ({ clients, handleEditClient, handleDeleteClient, deleteLoading }) => {
   return (
@@ -21,30 +22,34 @@ const ClientsTable = ({ clients, handleEditClient, handleDeleteClient, deleteLoa
           </tr>
         </thead>
         <tbody>
-          {clients.map((client) => (
+          {clients.map((client, index) => (
             <motion.tr
               key={client._id}
-              className="hover:bg-gray-100 transition-all"
-              // whileHover={{ scale: 1.02 }}
+              className={`transition-all ${index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'}`}
+              whileHover={{ boxShadow: '0px 5px 15px rgba(0,0,0,0.3)', backgroundColor: 'transparent' , backdropFilter: 'blur(100px)' }}
             >
               <td className="p-4 text-center">{client.name}</td>
               <td className="p-4 text-center">{client.email}</td>
               <td className="p-4 text-center">{client.status}</td>
-              <td className="p-4 flex justify-center gap-2">
+              <td className="p-4 flex justify-center gap-4">
                 <motion.button
-                  className="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600"
-                  whileHover={{ scale: 1.1 }}
+                  className="bg-green-500 text-white py-2 px-3 rounded-lg shadow-lg hover:bg-green-600 transition-transform"
+                  whileHover={{ scale: 1.1, rotate: 3 }}
                   onClick={() => handleEditClient(client._id)}
                 >
-                  Editar
+                  <PencilSimple size={24} weight="bold" className="hover:text-black transition-colors" />
                 </motion.button>
                 <motion.button
-                  className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600"
-                  whileHover={{ scale: 1.1 }}
+                  className="bg-red-500 text-white py-2 px-3 rounded-lg shadow-lg hover:bg-red-600 transition-transform"
+                  whileHover={{ scale: 1.1, rotate: -3 }}
                   onClick={() => handleDeleteClient(client._id)}
                   disabled={deleteLoading}
                 >
-                  {deleteLoading ? 'Excluindo...' : 'Excluir'}
+                  {deleteLoading ? (
+                    'Excluindo...'
+                  ) : (
+                    <Trash size={24} weight="bold" className="hover:text-black transition-colors" />
+                  )}
                 </motion.button>
               </td>
             </motion.tr>
