@@ -35,9 +35,10 @@ const Register = () => {
     try {
       // console.log('Dados do formulário:', form);
       const response = await api.post('/api/auth/register', form);
-      const { token } = response.data;
+      const { accessToken } = response.data;
 
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', accessToken);
+      console.log('Token de acesso pós registro:', accessToken);
       navigate('/dashboard');
     } catch (error) {
       console.error('Erro ao registrar', error);

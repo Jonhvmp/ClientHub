@@ -21,7 +21,6 @@ const Login = () => {
 
       // Armazenar o token no localStorage ou sessionStorage
       localStorage.setItem('token', accessToken); // Certifique-se de usar o nome correto do token aqui
-
       // Redirecionar para o dashboard
       window.location.href = '/dashboard';
     } catch (error) {
