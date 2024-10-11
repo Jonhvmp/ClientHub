@@ -1,5 +1,4 @@
 // app.js
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -10,6 +9,8 @@ const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 const userRoutes = require('./routes/userRouter');
 const { errorHandler } = require('./middleware/errorHandler');
+
+require('dotenv').config();
 
 // Inicializando o app
 const app = express();

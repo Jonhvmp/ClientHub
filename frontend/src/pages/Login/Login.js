@@ -12,16 +12,15 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // console.log('Dados de entrada:', form);
-
     try {
       const response = await api.post('/api/auth/login', form);
       console.log('Resposta da API:', response.data);
 
-      const { token } = response.data;
+      // Pegue o token corretamente, conforme retornado pelo backend (acessToken)
+      const { accessToken } = response.data;
 
       // Armazenar o token no localStorage ou sessionStorage
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', accessToken); // Certifique-se de usar o nome correto do token aqui
 
       // Redirecionar para o dashboard
       window.location.href = '/dashboard';
