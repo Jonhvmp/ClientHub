@@ -47,7 +47,7 @@ router.post('/login', validate('login'), loginUser);
 // Rota de registro de usuário
 router.post('/register', validate('register'), registerUser);
 
-// Exemplo de rota protegida
+// Dashboard de rota protegida
 router.get('/dashboard', protect, (req, res) => {
   res.json({ message: 'Bem-vindo ao dashboard!', user: req.user });
 });
