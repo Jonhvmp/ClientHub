@@ -38,7 +38,6 @@ const Register = () => {
       const { accessToken } = response.data;
 
       localStorage.setItem('token', accessToken);
-      console.log('Token de acesso pós registro:', accessToken);
       navigate('/dashboard');
     } catch (error) {
       console.error('Erro ao registrar', error);
