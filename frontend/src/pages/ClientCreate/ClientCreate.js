@@ -1,5 +1,3 @@
-// Arquivo: ClientCreate.js
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import useClientCreate from '../../hooks/useClientCreate/useClientCreate';
@@ -24,6 +22,9 @@ const ClientCreate = () => {
     handleCustomFieldChange,
     addCustomField,
     handleSubmit,
+    setSubscriptionType,
+    setSubscriptionDuration,
+    setSubscriptionDurationUnit,
   } = useClientCreate();
 
   return (
@@ -37,10 +38,14 @@ const ClientCreate = () => {
         handleCustomFieldChange={handleCustomFieldChange}
         addCustomField={addCustomField}
       />
-      <motion.div className='subscriptDiv'>
-        <SubscriptionFields formData={formData} handleInputChange={handleInputChange} />
+      <motion.div className="subscriptDiv">
+        <SubscriptionFields
+          formData={formData}
+          setSubscriptionType={setSubscriptionType}
+          setSubscriptionDuration={setSubscriptionDuration}
+          setSubscriptionDurationUnit={setSubscriptionDurationUnit}
+        />
       </motion.div>
-
       <FormButtons handleSubmit={handleSubmit} loading={loading} navigate={navigate} />
     </div>
   );

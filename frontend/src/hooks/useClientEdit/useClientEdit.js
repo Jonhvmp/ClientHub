@@ -109,15 +109,26 @@ const useClientEdit = (id) => {
 
   const calculateExpirationDate = (startDate, duration, unit) => {
     const endDate = new Date(startDate);
-    if (unit === 'meses') {
-      endDate.setMonth(endDate.getMonth() + duration);
-    } else if (unit === 'anos') {
-      endDate.setFullYear(endDate.getFullYear() + duration);
+    switch (unit) {
+      case 'dias':
+        endDate.setDate(endDate.getDate() + duration);
+        break;
+      case 'semanas':
+        endDate.setDate(endDate.getDate() + duration * 7);
+        break;
+      case 'meses':
+        endDate.setMonth(endDate.getMonth() + duration);
+        break;
+      case 'anos':
+        endDate.setFullYear(endDate.getFullYear() + duration);
+        break;
+      default:
+        break;
     }
     return endDate;
   }; // Função para calcular a data de expiração da assinatura
 
-   const expirationDate = calculateExpirationDate(new Date(), formData.subscriptionDuration, formData.subscriptionDurationUnit);
+  const expirationDate = calculateExpirationDate(new Date(), formData.subscriptionDuration, formData.subscriptionDurationUnit);
 
   return {
     formData,
@@ -131,7 +142,7 @@ const useClientEdit = (id) => {
     addCustomField,
     handleSubmit,
     expirationDate,
-    calculateExpirationDate
+    calculateExpirationDate,
   };
 };
 

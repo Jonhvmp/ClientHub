@@ -175,6 +175,7 @@ const ClientEdit = () => {
             <div className="flex gap-4">
               <input
                 type="number"
+                min={1}
                 name="subscriptionDuration"
                 value={subscriptionDuration}
                 onChange={(e) => setSubscriptionDuration(e.target.value)}

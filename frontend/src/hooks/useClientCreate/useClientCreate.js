@@ -19,6 +19,7 @@ const useClientCreate = () => {
     subscriptionType: 'mensal',
     subscriptionStatus: 'ativo',
     subscriptionDuration: 1, // Valor padrão (em meses)
+    subscriptionDurationUnit: 'meses',
     customFields: [],
   });
 
@@ -89,6 +90,49 @@ const useClientCreate = () => {
     }
   };
 
+  const calculateExpirationDate = (startDate, duration, unit) => {
+    const endDate = new Date(startDate);
+    switch (unit) {
+      case 'dias':
+        endDate.setDate(endDate.getDate() + duration);
+        break;
+      case 'semanas':
+        endDate.setDate(endDate.getDate() + duration * 7);
+        break;
+      case 'meses':
+        endDate.setMonth(endDate.getMonth() + duration);
+        break;
+      case 'anos':
+        endDate.setFullYear(endDate.getFullYear() + duration);
+        break;
+      default:
+        break;
+    }
+    return endDate;
+  };
+
+  // Funções para atualizar os valores de assinatura
+  const setSubscriptionType = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      subscriptionType: value,
+    }));
+  };
+
+  const setSubscriptionDuration = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      subscriptionDuration: value,
+    }));
+  };
+
+  const setSubscriptionDurationUnit = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      subscriptionDurationUnit: value,
+    }));
+  };
+
   return {
     formData,
     customField,
@@ -99,6 +143,10 @@ const useClientCreate = () => {
     handleCustomFieldChange,
     addCustomField,
     handleSubmit,
+    calculateExpirationDate,
+    setSubscriptionType,
+    setSubscriptionDuration,
+    setSubscriptionDurationUnit,
   };
 };
 

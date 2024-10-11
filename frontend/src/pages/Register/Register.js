@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { User, EnvelopeSimple, Key } from 'phosphor-react';
 import api from '../../services/api';
 
 const Register = () => {
@@ -81,7 +82,15 @@ const Register = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.7, type: 'spring' }}
         >
-          <div className="form-group mb-6">
+          <div className="form-group mb-6 flex items-center">
+            <motion.div
+              className="mr-3"
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.4, type: 'spring', stiffness: 80 }}
+            >
+              <User size={32} weight="bold" />
+            </motion.div>
             <motion.input
               type="text"
               placeholder="Nome"
@@ -104,7 +113,15 @@ const Register = () => {
               </motion.span>
             )}
           </div>
-          <div className="form-group mb-6">
+          <div className="form-group mb-6 flex items-center">
+            <motion.div
+              className="mr-3"
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.5, type: 'spring', stiffness: 80 }}
+            >
+              <EnvelopeSimple size={32} weight="bold" />
+            </motion.div>
             <motion.input
               type="email"
               placeholder="Email"
@@ -127,7 +144,15 @@ const Register = () => {
               </motion.span>
             )}
           </div>
-          <div className="form-group mb-6">
+          <div className="form-group mb-6 flex items-center">
+            <motion.div
+              className="mr-3"
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.6, type: 'spring', stiffness: 80 }}
+            >
+              <Key size={32} weight="bold" />
+            </motion.div>
             <motion.input
               type="password"
               placeholder="Senha"
@@ -150,7 +175,15 @@ const Register = () => {
               </motion.span>
             )}
           </div>
-          <div className="form-group mb-6">
+          <div className="form-group mb-6 flex items-center">
+            <motion.div
+              className="mr-3"
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.7, type: 'spring', stiffness: 80 }}
+            >
+              <Key size={32} weight="bold" />
+            </motion.div>
             <motion.input
               type="password"
               placeholder="Confirmar Senha"

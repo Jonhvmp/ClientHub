@@ -2,9 +2,25 @@ const Client = require('../models/clientModel');
 const asyncHandler = require('express-async-handler');
 
 // Função para calcular a data de término da assinatura com base na duração
-const calculateSubscriptionEndDate = (startDate, duration) => {
+// Função para calcular a data de término da assinatura com base na duração e unidade
+const calculateSubscriptionEndDate = (startDate, duration, unit) => {
   const endDate = new Date(startDate);
-  endDate.setMonth(endDate.getMonth() + duration);
+  switch (unit) {
+    case 'dias':
+      endDate.setDate(endDate.getDate() + duration);
+      break;
+    case 'semanas':
+      endDate.setDate(endDate.getDate() + duration * 7);
+      break;
+    case 'meses':
+      endDate.setMonth(endDate.getMonth() + duration);
+      break;
+    case 'anos':
+      endDate.setFullYear(endDate.getFullYear() + duration);
+      break;
+    default:
+      break;
+  }
   return endDate;
 };
 
@@ -20,9 +36,10 @@ exports.createClient = asyncHandler(async (req, res) => {
       tags,
       subscriptionType,
       subscriptionStatus,
-      subscriptionDuration = 1, // Valor padrão para duração mensal
+      subscriptionDuration = 1, // Valor padrão para duração
+      subscriptionDurationUnit = 'meses', // Unidade padrão
       customFields,
-      status
+      status,
     } = req.body;
 
     if (!name || !email) {
@@ -35,7 +52,7 @@ exports.createClient = asyncHandler(async (req, res) => {
     }
 
     const subscriptionStartDate = new Date();
-    const subscriptionEndDate = calculateSubscriptionEndDate(subscriptionStartDate, subscriptionDuration);
+    const subscriptionEndDate = calculateSubscriptionEndDate(subscriptionStartDate, subscriptionDuration, subscriptionDurationUnit);
 
     const client = await Client.create({
       name,
@@ -47,11 +64,12 @@ exports.createClient = asyncHandler(async (req, res) => {
       subscriptionType,
       subscriptionStatus,
       subscriptionDuration,
+      subscriptionDurationUnit,
       subscriptionStartDate,
       subscriptionEndDate,
       customFields,
       status,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     res.status(201).json(client);
@@ -114,11 +132,12 @@ exports.updateClient = asyncHandler(async (req, res) => {
 
   const {
     subscriptionDuration,
+    subscriptionDurationUnit = client.subscriptionDurationUnit,
     subscriptionStartDate = client.subscriptionStartDate,
   } = req.body;
 
   if (subscriptionDuration) {
-    req.body.subscriptionEndDate = calculateSubscriptionEndDate(subscriptionStartDate, subscriptionDuration);
+    req.body.subscriptionEndDate = calculateSubscriptionEndDate(subscriptionStartDate, subscriptionDuration, subscriptionDurationUnit);
   }
 
   client = await Client.findByIdAndUpdate(req.params.id, req.body, {
