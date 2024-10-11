@@ -33,7 +33,7 @@ const Register = () => {
     }
 
     try {
-      console.log('Dados do formulário:', form);
+      // console.log('Dados do formulário:', form);
       const response = await api.post('/api/auth/register', form);
       const { token } = response.data;
 
