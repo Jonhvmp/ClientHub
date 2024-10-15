@@ -28,7 +28,10 @@ const ClientCreate = () => {
   } = useClientCreate();
 
   return (
-    <div className="client-create-container bg-gradient-to-b from-gray-900 to-gray-800 text-white p-8 min-h-screen flex flex-col items-center">
+    <div
+      style={{ paddingTop: '200px' }}
+      className="client-create-container bg-gradient-to-b from-gray-900 to-gray-800 text-white p-8 min-h-screen flex flex-col items-center"
+    >
       <FormHeader title="Adicionar Cliente" error={error} />
       <ClientForm formData={formData} handleInputChange={handleInputChange} />
       <AddressForm formData={formData} handleAddressChange={handleAddressChange} />

@@ -29,7 +29,9 @@ const CustomFields = ({ customField, formData, handleCustomFieldChange, addCusto
         <h3 className="text-lg font-semibold">Campos Personalizados</h3>
       </div>
 
-      <div className="form-group mb-4 flex items-center gap-4">
+      <div
+        style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+        className="form-group mb-4 flex items-center gap-4">
         <input
           type="text"
           name="fieldName"

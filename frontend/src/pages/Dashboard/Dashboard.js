@@ -7,6 +7,7 @@ import StatsCard from '../../components/StatsCard/StatsCard';
 import ClientsTable from '../../components/ClientsTable/ClientsTable';
 import RecentActivities from '../../components/RecentActivities/RecentActivities';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog/DeleteConfirmationDialog';
+// import Header from '../../components/Header/Header';
 import '../../assets/css/Dashboard/Dashboard.css';
 
 const Dashboard = () => {
@@ -85,10 +86,12 @@ const Dashboard = () => {
   return (
     <motion.div
       className="dashboard-container bg-gradient-to-b from-gray-900 to-gray-800 text-white min-h-screen p-8"
+      style={{ paddingTop: '200px' }}
       initial="hidden"
       animate="visible"
       exit="hidden"
     >
+      {/* Título da página */}
       <motion.h1
         className="text-5xl font-bold mb-8 text-center"
         variants={titleVariants}
