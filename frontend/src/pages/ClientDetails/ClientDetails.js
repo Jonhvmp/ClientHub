@@ -36,6 +36,7 @@ const ClientDetails = () => {
 
   return (
     <motion.div
+      style={{ paddingTop: '200px'}}
       className="client-details-container p-8 bg-gradient-to-b from-gray-900 to-gray-800 text-white min-h-screen"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

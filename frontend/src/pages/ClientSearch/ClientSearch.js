@@ -37,6 +37,7 @@ const ClientSearch = () => {
     if (clients.length === 0 && query.trim() !== '') {
       return (
         <motion.div
+          style={{ paddingTop: '200px' }}
           className="no-results text-yellow-500 text-xl text-center mt-4"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}

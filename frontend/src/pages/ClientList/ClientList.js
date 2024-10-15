@@ -60,6 +60,7 @@ const ClientList = () => {
 
   return (
     <motion.div
+      style={{ paddingTop: '200px' }}
       className="client-list-container bg-gradient-to-b from-gray-900 to-gray-800 text-white min-h-screen p-8"
       initial="hidden"
       animate="visible"

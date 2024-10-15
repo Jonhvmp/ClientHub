@@ -52,6 +52,7 @@ const ClientEdit = () => {
 
   return (
     <motion.div
+      style={{ paddingTop: '200px' }}
       className="client-edit-container bg-gradient-to-b from-gray-900 to-gray-800 text-black min-h-screen p-8 flex flex-col items-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

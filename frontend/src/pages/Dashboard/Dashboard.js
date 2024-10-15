@@ -7,7 +7,7 @@ import StatsCard from '../../components/StatsCard/StatsCard';
 import ClientsTable from '../../components/ClientsTable/ClientsTable';
 import RecentActivities from '../../components/RecentActivities/RecentActivities';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog/DeleteConfirmationDialog';
-// import Header from '../../components/Header/Header';
+import Skeleton from '@mui/material/Skeleton';
 import '../../assets/css/Dashboard/Dashboard.css';
 
 const Dashboard = () => {
@@ -66,7 +66,21 @@ const Dashboard = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center min-h-screen text-white text-3xl">Carregando...</div>;
+    return (
+      <div
+        style={{ paddingTop: '200px', backgroundColor: '#1a202c' }}
+        className="flex flex-col items-center min-h-screen p-8 text-white">
+        <Skeleton variant="text" width={300} height={60} animation="wave" />
+        <Skeleton variant="rectangular" width={300} height={40} animation="wave" />
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 my-12">
+          {[...Array(5)].map((_, index) => (
+            <Skeleton key={index} variant="rectangular" width={200} height={150} animation="wave" />
+          ))}
+        </div>
+        <Skeleton variant="text" width={300} height={40} animation="wave" />
+        <Skeleton variant="rectangular" width="100%" height={400} animation="wave" />
+      </div>
+    );
   }
 
   if (error) {
