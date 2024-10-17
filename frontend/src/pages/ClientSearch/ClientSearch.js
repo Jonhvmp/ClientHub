@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import Skeleton from '@mui/material/Skeleton';
 import useClientSearch from '../../hooks/useClientSearch/useClientSearch';
 
 const ClientSearch = () => {
@@ -10,14 +11,12 @@ const ClientSearch = () => {
   const renderClients = () => {
     if (loading) {
       return (
-        <motion.div
-          className="loading text-white text-xl flex justify-center items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          Buscando clientes...
-        </motion.div>
+        <div
+          className="loading-skeletons grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 my-12">
+          {[...Array(5)].map((_, index) => (
+            <Skeleton key={index} variant="rectangular" width="100%" height={150} animation="wave" />
+          ))}
+        </div>
       );
     }
 
@@ -37,7 +36,6 @@ const ClientSearch = () => {
     if (clients.length === 0 && query.trim() !== '') {
       return (
         <motion.div
-          style={{ paddingTop: '200px' }}
           className="no-results text-yellow-500 text-xl text-center mt-4"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -99,6 +97,7 @@ const ClientSearch = () => {
 
   return (
     <motion.div
+      style={{ paddingTop: '200px' }}
       className="client-search-container min-h-screen p-8 bg-gradient-to-b from-gray-900 to-gray-800 text-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
